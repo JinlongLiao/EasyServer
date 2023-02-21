@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="false" scanPeriod="60 seconds" debug="false">
+    <!-- ch.qos.logback.core.ConsoleAppender 表示控制台输出 -->
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <!--
+        日志输出格式：
+            %d表示日期时间，
+            %thread表示线程名，
+            %-5level：级别从左显示5个字符宽度
+            %logger{50} 表示logger名字最长50个字符，否则按照句点分割。
+            %msg：日志消息，
+            %n是换行符
+        -->
+        <layout class="io.github.jinlongliao.easy.server.utils.logger.format.logback.SimplePatternLayout">
+            <pattern>%black(控制台-) %red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level)
+                %boldMagenta(%logger{10}) - %cyan(%msg%n)
+            </pattern>
+        </layout>
+    </appender>
+
+    <!--
+root与logger是父子关系，没有特别定义则默认为root，任何一个类只会和一个logger对应，
+要么是定义的logger，要么是root，判断的关键在于找到这个logger，然后判断这个logger的appender和level。
+-->
+    <root level="info">
+        <appender-ref ref="stdout"/>
+        <!--        <appender-ref ref="appLogAppender"/>-->
+    </root>
+</configuration>

@@ -1,0 +1,12 @@
+/Users/liaojinlong/workspace/mywork/myProject/easy.server/easy.server.script/src/main/java/io/github/jinlongliao/easy/server/script/groovy/config/dynamic/DynamicField.java
+/Users/liaojinlong/workspace/mywork/myProject/easy.server/easy.server.script/src/main/java/io/github/jinlongliao/easy/server/script/groovy/GroovyBeanScriptLoader.java
+/Users/liaojinlong/workspace/mywork/myProject/easy.server/easy.server.script/src/main/java/io/github/jinlongliao/easy/server/script/groovy/config/ScriptConfig.java
+/Users/liaojinlong/workspace/mywork/myProject/easy.server/easy.server.script/src/main/java/io/github/jinlongliao/easy/server/script/groovy/bean/ScriptConfigFactoryBean.java
+/Users/liaojinlong/workspace/mywork/myProject/easy.server/easy.server.script/src/main/java/io/github/jinlongliao/easy/server/script/groovy/constant/ScriptLang.java
+/Users/liaojinlong/workspace/mywork/myProject/easy.server/easy.server.script/src/main/java/io/github/jinlongliao/easy/server/script/groovy/config/DynamicRefreshBeanConfiguration.java
+/Users/liaojinlong/workspace/mywork/myProject/easy.server/easy.server.script/src/main/java/io/github/jinlongliao/easy/server/script/groovy/config/dynamic/DynamicRefreshBean.java
+/Users/liaojinlong/workspace/mywork/myProject/easy.server/easy.server.script/src/main/java/io/github/jinlongliao/easy/server/script/groovy/annotation/EnableRefresh.java
+/Users/liaojinlong/workspace/mywork/myProject/easy.server/easy.server.script/src/main/java/io/github/jinlongliao/easy/server/script/groovy/ResourceScriptSource.java
+/Users/liaojinlong/workspace/mywork/myProject/easy.server/easy.server.script/src/main/java/io/github/jinlongliao/easy/server/script/groovy/annotation/RefreshClass.java
+/Users/liaojinlong/workspace/mywork/myProject/easy.server/easy.server.script/src/main/java/io/github/jinlongliao/easy/server/script/groovy/bean/TargetSourceFactoryBean.java
+/Users/liaojinlong/workspace/mywork/myProject/easy.server/easy.server.script/src/main/java/io/github/jinlongliao/easy/server/script/groovy/annotation/RefreshValue.java
