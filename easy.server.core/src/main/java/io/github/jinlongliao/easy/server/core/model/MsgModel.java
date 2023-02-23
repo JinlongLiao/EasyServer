@@ -38,7 +38,7 @@ public class MsgModel {
     /**
      * 对应消息的ID
      */
-    private final int msgType;
+    private final String logicId;
     /**
      * 参数默认值
      */
@@ -53,12 +53,13 @@ public class MsgModel {
     private final boolean innerField;
 
 
-    public MsgModel(String paramName, Class<?> type,
+    public MsgModel(String paramName,
+                    Class<?> type,
                     int length,
                     boolean dynamicLength,
                     Annotation[] extAnnotation,
                     boolean isRequestBody,
-                    int msgType,
+                    String logicId,
                     String defaultValue,
                     boolean isCommon,
                     boolean innerField) {
@@ -68,7 +69,7 @@ public class MsgModel {
         this.dynamicLength = dynamicLength;
         this.extAnnotation = extAnnotation;
         this.isRequestBody = isRequestBody;
-        this.msgType = msgType;
+        this.logicId = logicId;
         this.defaultValue = defaultValue;
         this.isCommon = isCommon;
         this.innerField = innerField;
@@ -102,8 +103,8 @@ public class MsgModel {
         return isRequestBody;
     }
 
-    public int getMsgType() {
-        return msgType;
+    public String getMsgType() {
+        return logicId;
     }
 
     public String getDefaultValue() {

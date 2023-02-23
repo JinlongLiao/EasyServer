@@ -37,16 +37,16 @@ public class ExtraMethodDesc {
      **/
 
     public static class MethodDesc {
-        private final int msgId;
+        private final String logicId;
         private final String desc;
 
-        public MethodDesc(int msgId, String desc) {
-            this.msgId = msgId;
+        public MethodDesc(String logicId, String desc) {
+            this.logicId = logicId;
             this.desc = desc;
         }
 
-        public int getMsgId() {
-            return msgId;
+        public String getLogicId() {
+            return logicId;
         }
 
         public String getDesc() {
@@ -56,7 +56,7 @@ public class ExtraMethodDesc {
         @Override
         public String toString() {
             return "ExtraMethodDesc{" +
-                    "msgId=" + msgId +
+                    "logicId=" + logicId +
                     ", desc='" + desc + '\'' +
                     '}';
         }

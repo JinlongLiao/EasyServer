@@ -18,11 +18,13 @@ public @interface LogicRequestBody {
      *
      * @return 消息ID
      */
-    int msgType() default 0;
+    String logicId() default "";
 
     String value() default "";
+
     /**
      * 参数默认值
+     *
      * @return /
      */
     String defaultValue() default "";

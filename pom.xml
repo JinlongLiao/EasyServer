@@ -20,6 +20,7 @@
         <module>easy.server.extend</module>
         <module>easy.server.bom</module>
         <module>plugins</module>
+        <module>easy.server.demo/easy.server.boot.demo</module>
     </modules>
     <repositories>
         <repository>
@@ -35,14 +36,6 @@
         </repository>
     </repositories>
     <distributionManagement>
-        <snapshotRepository>
-            <id>nexus_release</id>
-            <url>https://nexus.pook.com/repository/pokercity-snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>nexus_release</id>
-            <url>https://nexus.pook.com/repository/pokercity-releases/</url>
-        </repository>
     </distributionManagement>
     <properties>
         <slf4j.version>1.7.36</slf4j.version>

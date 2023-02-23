@@ -18,7 +18,7 @@ import static io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.as
  * @author: liaojinlong
  * @date: 2022/5/21 22:01
  */
-public class MapClassMethodCoreGenerator extends AbstractExtraClassMethodGenerator {
+public class MapClassMethodCoreGenerator extends AbstractExtraClassMethodGenerator<IMapData2Object2> {
     @Override
     public <T> void initExtraMethod(List<FieldParserBody> filedParserBodies,
                                     String owner,
@@ -77,7 +77,7 @@ public class MapClassMethodCoreGenerator extends AbstractExtraClassMethodGenerat
 
 
     @Override
-    public Class getTargetConverter() {
+    public Class<IMapData2Object2> getTargetConverter() {
         return IMapData2Object2.class;
     }
 

@@ -16,6 +16,7 @@
 package io.github.jinlongliao.easy.server.core.core.spring.register;
 
 import io.github.jinlongliao.easy.server.core.annotation.LogicContextScan;
+import io.github.jinlongliao.easy.server.core.core.spring.LogicRegisterContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;

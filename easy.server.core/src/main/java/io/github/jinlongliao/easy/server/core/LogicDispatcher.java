@@ -71,11 +71,11 @@ public class LogicDispatcher {
     /**
      * 业务转发，返回统一结果
      *
-     * @param msgType
+     * @param logicId
      * @param args
      * @return 结果
      */
-    public String dispatcher(Integer msgType, Object[] args) throws Exception {
+    public String dispatcher(String logicId, Object[] args) throws Exception {
         Exception exception = null;
         Object result = null;
         try {
@@ -88,7 +88,7 @@ public class LogicDispatcher {
         } catch (Exception e) {
             exception = e;
         }
-        return handleResult(msgType, args, result, exception);
+        return handleResult(logicId, args, result, exception);
     }
 
     /**
@@ -98,12 +98,12 @@ public class LogicDispatcher {
      * @param exception
      * @return 操作结果
      */
-    protected String handleResult(Integer msgType, Object[] args, Object obj, Exception exception) throws Exception {
+    protected String handleResult(String logicId, Object[] args, Object obj, Exception exception) throws Exception {
         String result;
         if (exception == null) {
-            result = logicResultHandler.logicResultHandler(msgType, args, obj);
+            result = logicResultHandler.logicResultHandler(logicId, args, obj);
         } else {
-            result = logicResultHandler.logicExceptionHandler(msgType, args, obj, exception);
+            result = logicResultHandler.logicExceptionHandler(logicId, args, obj, exception);
         }
         return result;
     }

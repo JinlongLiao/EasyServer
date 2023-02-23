@@ -11,36 +11,36 @@ public interface ILogicResultHandler {
      * 正常操作解析
 
      */
-    default String logicResultHandler(Integer msgType, Object[] args, Object obj) throws Exception {
-        return this.logicResultHandler(msgType, obj);
+    default String logicResultHandler(String logicId, Object[] args, Object obj) throws Exception {
+        return this.logicResultHandler(logicId, obj);
     }
 
     /**
      * 正常操作解析
      *
-     * @param msgType
+     * @param logicId
      * @param obj
      * @return 解析后的结果
      */
-    String logicResultHandler(Integer msgType, Object obj) throws Exception;
+    String logicResultHandler(String  logicId, Object obj) throws Exception;
 
     /**
      * 异常信息解析
      *
-     * @param msgType
+     * @param logicId
      * @param exception
      * @return 解析后的结果
      */
-   default String logicExceptionHandler(Integer msgType, Object[] args,Object obj,  Exception exception) throws Exception {
-        return this.logicExceptionHandler(msgType, exception);
+   default String logicExceptionHandler(String logicId, Object[] args,Object obj,  Exception exception) throws Exception {
+        return this.logicExceptionHandler(logicId, exception);
     }
     /**
      * 异常信息解析
      *
-     * @param msgType
+     * @param logicId
      * @param exception
      * @return 解析后的结果
      */
-    String logicExceptionHandler(Integer msgType, Exception exception) throws Exception;
+    String logicExceptionHandler(String logicId, Exception exception) throws Exception;
 
 }

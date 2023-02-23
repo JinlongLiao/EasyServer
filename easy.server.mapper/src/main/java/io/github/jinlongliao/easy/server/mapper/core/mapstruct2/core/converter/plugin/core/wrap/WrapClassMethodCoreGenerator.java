@@ -6,7 +6,7 @@ import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.p
 import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.plugin.core.map.MapClassMethodCoreGenerator;
 import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.generator.FieldParserBody;
 import io.github.jinlongliao.easy.server.mapper.utils.CLassUtils;
- import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ClassWriter;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ClassWriter;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * @author: liaojinlong
  * @date: 2022/5/21 22:01
  */
-public class WrapClassMethodCoreGenerator extends AbstractExtraClassMethodGenerator {
+public class WrapClassMethodCoreGenerator extends AbstractExtraClassMethodGenerator<ICoreData2Object2> {
     private final MapClassMethodCoreGenerator mapClassMethodCoreGenerator = new MapClassMethodCoreGenerator();
     private final ArrayClassMethodCoreGenerator classMethodCoreGenerator = new ArrayClassMethodCoreGenerator();
 
@@ -39,12 +39,12 @@ public class WrapClassMethodCoreGenerator extends AbstractExtraClassMethodGenera
     }
 
     @Override
-    public Class getTargetConverter() {
+    public Class<ICoreData2Object2> getTargetConverter() {
         return ICoreData2Object2.class;
     }
 
     @Override
     public String getSuperName() {
-        return                 CLassUtils.OBJECT_SUPER_NAME;
+        return CLassUtils.OBJECT_SUPER_NAME;
     }
 }

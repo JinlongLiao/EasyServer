@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  */
 public class MethodParse implements AutoCloseable {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    private final Map<Integer, LogicModel> logicDefineCache = new HashMap<>(32);
+    private final Map<String, LogicModel> logicDefineCache = new HashMap<>(32);
     private final List<MethodPostProcess> methodPostProcesses;
     private static final Collection<ExtraMethodAnnotationProcess> extraMethodAnnotationProcesses = AccessController
             .doPrivileged((PrivilegedAction<Collection<ExtraMethodAnnotationProcess>>) () -> {
@@ -80,13 +80,13 @@ public class MethodParse implements AutoCloseable {
      */
     public void parserLogic(String beanName, Object value) {
         Class<?> targetClass = AopUtils.getTargetClass(value);
-        Map<Integer, MethodInfo> logics = getLogic(targetClass);
+        Map<String, MethodInfo> logics = getLogic(targetClass);
         if (CollectionUtils.isEmpty(logics)) {
             return;
         }
-        for (Map.Entry<Integer, MethodInfo> logic : logics.entrySet()) {
+        for (Map.Entry<String, MethodInfo> logic : logics.entrySet()) {
             MethodInfo methodInfo = logic.getValue();
-            Integer msgTypeId = logic.getKey();
+            String msgTypeId = logic.getKey();
             DirectMethod directMethod = methodInfo.getDirectMethod();
             for (MethodPostProcess methodPostProcess : methodPostProcesses) {
                 directMethod = methodPostProcess.process(targetClass, directMethod);
@@ -98,22 +98,22 @@ public class MethodParse implements AutoCloseable {
     }
 
 
-    public Map<Integer, MethodInfo> getLogic(Class<?> targetClass) {
+    public Map<String, MethodInfo> getLogic(Class<?> targetClass) {
         Method[] declaredMethods = targetClass.getDeclaredMethods();
         if (declaredMethods.length == 0) {
             return null;
         }
-        Map<Integer, MethodInfo> data = new HashMap<>(declaredMethods.length);
+        Map<String, MethodInfo> data = new HashMap<>(declaredMethods.length);
         Arrays.stream(declaredMethods).forEach(method -> this.parseMethod(data, method));
         return data;
     }
 
-    protected void parseMethod(Map<Integer, MethodInfo> data, Method method) {
+    protected void parseMethod(Map<String, MethodInfo> data, Method method) {
         LogicMapping logicMapping = AnnotationUtils.getAnnotation(method, LogicMapping.class);
-        List<Integer> logicIds = null;
+        List<String> logicIds = null;
         List<ExtraMethodDesc> extraLogicIds = null;
         if (Objects.nonNull(logicMapping)) {
-            logicIds = (Arrays.stream(logicMapping.value()).boxed().collect(Collectors.toList()));
+            logicIds = (Arrays.stream(logicMapping.value()).collect(Collectors.toList()));
         }
         for (ExtraMethodAnnotationProcess extraMethodAnnotationProcess : extraMethodAnnotationProcesses) {
             ExtraMethodDesc extraMethodDesc = extraMethodAnnotationProcess.extraProcessMethod(data, method);
@@ -144,14 +144,14 @@ public class MethodParse implements AutoCloseable {
             }
         }
         if (Objects.nonNull(logicIds)) {
-            for (int logicId : logicIds) {
+            for (String logicId : logicIds) {
                 data.put(logicId, new MethodInfo(logicId, DirectMethod.valueOf(method), msgModels, logicMapping.desc()));
             }
         }
         if (Objects.nonNull(extraLogicIds)) {
             for (ExtraMethodDesc extraLogicId : extraLogicIds) {
                 for (ExtraMethodDesc.MethodDesc methodDesc : extraLogicId.getMethodDes()) {
-                    data.put(methodDesc.getMsgId(), new MethodInfo(methodDesc.getMsgId(), DirectMethod.valueOf(method), msgModels, methodDesc.getDesc()));
+                    data.put(methodDesc.getLogicId(), new MethodInfo(methodDesc.getLogicId(), DirectMethod.valueOf(method), msgModels, methodDesc.getDesc()));
                 }
             }
         }
@@ -168,7 +168,7 @@ public class MethodParse implements AutoCloseable {
      * @param msgModels
      */
     protected void parseRequestParam(int i, Class<?> type, String[] parameterNames, Annotation[] annotations, List<MsgModel> msgModels) {
-        int msgType = 0;
+        String logicId = "";
         final LogicRequestParam logicRequestParam = getAnnotation(annotations, LogicRequestParam.class);
         boolean isBody = false;
         String paramName;
@@ -194,11 +194,11 @@ public class MethodParse implements AutoCloseable {
             } else {
                 defaultValue = logicRequestBody.defaultValue();
                 paramName = logicRequestBody.value();
-                msgType = logicRequestBody.msgType();
+                logicId = logicRequestBody.logicId();
                 isBody = true;
             }
         }
-        msgModels.add(new MsgModel(paramName, type, length, dynamicLen, annotations, isBody, msgType, defaultValue, isCommon, innerField));
+        msgModels.add(new MsgModel(paramName, type, length, dynamicLen, annotations, isBody, logicId, defaultValue, isCommon, innerField));
     }
 
     private <T extends Annotation> T getAnnotation(Annotation[] annotations, Class<T> ctClass) {
@@ -254,7 +254,7 @@ public class MethodParse implements AutoCloseable {
 
     }
 
-    public Map<Integer, LogicModel> getLogicDefineCache() {
+    public Map<String, LogicModel> getLogicDefineCache() {
         return logicDefineCache;
     }
 
@@ -266,12 +266,12 @@ public class MethodParse implements AutoCloseable {
     /**
      * 手动添加
      *
-     * @param msgId
+     * @param logicId
      * @param logicModel
      * @return /
      */
-    public LogicModel putLogicDefine(Integer msgId, LogicModel logicModel) {
-        return this.logicDefineCache.put(msgId, logicModel);
+    public LogicModel putLogicDefine(String logicId, LogicModel logicModel) {
+        return this.logicDefineCache.put(logicId, logicModel);
     }
 
     @Override

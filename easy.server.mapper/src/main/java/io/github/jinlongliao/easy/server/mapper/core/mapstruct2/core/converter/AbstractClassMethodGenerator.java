@@ -117,7 +117,7 @@ public abstract class AbstractClassMethodGenerator<C extends IData2Object2> {
     public abstract Class<C> getTargetConverter();
 
     public Class<?>[] getInterfaces() {
-        return new Class[]{getTargetConverter()};
+        return new Class<?>[]{getTargetConverter()};
     }
 
     public abstract String getSuperName();

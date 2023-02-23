@@ -27,7 +27,7 @@ import static io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.as
  * @author: liaojinlong
  * @date: 2022/5/21 22:01
  */
-public class ClassMethodCoreGenerator extends AbstractClassMethodGenerator<IData2Object2<?>> {
+public abstract class ClassMethodCoreGenerator<C extends IData2Object2> extends AbstractClassMethodGenerator<C> {
 
     /**
      * 构造函数初始化
@@ -143,13 +143,6 @@ public class ClassMethodCoreGenerator extends AbstractClassMethodGenerator<IData
         }
         return new FieldParserBody(field.getDeclaringClass().getName(), index.getAndIncrement(), sourceName, putMethod, type, className, methodName, isParent);
     }
-
-
-    @Override
-    public Class getTargetConverter() {
-        return IData2Object2.class;
-    }
-
 
     @Override
     public String getSuperName() {

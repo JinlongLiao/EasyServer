@@ -1,0 +1,7 @@
+io.github.jinlongliao.easy.server.netty.demo.logic.LogicBean2_:_test1_:_java.lang.String__userId@int__age@io.github.jinlongliao.easy.server.netty.demo.logic.param.UserModel__userModel
+io.github.jinlongliao.easy.server.netty.demo.logic.LogicBean_:_error_:_
+io.github.jinlongliao.easy.server.netty.demo.logic.LogicBean2_:_refreshApi_:_
+io.github.jinlongliao.easy.server.netty.demo.logic.LogicBean_:_testAnn_:_int__userId@java.lang.String__clientIp
+io.github.jinlongliao.easy.server.netty.demo.logic.LogicBean_:_test1_:_java.lang.String__userId@int__age@io.github.jinlongliao.easy.server.netty.demo.logic.param.UserModel__userModel
+io.github.jinlongliao.easy.server.netty.demo.logic.LogicBean_:_test2_:_io.github.jinlongliao.easy.server.netty.demo.logic.param.UserModel__userModel
+io.github.jinlongliao.easy.server.netty.demo.logic.LogicBean_:_testHex_:_int__userId@java.lang.String__clientIp
