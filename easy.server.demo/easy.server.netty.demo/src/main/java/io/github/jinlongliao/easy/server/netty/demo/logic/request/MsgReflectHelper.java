@@ -4,12 +4,12 @@ import io.github.jinlongliao.easy.server.core.core.MethodParse;
 import io.github.jinlongliao.easy.server.core.model.LogicModel;
 import io.github.jinlongliao.easy.server.core.parser.ParseAdapter;
 import io.github.jinlongliao.easy.server.extend.parser.StaticRequestParseRule;
+import io.github.jinlongliao.easy.server.netty.demo.core.tcp.conn.TcpConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 
@@ -21,19 +21,14 @@ import java.util.Objects;
  * @since 2021-12-27 14:09
  */
 public class MsgReflectHelper {
+    private final TcpConnectionFactory tcpConnectionFactory;
+
     private final MethodParse methodParse;
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    private static final Map<Integer, ParseAdapter> parseRuleMap = new HashMap<>(32);
-    private static final HashSet<String> COMMON_PARAM_NAME = new HashSet<>(16);
+    private static final Map<String, ParseAdapter> parseRuleMap = new HashMap<>(32);
 
-    static {
-        COMMON_PARAM_NAME.add("version");
-        COMMON_PARAM_NAME.add("msgType");
-        COMMON_PARAM_NAME.add("extraFlag");
-        COMMON_PARAM_NAME.add("userId");
-    }
-
-    public MsgReflectHelper(MethodParse methodParse) {
+    public MsgReflectHelper(TcpConnectionFactory tcpConnectionFactory, MethodParse methodParse) {
+        this.tcpConnectionFactory = tcpConnectionFactory;
         this.methodParse = methodParse;
     }
 
@@ -45,19 +40,17 @@ public class MsgReflectHelper {
      */
     public LogicRequest transferMsgInfo(RequestStreamFactory request) {
         // 获取签名密钥
-        byte version = request.readByte();
-        int msgType = request.readInt();
-        int extraFlag = request.readInt();
+        String logicId = request.readInt() + "";
         int userId = request.readInt();
         LogicModel logicModel;
-        boolean isNull = Objects.isNull(logicModel = methodParse.getLogicDefineCache().get(msgType));
+        boolean isNull = Objects.isNull(logicModel = methodParse.getLogicDefineCache().get(logicId));
         if (isNull) {
-            throw new RuntimeException(String.format("msgType : [%d] 此消息类型不存在", msgType));
+            throw new RuntimeException(String.format("logicId : [%s] 此消息类型不存在", logicId));
         }
         LogicRequest requestMsgInfo = new LogicRequest(logicModel);
-        this.putCommonValue(requestMsgInfo, version, msgType, extraFlag, userId);
+        this.putCommonValue(requestMsgInfo, logicId, userId);
         request.setRequest(requestMsgInfo);
-        ParseAdapter parseRule = parseRuleMap.computeIfAbsent(msgType, k -> new ParseAdapter(new StaticRequestParseRule(  logicModel), new TcpMsgParserCallBack()));
+        ParseAdapter parseRule = parseRuleMap.computeIfAbsent(logicId, k -> new ParseAdapter(new StaticRequestParseRule(logicModel), new TcpMsgParserCallBack()));
         if (log.isDebugEnabled()) {
             log.debug("[gold interface msg : {}]", requestMsgInfo);
         }
@@ -65,8 +58,8 @@ public class MsgReflectHelper {
         return requestMsgInfo;
     }
 
-    private void putCommonValue(LogicRequest requestMsgInfo, byte version, int msgType, int extraFlag, int userId) {
-
+    private void putCommonValue(LogicRequest requestMsgInfo, String logicId, int userId) {
+        requestMsgInfo.setLogicId(logicId);
         requestMsgInfo.setUserId(userId);
     }
 }

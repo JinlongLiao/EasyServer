@@ -30,7 +30,7 @@ import java.util.Set;
 public class TcpLogicDispatcher {
     private static final Logger log = LoggerFactory.getLogger(TcpLogicDispatcher.class);
     private final TcpLogicResultHandler logicResultHandler;
-    private final Integer msgType;
+    private final String logicId;
     private final LogicModel logicModel;
     private final DirectMethod logic;
     private final Object logicBean;
@@ -64,12 +64,12 @@ public class TcpLogicDispatcher {
     }
 
     /**
-     * @param msgType
+     * @param logicId
      * @param logicModel
      * @param logicResultHandler
      */
-    public TcpLogicDispatcher(Integer msgType, LogicModel logicModel, TcpLogicResultHandler logicResultHandler) {
-        this.msgType = msgType;
+    public TcpLogicDispatcher(String logicId, LogicModel logicModel, TcpLogicResultHandler logicResultHandler) {
+        this.logicId = logicId;
         this.logicModel = logicModel;
         this.logic = logicModel.getDirectMethod();
         this.logicBean = logicModel.getObject();
@@ -80,11 +80,11 @@ public class TcpLogicDispatcher {
     /**
      * 业务转发，返回统一结果
      *
-     * @param msgType
+     * @param logicId
      * @param args
      * @return 结果
      */
-    public RootResponse dispatcher(Integer msgType, Object[] args, TcpConnection localTcpConnection) throws Exception {
+    public RootResponse dispatcher(String logicId, Object[] args, TcpConnection localTcpConnection) throws Exception {
         Exception exception = null;
         Object result = null;
         try {
@@ -98,7 +98,7 @@ public class TcpLogicDispatcher {
             exception = e;
         }
         RootResponse iResponse = handleResult(result, exception);
-         localTcpConnection.writeResponse(iResponse);
+        localTcpConnection.writeResponse(iResponse);
         return iResponse;
     }
 
@@ -112,9 +112,9 @@ public class TcpLogicDispatcher {
     protected RootResponse handleResult(Object obj, Exception exception) throws Exception {
         RootResponse result;
         if (exception == null) {
-            result = logicResultHandler.logicResultHandler(msgType, obj);
+            result = logicResultHandler.logicResultHandler(logicId, obj);
         } else {
-            result = logicResultHandler.logicExceptionHandler(msgType, exception);
+            result = logicResultHandler.logicExceptionHandler(logicId, exception);
         }
         return result;
     }

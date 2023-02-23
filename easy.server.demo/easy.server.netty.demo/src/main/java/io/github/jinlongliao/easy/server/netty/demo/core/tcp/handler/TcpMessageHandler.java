@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 
 public class TcpMessageHandler extends SimpleChannelInboundHandler<LogicRequest> {
-    private static final Map<Integer, TcpLogicDispatcher> LOGIC_DISPATCHER_MAP = new ConcurrentHashMap<>(128);
+    private static final Map<String, TcpLogicDispatcher> LOGIC_DISPATCHER_MAP = new ConcurrentHashMap<>(128);
     private final TcpConnectionFactory tcpConnectionFactory;
     private final MethodParse methodParse;
     private final JsonHelper jsonHelper;
@@ -40,9 +40,9 @@ public class TcpMessageHandler extends SimpleChannelInboundHandler<LogicRequest>
         if (Objects.isNull(msg)) {
             return;
         }
-        int msgType = msg.getLogicId();
-        LogicModel logicModel = methodParse.getLogicDefineCache().get(msgType);
-        TcpLogicDispatcher tcpLogicDispatcher = LOGIC_DISPATCHER_MAP.computeIfAbsent(msgType,
+        String logicId = msg.getLogicId();
+        LogicModel logicModel = methodParse.getLogicDefineCache().get(logicId);
+        TcpLogicDispatcher tcpLogicDispatcher = LOGIC_DISPATCHER_MAP.computeIfAbsent(logicId,
                 key -> new TcpLogicDispatcher(key,
                         logicModel,
                         new TcpLogicResultHandler(this.jsonHelper)));
@@ -58,10 +58,10 @@ public class TcpMessageHandler extends SimpleChannelInboundHandler<LogicRequest>
                 throw new RuntimeException(String.valueOf(ErrorCode.NEED_AUTHED));
             }
         }
-        if (!authed && LogicId.USER_AUTH != msgType) {
+        if (!authed && !LogicId.USER_AUTH.equals(logicId)) {
             throw new RuntimeException(String.valueOf(ErrorCode.NEED_AUTHED));
         }
-        tcpLogicDispatcher.dispatcher(msgType, msg.getArgs(), localTcpConnection);
+        tcpLogicDispatcher.dispatcher(logicId, msg.getArgs(), localTcpConnection);
 
     }
 

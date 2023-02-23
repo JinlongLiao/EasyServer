@@ -1,20 +1,18 @@
-package io.github.jinlongliao.easy.server.netty.demo.config.web;
+package io.github.jinlongliao.easy.server.netty.demo.config;
 
 
 import io.github.jinlongliao.easy.server.mapper.spring.BeanMapperFactoryBean;
-import io.github.jinlongliao.easy.server.swagger.config.ApiConfig;
-import io.github.jinlongliao.easy.server.swagger.knife4j.parse.ExtraApiDocGenerator;
-import io.github.jinlongliao.easy.server.swagger.model.ApiDocInfo;
-import io.github.jinlongliao.easy.server.swagger.model.License;
+import io.github.jinlongliao.easy.server.netty.demo.config.swagger.tcp.TcpClient;
+import io.github.jinlongliao.easy.server.netty.demo.core.tcp.NettyTcpServer;
+import io.github.jinlongliao.easy.server.netty.demo.core.tcp.conn.TcpConnectionFactory;
+import io.github.jinlongliao.easy.server.netty.demo.logic.request.MsgReflectHelper;
+
 import io.github.jinlongliao.easy.server.utils.json.JsonHelper;
 import io.github.jinlongliao.easy.server.utils.json.extra.JackJsonJsonHelper;
 import io.github.jinlongliao.easy.server.core.core.spring.LogicRegisterContext;
 import org.springframework.context.annotation.*;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -66,36 +64,28 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public ApiConfig apiConfig() {
-        ApiDocInfo apiDocInfo = new ApiDocInfo();
-        String name = "APiDemo";
-        apiDocInfo.setTitle(name);
-        apiDocInfo.setVersion("v1");
-        apiDocInfo.setTermsOfService("https://www.boke.com/");
-        apiDocInfo.setDescription(name);
-        Map<String, Object> contact = new HashMap<>(4, 1.5f);
-        contact.put("name", "廖金龙");
-        contact.put("email", "jinlongliao@foxmail.com");
-        apiDocInfo.setContact(contact);
-        apiDocInfo.setLicense(new License("Apache License", "https://www.apache.org/licenses/LICENSE-2.0.txt"));
-        ApiConfig apiConfig = new ApiConfig("127.0.0.1",
-                "/api/",
-                "/api",
-                "/api",
-                new String[]{"http", "https"},
-                apiDocInfo,
-                null,
-                "proxy");
-        apiConfig.setEnableBasicAuth(true);
-
-        apiConfig.setPassword("123");
-        apiConfig.setUserName("admin");
-        return apiConfig;
+    public BeanMapperFactoryBean beanMapperFactoryBean() {
+        return new BeanMapperFactoryBean(false);
     }
 
     @Bean
-    public BeanMapperFactoryBean beanMapperFactoryBean() {
-        return new BeanMapperFactoryBean(false);
+    public TcpConnectionFactory tcpConnectionFactory() {
+        return new TcpConnectionFactory();
+    }
+
+    @Bean
+    public MsgReflectHelper msgReflectHelper(TcpConnectionFactory tcpConnectionFactory, LogicRegisterContext logicRegisterContext) {
+        return new MsgReflectHelper(tcpConnectionFactory, logicRegisterContext.getParse());
+    }
+
+    @Bean
+    public NettyTcpServer nettyTcpServer(LogicRegisterContext logicRegisterContext, TcpConnectionFactory tcpConnectionFactory, MsgReflectHelper msgReflectHelper, JsonHelper jsonHelper) {
+        return new NettyTcpServer(tcpConnectionFactory, logicRegisterContext, msgReflectHelper, jsonHelper);
+    }
+
+    @Bean
+    public TcpClient tcpClient(LogicRegisterContext logicRegisterContext, TcpConnectionFactory tcpConnectionFactory, MsgReflectHelper msgReflectHelper, JsonHelper jsonHelper) {
+        return new TcpClient(tcpConnectionFactory, logicRegisterContext, msgReflectHelper, jsonHelper);
     }
 
 

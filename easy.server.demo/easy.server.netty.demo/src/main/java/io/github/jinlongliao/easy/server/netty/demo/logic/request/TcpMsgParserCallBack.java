@@ -39,4 +39,10 @@ public class TcpMsgParserCallBack implements IMessageParserCallBack {
         IRequest request = (IRequest) arg;
         return request.getUserId();
     }
+
+    @Override
+    public Object parserInnerFiled(Object args, MeType meType, Object arg) {
+        RequestStreamFactory factory = (RequestStreamFactory) args;
+        return factory.getTcpConnection();
+    }
 }

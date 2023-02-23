@@ -40,8 +40,8 @@ public class DeveloperConfig {
                 compile,
                 "proxy");
         apiConfig.setEnableBasicAuth(true);
-        apiConfig.setUserName("gameOne");
-        apiConfig.setPassword("gameOnePwd");
+        apiConfig.setUserName("user");
+        apiConfig.setPassword("123");
         return apiConfig;
     }
 

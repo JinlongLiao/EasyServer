@@ -30,4 +30,19 @@ public class ErrorResponse extends RootResponse {
         byteBuf.writeIntLE(bytes.length);
         byteBuf.writeBytes(bytes);
     }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    @Override
+    public String toString() {
+        return "ErrorResponse{" +
+                "message='" + message + '\'' +
+                '}';
+    }
 }

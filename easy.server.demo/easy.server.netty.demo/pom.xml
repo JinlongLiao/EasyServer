@@ -9,9 +9,7 @@
         <version>1.1.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-
     <artifactId>easy.server.netty.demo</artifactId>
-
     <properties>
         <maven.compiler.debug>false</maven.compiler.debug>
         <maven.compiler.debuglevel>none</maven.compiler.debuglevel>
@@ -19,8 +17,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <spring.boot.version>2.7.8</spring.boot.version>
-        <start.class>io.github.jinlongliao.easy.server.boot.demo.MainApplication</start.class>
+        <spring.boot.version>2.7.2</spring.boot.version>
+        <start.class>io.github.jinlongliao.easy.server.netty.demo.NettyMainApplication</start.class>
     </properties>
     <dependencyManagement>
         <dependencies>

@@ -9,7 +9,7 @@
     </parent>
     <modules>
         <module>easy.server.boot.demo</module>
-<!--        <module>easy.server.netty.demo</module>-->
+        <module>easy.server.netty.demo</module>
         <module>easy.server.tomcat.demo</module>
     </modules>
     <modelVersion>4.0.0</modelVersion>

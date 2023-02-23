@@ -35,20 +35,20 @@ public final class LocalAddressConstant {
      */
     private static String getLocalIpByNetcard() {
         try {
-            for (Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces(); e.hasMoreElements(); ) {
-                NetworkInterface item = e.nextElement();
-                for (InterfaceAddress address : item.getInterfaceAddresses()) {
-                    if (item.isLoopback() || !item.isUp()) {
-                        continue;
-                    }
-                    InetAddress inet4Address = address.getAddress();
-                    if (inet4Address instanceof Inet4Address) {
-                        return ((Inet4Address) inet4Address).getHostAddress();
-                    }
-                }
-            }
+            //            for (Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces(); e.hasMoreElements(); ) {
+            //                NetworkInterface item = e.nextElement();
+            //                for (InterfaceAddress address : item.getInterfaceAddresses()) {
+            //                    if (item.isLoopback() || !item.isUp()) {
+            //                        continue;
+            //                    }
+            //                    InetAddress inet4Address = address.getAddress();
+            //                    if (inet4Address instanceof Inet4Address) {
+            //                        return ((Inet4Address) inet4Address).getHostAddress();
+            //                    }
+            //                }
+            //            }
             return InetAddress.getLocalHost().getHostAddress();
-        } catch (SocketException | UnknownHostException e) {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             return DEFAULT_IP;
         }

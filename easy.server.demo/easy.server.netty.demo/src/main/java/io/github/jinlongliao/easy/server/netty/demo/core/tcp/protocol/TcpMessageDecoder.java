@@ -2,6 +2,7 @@ package io.github.jinlongliao.easy.server.netty.demo.core.tcp.protocol;
 
 
 import io.github.jinlongliao.easy.server.netty.demo.core.tcp.ExceptionHandler;
+import io.github.jinlongliao.easy.server.netty.demo.core.tcp.conn.TcpConnection;
 import io.github.jinlongliao.easy.server.netty.demo.core.tcp.conn.TcpConnectionFactory;
 import io.github.jinlongliao.easy.server.netty.demo.logic.request.MsgReflectHelper;
 import io.github.jinlongliao.easy.server.netty.demo.logic.request.RequestStreamFactory;
@@ -45,8 +46,8 @@ public class TcpMessageDecoder extends LengthFieldBasedFrameDecoder {
         }
 
         ByteBuf decodedByteBuf = (ByteBuf) decode;
-        try (RequestStreamFactory requestStreamFactory = new RequestStreamFactory(decodedByteBuf)) {
-            return this. msgReflectHelper.transferMsgInfo(requestStreamFactory);
+        try (RequestStreamFactory requestStreamFactory = new RequestStreamFactory(decodedByteBuf, tcpConnectionFactory.getLocalTcpConnection(ctx))) {
+             return this. msgReflectHelper.transferMsgInfo(requestStreamFactory);
         }
     }
 

@@ -12,7 +12,7 @@ public abstract class IRequest {
     /**
      * 消息类型
      */
-    private int logicId;
+    private String logicId;
 
 
     /**
@@ -20,11 +20,11 @@ public abstract class IRequest {
      */
     private int userId;
 
-    public int getLogicId() {
+    public String getLogicId() {
         return logicId;
     }
 
-    public void setLogicId(int logicId) {
+    public void setLogicId(String logicId) {
         this.logicId = logicId;
     }
 

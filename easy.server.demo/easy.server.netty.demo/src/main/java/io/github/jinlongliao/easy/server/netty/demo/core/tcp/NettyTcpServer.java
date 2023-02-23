@@ -1,6 +1,7 @@
 package io.github.jinlongliao.easy.server.netty.demo.core.tcp;
 
 
+import io.github.jinlongliao.easy.server.core.core.spring.LogicRegisterContext;
 import io.github.jinlongliao.easy.server.netty.demo.logic.request.MsgReflectHelper;
 import io.github.jinlongliao.easy.server.netty.demo.utils.LocalAddressConstant;
 import io.github.jinlongliao.easy.server.netty.demo.core.tcp.conn.TcpConnectionFactory;
@@ -20,6 +21,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 
 import java.lang.invoke.MethodHandles;
 
@@ -29,7 +31,7 @@ import java.lang.invoke.MethodHandles;
  * @author: liaojinlong
  * @date: 2022-08-03 18:24
  */
-public class NettyTcpServer implements AutoCloseable {
+public class NettyTcpServer implements AutoCloseable, InitializingBean {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private EventLoopGroup bossGroup;
     private EventLoopGroup workerGroup;
@@ -41,11 +43,12 @@ public class NettyTcpServer implements AutoCloseable {
     private final MsgReflectHelper msgReflectHelper;
     private final JsonHelper jsonHelper;
 
-    public NettyTcpServer(TcpConnectionFactory tcpConnectionFactory, MethodParse methodParse, MsgReflectHelper msgReflectHelper, JsonHelper jsonHelper) {
+    public NettyTcpServer(TcpConnectionFactory tcpConnectionFactory, LogicRegisterContext logicRegisterContext, MsgReflectHelper msgReflectHelper, JsonHelper jsonHelper) {
         this.tcpConnectionFactory = tcpConnectionFactory;
-        this.methodParse = methodParse;
+        this.methodParse = logicRegisterContext.getParse();
         this.msgReflectHelper = msgReflectHelper;
         this.jsonHelper = jsonHelper;
+
     }
 
     public void init() throws InterruptedException {
@@ -80,7 +83,7 @@ public class NettyTcpServer implements AutoCloseable {
     }
 
     protected int getPort() {
-        return 9999;
+        return 8100;
     }
 
     protected ChannelHandler getChannelHandler() {
@@ -106,9 +109,6 @@ public class NettyTcpServer implements AutoCloseable {
         if (Epoll.isAvailable()) {
             return new EpollEventLoopGroup(num);
         }
-        if (KQueue.isAvailable()) {
-            return new KQueueEventLoopGroup(num);
-        }
         return new NioEventLoopGroup(num);
     }
 
@@ -121,5 +121,16 @@ public class NettyTcpServer implements AutoCloseable {
 
     public Channel getChannel() {
         return channel;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        new Thread(() -> {
+            try {
+                init();
+            } catch (InterruptedException e) {
+                NettyTcpServer.log.error(e.getMessage(), e);
+            }
+        }).start();
     }
 }

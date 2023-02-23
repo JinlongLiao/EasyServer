@@ -158,12 +158,12 @@ public class NotificationUiProxyController {
         byteBuf.writeBytes(bytes);
     }
 
-    @Scheduled(fixedDelay = 2000)
+    @Scheduled(fixedDelay = 10000)
     public void scheduleHeart() {
         Map<Integer, Channel> channelMap = this.tcpClient.getChannelMap();
         for (Map.Entry<Integer, Channel> entry : channelMap.entrySet()) {
             EmptyRequest emptyRequest = new EmptyRequest();
-            emptyRequest.setLogicId(LogicId.HEART_BEAT);
+            emptyRequest.setLogicId(Integer.parseInt(LogicId.HEART_BEAT));
             emptyRequest.setUserId(entry.getKey());
             ByteBuf buffer = Unpooled.buffer(1024, 1024);
             emptyRequest.writeResponse(buffer);

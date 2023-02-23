@@ -1,7 +1,7 @@
 package io.github.jinlongliao.easy.server.netty.demo.config.swagger.tcp;
 
 
-import io.github.jinlongliao.easy.server.core.core.MethodParse;
+import io.github.jinlongliao.easy.server.core.core.spring.LogicRegisterContext;
 import io.github.jinlongliao.easy.server.netty.demo.core.tcp.NettyTcpServer;
 import io.github.jinlongliao.easy.server.netty.demo.core.tcp.conn.TcpConnectionFactory;
 import io.github.jinlongliao.easy.server.netty.demo.logic.request.MsgReflectHelper;
@@ -22,7 +22,6 @@ import io.netty.handler.logging.LoggingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.stereotype.Component;
 
 import java.lang.invoke.MethodHandles;
 import java.util.*;
@@ -33,18 +32,16 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author: liaojinlong
  * @date: 2022-08-09 14:32
  */
-@Component
 public class TcpClient extends NettyTcpServer implements DisposableBean {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private EventLoopGroup loopGroup;
 
 
-
     private final Map<Integer, List<RootResponse>> responseMap = new HashMap<>(8);
     private final Map<Integer, Channel> channelMap = new ConcurrentHashMap<>(32, 1L);
 
-    public TcpClient(TcpConnectionFactory tcpConnectionFactory, MethodParse methodParse, MsgReflectHelper msgReflectHelper, JsonHelper jsonHelper) {
-        super(tcpConnectionFactory, methodParse, msgReflectHelper, jsonHelper);
+    public TcpClient(TcpConnectionFactory tcpConnectionFactory, LogicRegisterContext logicRegisterContext, MsgReflectHelper msgReflectHelper, JsonHelper jsonHelper) {
+        super(tcpConnectionFactory, logicRegisterContext, msgReflectHelper, jsonHelper);
     }
 
     @Override
@@ -54,8 +51,7 @@ public class TcpClient extends NettyTcpServer implements DisposableBean {
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(loopGroup).option(ChannelOption.SO_KEEPALIVE, true).channel(getSocketChannel()).handler(new LoggingHandler(LogLevel.INFO)).handler(new ClientChannelInitializer(this));
         // Start the connection attempt.
-        this.channel = bootstrap.connect("10.161.2.151", 1118).sync().channel();
-        //        this.channel = bootstrap.connect("127.0.0.1", 8100).sync().channel();
+        this.channel = bootstrap.connect("127.0.0.1", 8100).sync().channel();
         //        this.channel = bootstrap.connect("127.0.0.1", 8200).sync().channel();
     }
 
@@ -67,9 +63,6 @@ public class TcpClient extends NettyTcpServer implements DisposableBean {
     private Class<? extends SocketChannel> getSocketChannel() {
         if (Epoll.isAvailable()) {
             return EpollSocketChannel.class;
-        }
-        if (KQueue.isAvailable()) {
-            return KQueueSocketChannel.class;
         }
         return NioSocketChannel.class;
     }
@@ -106,21 +99,29 @@ public class TcpClient extends NettyTcpServer implements DisposableBean {
     }
 
     public synchronized void addNewResponse(RootResponse response) {
-         List<RootResponse> responses = this.responseMap.computeIfAbsent(1, k -> new ArrayList<>(8));
+        List<RootResponse> responses = this.responseMap.computeIfAbsent(1, k -> new ArrayList<>(8));
         responses.add(response);
     }
 
     public synchronized List<RootResponse> popAllResponse(int userId) {
         List<RootResponse> responses = this.responseMap.computeIfAbsent(userId, k -> new ArrayList<>(8));
         List<RootResponse> list = this.responseMap.getOrDefault(0, Collections.emptyList());
+        List<RootResponse> list2 = this.responseMap.getOrDefault(1, Collections.emptyList());
         List<RootResponse> res = new ArrayList<>(responses);
+        res.addAll(list2);
         res.addAll(list);
         list.clear();
+        list2.clear();
         responses.clear();
         return res;
     }
 
     public Map<Integer, Channel> getChannelMap() {
         return channelMap;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+
     }
 }

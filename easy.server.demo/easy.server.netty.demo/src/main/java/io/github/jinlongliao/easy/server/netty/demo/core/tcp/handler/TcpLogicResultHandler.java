@@ -33,11 +33,11 @@ public class TcpLogicResultHandler {
     /**
      * 正常操作解析
      *
-     * @param msgType
+     * @param logicId
      * @param obj
      * @return 解析后的结果
      */
-    public RootResponse logicResultHandler(Integer msgType, Object obj) throws Exception {
+    public RootResponse logicResultHandler(String logicId, Object obj) throws Exception {
         if (Objects.isNull(obj)) {
             return VoidResponse.getInstance();
         }
@@ -50,11 +50,11 @@ public class TcpLogicResultHandler {
     /**
      * 异常信息解析
      *
-     * @param msgType
+     * @param logicId
      * @param exception
      * @return 解析后的结果
      */
-    public RootResponse logicExceptionHandler(Integer msgType, Exception exception) {
+    public RootResponse logicExceptionHandler(String logicId, Exception exception) {
         Throwable throwable = exception;
         if (exception instanceof MethodInvokeException) {
             throwable = ((MethodInvokeException) exception).getTargetException();

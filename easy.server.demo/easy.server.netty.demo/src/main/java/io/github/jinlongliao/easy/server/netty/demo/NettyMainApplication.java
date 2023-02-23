@@ -1,10 +1,10 @@
 package io.github.jinlongliao.easy.server.netty.demo;
 
-import io.github.jinlongliao.easy.server.netty.demo.config.web.BeanConfiguration;
-import io.github.jinlongliao.easy.server.netty.demo.config.web.WebConfig;
+import io.github.jinlongliao.easy.server.netty.demo.config.swagger.config.DeveloperConfig;
+import io.github.jinlongliao.easy.server.netty.demo.config.BeanConfiguration;
+import io.github.jinlongliao.easy.server.netty.demo.config.WebConfig;
 import io.github.jinlongliao.easy.server.cached.annotation.EnableMethodCache;
 import io.github.jinlongliao.easy.server.core.annotation.LogicContextScan;
-import io.github.jinlongliao.easy.server.script.groovy.config.DynamicRefreshBeanConfiguration;
 import io.github.jinlongliao.easy.server.swagger.config.ApiSpringAutoConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -27,19 +27,19 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 },
         proxyBeanMethods = false,
         scanBasePackages = {
-                "io.github.jinlongliao.easy.server.boot.demo",
+                "io.github.jinlongliao.easy.server.netty.demo",
         })
-@LogicContextScan("io.github.jinlongliao.easy.server.boot.demo")
+@LogicContextScan("io.github.jinlongliao.easy.server.netty.demo")
 @Configuration(proxyBeanMethods = false)
-@EnableMethodCache(basePackages = "io.github.jinlongliao.easy.server.demo")
+@EnableMethodCache(basePackages = "io.github.jinlongliao.easy.netty.demo")
 @EnableScheduling
 @EnableAsync
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 @Import(value = {
         WebConfig.class,
+        DeveloperConfig.class,
         BeanConfiguration.class,
-        DynamicRefreshBeanConfiguration.class,
         ApiSpringAutoConfig.class
 })
 public class NettyMainApplication {

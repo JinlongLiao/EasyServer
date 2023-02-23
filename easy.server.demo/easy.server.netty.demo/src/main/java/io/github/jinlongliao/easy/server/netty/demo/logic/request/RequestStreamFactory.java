@@ -1,6 +1,7 @@
 package io.github.jinlongliao.easy.server.netty.demo.logic.request;
 
 import io.github.jinlongliao.easy.server.core.parser.IRequestStreamFactory;
+import io.github.jinlongliao.easy.server.netty.demo.core.tcp.conn.TcpConnection;
 import io.netty.buffer.ByteBuf;
 
 
@@ -15,9 +16,11 @@ import java.nio.charset.StandardCharsets;
 public class RequestStreamFactory implements IRequestStreamFactory, Closeable {
     private final ByteBuf byteBuf;
     private IRequest request;
+    private TcpConnection tcpConnection;
 
-    public RequestStreamFactory(ByteBuf byteBuf) {
+    public RequestStreamFactory(ByteBuf byteBuf, TcpConnection tcpConnection) {
         this.byteBuf = byteBuf;
+        this.tcpConnection = tcpConnection;
     }
 
     @Override
@@ -80,5 +83,21 @@ public class RequestStreamFactory implements IRequestStreamFactory, Closeable {
     @Override
     public String getClientIp() {
         return null;
+    }
+
+    public ByteBuf getByteBuf() {
+        return byteBuf;
+    }
+
+    public IRequest getRequest() {
+        return request;
+    }
+
+    public TcpConnection getTcpConnection() {
+        return tcpConnection;
+    }
+
+    public void setTcpConnection(TcpConnection tcpConnection) {
+        this.tcpConnection = tcpConnection;
     }
 }

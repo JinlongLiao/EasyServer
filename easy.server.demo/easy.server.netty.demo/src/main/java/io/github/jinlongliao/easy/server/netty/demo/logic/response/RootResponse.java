@@ -12,6 +12,9 @@ import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @author liaojinlong
+ */
 public class RootResponse implements ICommonResponse {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final static List<Field> header;
@@ -48,8 +51,9 @@ public class RootResponse implements ICommonResponse {
     }
 
     protected void writeCommonResp(ByteBuf byteBuf) {
-        byteBuf.writeInt(0);
+        byteBuf.writeIntLE(0);
         /*header details*/
+        byteBuf.writeIntLE(getStatus());
     }
 
     /**
@@ -70,7 +74,10 @@ public class RootResponse implements ICommonResponse {
     protected void writePrivateResp(ByteBuf byteBuf) {
     }
 
-    ;
-
-
+    @Override
+    public String toString() {
+        return "RootResponse{" +
+                "status=" + status +
+                '}';
+    }
 }

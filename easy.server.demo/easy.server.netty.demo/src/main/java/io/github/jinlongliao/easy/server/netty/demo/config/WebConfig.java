@@ -1,4 +1,4 @@
-package io.github.jinlongliao.easy.server.netty.demo.config.web;
+package io.github.jinlongliao.easy.server.netty.demo.config;
 
 import io.github.jinlongliao.easy.server.cached.aop.simple.SimplePointcutAndHandler;
 import org.springframework.beans.factory.ListableBeanFactory;

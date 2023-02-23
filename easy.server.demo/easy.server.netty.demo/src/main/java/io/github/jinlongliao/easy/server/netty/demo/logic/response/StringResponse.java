@@ -29,4 +29,15 @@ public class StringResponse extends RootResponse {
         byteBuf.writeIntLE(bytes.length);
         byteBuf.writeBytes(bytes);
     }
+
+    public String getJson() {
+        return json;
+    }
+
+    @Override
+    public String toString() {
+        return "StringResponse{" +
+                "json='" + json + '\'' +
+                '}';
+    }
 }

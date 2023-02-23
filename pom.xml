@@ -20,7 +20,6 @@
         <module>easy.server.extend</module>
         <module>easy.server.bom</module>
         <module>plugins</module>
-        <module>easy.server.demo/easy.server.boot.demo</module>
     </modules>
     <repositories>
         <repository>

@@ -1,4 +1,4 @@
-package io.github.jinlongliao.easy.server.netty.demo.config.web;
+package io.github.jinlongliao.easy.server.netty.demo.config;
 
 import io.github.jinlongliao.easy.server.servlet.config.ServletBeanConfig;
 import org.springframework.beans.BeansException;

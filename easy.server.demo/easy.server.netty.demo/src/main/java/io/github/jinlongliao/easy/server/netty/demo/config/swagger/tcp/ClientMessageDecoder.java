@@ -27,13 +27,11 @@ public class ClientMessageDecoder extends LengthFieldBasedFrameDecoder {
     @Override
     protected Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
         Object decode = super.decode(ctx, in);
-
         if (Objects.isNull(decode)) {
             return null;
         }
         ByteBuf byteBuf = (ByteBuf) decode;
         // 获取签名密钥
-
         int code = byteBuf.readIntLE();
         boolean readable = byteBuf.isReadable();
         String json = "";

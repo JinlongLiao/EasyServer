@@ -52,7 +52,7 @@ public class NotificationUiApiGenerator extends AbstractDefaultApiGenerator {
     @Override
     protected void buildParameter(String key, int fieldLength, List<Map<String, Object>> parameters, int modifiers, String fieldName, Class<?> fieldType, boolean required) {
         Map<String, Object> param = new HashMap<>(8);
-        if ("msgType".equalsIgnoreCase(fieldName)) {
+        if ("logicId".equalsIgnoreCase(fieldName)) {
             return;
         }
         addDefaultVal(param, fieldName);
@@ -139,7 +139,7 @@ public class NotificationUiApiGenerator extends AbstractDefaultApiGenerator {
 
     @Override
     protected String getLogicTagUrl(String key, LogicModel logicModel) {
-        return apiConfig.getProxyAccessPath() + "?msgType=" + key;
+        return apiConfig.getProxyAccessPath() + "?logicId=" + key;
     }
 
     @Override

@@ -8,27 +8,12 @@ public interface LogicId {
     /**
      * 心跳
      */
-    int HEART_BEAT = 0x1;
+    String HEART_BEAT = "1";
     /**
      * 用户鉴权
      */
-    int USER_AUTH = 0x2;
+    String USER_AUTH = "2";
 
-    /**
-     * 用户上下线
-     */
-    int USER_LINE_STATUS = 0x3;
 
-    /**
-     * 创建2v2房间
-     */
-    int HANDLE_CREATE_2V2_ROOM = 0x4;
-    /**
-     * 用户行为消息
-     */
-    int HANDLE_2V2_MESSAGE = 0x5;
-    /**
-     * 触发历史消息推送
-     */
-    int HANDLE_HISTORY_MESSAGE = 0x6;
+    String FRESH = "112";
 }
