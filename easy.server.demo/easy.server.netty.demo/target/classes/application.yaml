@@ -1,6 +1,0 @@
-# 应用名称
-spring:
-  application:
-    name: netty.demo
-server:
-  port: 8890
