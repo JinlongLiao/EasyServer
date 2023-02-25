@@ -262,6 +262,65 @@ public @interface Mapping2 {
     sourceName 假设 mesaage 中的名字不是属性a 的名字  sourceName 可以指定获取源的名字
 
 
+### 提前编译 支持
+1. 手动指定
+
+通过 ```io.github.jinlongliao.easy.server.mapper.utils.MapperStructConfig``` 可以指定 自动生成消息转换实现的 class 及其源文件
+
+```java
+      MapperStructConfig.setDev(true, "./target/", "./target/");
+```
+
+2. 通过 maven 插件实现 [maven-generator-plugin](https://github.com/JinlongLiao/EasyServer/tree/main/plugins/maven-generator-plugin)  
+
+```xml
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <annotationProcessorPath>
+                            <groupId>io.github.jinlongliao</groupId>
+                            <artifactId>easy.server.mapper</artifactId>
+                            <version>${project.version}</version>
+                        </annotationProcessorPath>
+                        <annotationProcessorPath>
+                            <groupId>io.github.jinlongliao</groupId>
+                            <artifactId>easy.server.extend</artifactId>
+                            <version>${project.version}</version>
+                        </annotationProcessorPath>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>io.github.jinlongliao</groupId>
+                <artifactId>maven-generator-plugin</artifactId>
+                <version>${project.version}</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <arguments>
+                        <argument>${project.basedir}/target/classes/</argument>
+                        <argument>${project.basedir}/target/generated-sources/annotations/</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+```
+
+![mapper-gen.png](img%2Fmapper-gen.png)
+
 ### spring 支持
 
 将 ```io.github.jinlongliao.easy.server.mapper.spring.BeanMapperFactoryBean``` 设置spring 托管。既可在 spring 中 使用 IBeanMapper类型 进行操作，IBeanMapper封装了常见的类型操作推荐使用
