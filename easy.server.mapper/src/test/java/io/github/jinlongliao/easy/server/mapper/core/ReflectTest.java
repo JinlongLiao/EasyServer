@@ -35,7 +35,6 @@ import java.util.*;
 public class ReflectTest {
     public static boolean warmup = false;
     private Map<String, Object> data = new HashMap<>();
-
     private Map<String, Object> dataMap = new TreeMap<String, Object>() {{
         put("grep", 1234);
         put("name", "liaojl");
@@ -46,51 +45,21 @@ public class ReflectTest {
         put("array", new int[]{1, 2, 3});
     }};
     private Object[] dataArray = new Object[]{13, "liaojl", 26, new Date(), Arrays.asList("2312", "12423"), data, new int[]{1, 2, 3}};
-    private final IData2Object<Person> data2Object = BeanCopierUtils.getFullData2Object(Person.class);
     private final ICoreData2Object2<Person> data2Object2 = BeanCopier2Utils.getFullData2Object(Person.class);
 
     @org.junit.Ignore
     @Test
     public void test() throws Exception {
-        testMapCustomize();
-        testArrayCustomize();
         testMapCustomize2();
         testArrayCustomize2();
         testReflect();
         warmup = true;
-
-        testMapCustomize();
-        testArrayCustomize();
         testReflect();
         testMapCustomize2();
         testArrayCustomize2();
     }
 
-    public static final int SIZE = 1;
-
-    private void testMapCustomize() {
-        final long start = System.currentTimeMillis();
-        Person person;
-        for (int i = 0; i < SIZE; i++) {
-            final Class<Person> personClass = Person.class;
-            person = data2Object.toMapConverter(dataMap);
-            System.out.println("person = " + person);
-        }
-        final long end = System.currentTimeMillis();
-        if (warmup)
-            System.out.println("testMapCustomize:" + (end - start));
-    }
-
-    private void testArrayCustomize() {
-        final long start = System.currentTimeMillis();
-        Person person = null;
-        for (int i = 0; i < SIZE; i++) {
-            person = data2Object.toArrayConverter(dataArray);
-        }
-        final long end = System.currentTimeMillis();
-        if (warmup)
-            System.out.println("testArrayCustomize:" + (end - start));
-    }
+    public static final int SIZE = 1000000;
 
     private void testMapCustomize2() {
         final long start = System.currentTimeMillis();
