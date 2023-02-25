@@ -19,7 +19,7 @@ public interface ExtraMethodAnnotationProcess {
      * @param method
      * @return /
      */
-    ExtraMethodDesc extraProcessMethod(Map<Integer, MethodInfo> data, Method method);
+    ExtraMethodDesc extraProcessMethod(Map<String, MethodInfo> data, Method method);
 
     /**
      * 权重

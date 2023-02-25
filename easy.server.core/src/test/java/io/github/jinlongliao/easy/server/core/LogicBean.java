@@ -10,7 +10,7 @@ import io.github.jinlongliao.easy.server.core.annotation.LogicRequestParam;
  */
 @LogicController
 public class LogicBean {
-    @LogicMapping(99)
+    @LogicMapping("99")
     public void test(@LogicRequestParam("userId") String userId, @LogicRequestParam("age") int age) {
 
     }

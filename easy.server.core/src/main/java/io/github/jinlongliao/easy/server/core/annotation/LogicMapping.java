@@ -21,7 +21,7 @@ public @interface LogicMapping {
      *
      * @return 处理的消息类型
      */
-    int[] value();
+    String[] value();
 
     /**
      * 消息描述

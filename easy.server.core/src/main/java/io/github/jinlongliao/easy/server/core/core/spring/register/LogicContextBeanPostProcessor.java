@@ -16,6 +16,7 @@
 package io.github.jinlongliao.easy.server.core.core.spring.register;
 
 import io.github.jinlongliao.easy.server.core.annotation.LogicController;
+import io.github.jinlongliao.easy.server.core.core.spring.LogicRegisterContext;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.config.BeanPostProcessor;

@@ -6,7 +6,7 @@ import io.github.jinlongliao.easy.server.swagger.model.*;
 import io.github.jinlongliao.easy.server.servlet.BaseHttpServlet;
 import io.github.jinlongliao.easy.server.core.annotation.LogicRequestParam;
 import io.github.jinlongliao.easy.server.core.core.MethodParse;
-import io.github.jinlongliao.easy.server.core.core.spring.register.LogicRegisterContext;
+import io.github.jinlongliao.easy.server.core.core.spring.LogicRegisterContext;
 import io.github.jinlongliao.easy.server.core.model.LogicModel;
 import io.github.jinlongliao.easy.server.core.model.MsgModel;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -40,7 +40,7 @@ public abstract class AbstractDefaultApiGenerator implements ApiGenerator {
 
     protected void parseConfig() {
         MethodParse parse = this.logicRegisterContext.getParse();
-        Map<Integer, LogicModel> logicDefineCache = parse.getLogicDefineCache();
+        Map<String, LogicModel> logicDefineCache = parse.getLogicDefineCache();
         apiResources = new HashSet<>(2, 1.5f);
         apiDocMap = new HashMap<>(2, 1.5f);
         this.buildLogicApiDoc(logicDefineCache);
@@ -73,7 +73,7 @@ public abstract class AbstractDefaultApiGenerator implements ApiGenerator {
      *
      * @param logicDefineCache
      */
-    protected void buildLogicApiDoc(Map<Integer, LogicModel> logicDefineCache) {
+    protected void buildLogicApiDoc(Map<String, LogicModel> logicDefineCache) {
         ApiResource apiResource = new ApiResource();
         apiResource.setName("logic");
         apiResource.setSwaggerVersion("2.0");
@@ -86,7 +86,7 @@ public abstract class AbstractDefaultApiGenerator implements ApiGenerator {
     }
 
 
-    protected ApiDoc buildLogicAipDoc(Map<Integer, LogicModel> logicDefineCache) {
+    protected ApiDoc buildLogicAipDoc(Map<String, LogicModel> logicDefineCache) {
         ApiDoc apiDoc = new ApiDoc();
         apiDoc.setBasePath(this.getBasePath());
         apiDoc.setDefinitions(this.getDefinitions());
@@ -128,10 +128,10 @@ public abstract class AbstractDefaultApiGenerator implements ApiGenerator {
 
     protected abstract String getServletTagUrl(String key, BaseHttpServlet<?> value);
 
-    protected Map<String, Map<String, Operation>> getLogicPath(Map<Integer, LogicModel> logicDefineCache) {
+    protected Map<String, Map<String, Operation>> getLogicPath(Map<String, LogicModel> logicDefineCache) {
         Map<String, Map<String, Operation>> paths = new HashMap<>(logicDefineCache.size(), 1.5f);
-        for (Map.Entry<Integer, LogicModel> modelEntry : logicDefineCache.entrySet()) {
-            Integer key = modelEntry.getKey();
+        for (Map.Entry<String, LogicModel> modelEntry : logicDefineCache.entrySet()) {
+            String key = modelEntry.getKey();
             LogicModel logicModel = modelEntry.getValue();
             final Map<String, Operation> operationHashMap = new HashMap<>(2);
             paths.put(getLogicTagUrl(key, logicModel), operationHashMap);
@@ -142,9 +142,9 @@ public abstract class AbstractDefaultApiGenerator implements ApiGenerator {
         return paths;
     }
 
-    protected Operation getLogicOperation(Integer key, LogicModel logicModel) {
+    protected Operation getLogicOperation(String key, LogicModel logicModel) {
         Operation operation = new Operation();
-        final String operationId = "0x" + Integer.toHexString(key) + "-" + logicModel.getDirectMethod().getName();
+        final String operationId = key + "-" + logicModel.getDirectMethod().getName();
         operation.setOperationId(operationId);
         operation.setSummary(operationId);
         operation.setDescription(logicModel.getDescription());
@@ -202,7 +202,7 @@ public abstract class AbstractDefaultApiGenerator implements ApiGenerator {
         return parameters;
     }
 
-    protected List<Map<String, Object>> getLogicParameters(Integer key, List<MsgModel> msgModels) {
+    protected List<Map<String, Object>> getLogicParameters(String key, List<MsgModel> msgModels) {
         List<Map<String, Object>> parameters = new ArrayList<>(16);
         final Field[] parentFields = getCommonField();
         Set<String> filedName = new HashSet<>(parentFields.length);
@@ -256,12 +256,12 @@ public abstract class AbstractDefaultApiGenerator implements ApiGenerator {
 
     protected abstract void buildParameter(String key, int fieldLength, List<Map<String, Object>> parameters, int modifiers, String fieldName, Class<?> fieldType, boolean required);
 
-    protected abstract String getLogicTagUrl(Integer key, LogicModel logicModel);
+    protected abstract String getLogicTagUrl(String key, LogicModel logicModel);
 
 
-    protected Collection<Tag> getApiTags(Map<Integer, LogicModel> logicDefineCache) {
+    protected Collection<Tag> getApiTags(Map<String, LogicModel> logicDefineCache) {
         this.tags = new HashMap<>(logicDefineCache.size(), 1.5f);
-        for (Map.Entry<Integer, LogicModel> modelEntry : logicDefineCache.entrySet()) {
+        for (Map.Entry<String, LogicModel> modelEntry : logicDefineCache.entrySet()) {
             LogicModel logicModel = modelEntry.getValue();
             Class<?> sourceClass = logicModel.getSourceClass();
             if (tags.containsKey(sourceClass)) {

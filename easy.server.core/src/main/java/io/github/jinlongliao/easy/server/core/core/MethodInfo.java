@@ -15,7 +15,7 @@ public class MethodInfo {
     /**
      * 消息ID
      */
-    private final int msgType;
+    private final String logicId;
     private final DirectMethod directMethod;
     private final List<MsgModel> msgModels;
     /**
@@ -23,8 +23,8 @@ public class MethodInfo {
      */
     private final String desc;
 
-    public MethodInfo(int msgType, DirectMethod directMethod, List<MsgModel> msgModels, String desc) {
-        this.msgType = msgType;
+    public MethodInfo(String logicId, DirectMethod directMethod, List<MsgModel> msgModels, String desc) {
+        this.logicId = logicId;
         this.directMethod = directMethod;
         this.msgModels = msgModels;
         this.desc = desc;
@@ -43,14 +43,14 @@ public class MethodInfo {
         return msgModels;
     }
 
-    public int getMsgType() {
-        return msgType;
+    public String getLogicId() {
+        return logicId;
     }
 
     @Override
     public String toString() {
         return "MethodInfo{" +
-                "msgType=" + msgType +
+                "logicId=" + logicId +
                 ", directMethod=" + directMethod +
                 ", msgModels=" + msgModels +
                 ", desc='" + desc + '\'' +

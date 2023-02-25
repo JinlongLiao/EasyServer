@@ -1,6 +1,7 @@
 package io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.plugin.servlet;
 
 import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.ExtraFieldConverter;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.IData2Object2;
 import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.plugin.AbstractExtraClassMethodGenerator;
 import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.generator.FieldParserBody;
 import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ClassWriter;
@@ -17,7 +18,7 @@ import static io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.as
  * @author: liaojinlong
  * @date: 2022/5/22 10:28
  */
-public class ServletExtraClassMethodGenerator extends AbstractExtraClassMethodGenerator {
+public class ServletExtraClassMethodGenerator extends AbstractExtraClassMethodGenerator<IServletData2Object> {
     public <T> void initJavaxServletExtraMethod(List<FieldParserBody> fieldParserBodyList,
                                                 String owner,
                                                 String className,
@@ -68,7 +69,7 @@ public class ServletExtraClassMethodGenerator extends AbstractExtraClassMethodGe
     }
 
     @Override
-    public Class getTargetConverter() {
+    public Class<IServletData2Object> getTargetConverter() {
         return IServletData2Object.class;
     }
 }

@@ -1,6 +1,5 @@
 package io.github.jinlongliao.easy.server.extend.response;
 
-import io.github.jinlongliao.easy.server.extend.response.ICommonResponse;
 import io.github.jinlongliao.easy.server.mapper.utils.MapperStructConfig;
 import io.github.jinlongliao.easy.server.extend.parser.StaticRequestParseRule;
 import io.github.jinlongliao.easy.server.core.annotation.LogicMapping;
@@ -18,7 +17,7 @@ import java.util.Map;
 public class TestMethod {
     private static final int key = 0x67;
 
-    @LogicMapping(value = key + 1)
+    @LogicMapping(value = " key + 1")
     public void testMethod1(@LogicRequestParam(value = "str", length = 120)
                             String str
 
@@ -26,7 +25,7 @@ public class TestMethod {
 
     }
 
-    @LogicMapping(value = key + 2)
+    @LogicMapping(value = "key + 2")
     public void testMethod2(@LogicRequestParam(value = "str", length = 120, dynamicLength = true)
                             String str
 
@@ -34,7 +33,7 @@ public class TestMethod {
 
     }
 
-    @LogicMapping(value = key + 3)
+    @LogicMapping(value = "key + 3")
     public void testMethod3(@LogicRequestParam(value = "str", length = 20)
                             String str,
                             @LogicRequestParam(value = "int0")
@@ -43,7 +42,7 @@ public class TestMethod {
 
     }
 
-    @LogicMapping(value = key + 4)
+    @LogicMapping(value = "key + 4")
     public void testMethod4(
             @LogicRequestParam(value = "long0")
             long long0
@@ -52,7 +51,7 @@ public class TestMethod {
     }
 
 
-    @LogicMapping(value = key + 5)
+    @LogicMapping(value = "key + 5")
     public void testMethod5(@LogicRequestParam(value = "str", length = 20)
                             String str,
                             @LogicRequestParam(value = "int0")
@@ -63,7 +62,7 @@ public class TestMethod {
 
     }
 
-    @LogicMapping(value = key + 6)
+    @LogicMapping(value = "key + 6")
     public void testMethod6(@LogicRequestParam(value = "byte0")
                             byte byte0
     ) {
@@ -71,63 +70,63 @@ public class TestMethod {
     }
 
 
-    @LogicMapping(value = key + 7)
+    @LogicMapping(value = "key + 7")
     public void testMethod7(@LogicRequestParam(value = "short0")
                             short short0
     ) {
 
     }
 
-    @LogicMapping(value = key + 8)
+    @LogicMapping(value = "key + 8")
     public void testMethod8(@LogicRequestParam(value = "ints")
                             List<Integer> ints
     ) {
 
     }
 
-    @LogicMapping(value = key + 9)
+    @LogicMapping(value = "key + 9")
     public void testMethod9(@LogicRequestParam(value = "ints")
                             int[] ints
     ) {
 
     }
 
-    @LogicMapping(value = key + 10)
+    @LogicMapping(value = "key + 10")
     public void testMethod10(@LogicRequestParam(value = "ints")
                              Integer[] ints
     ) {
 
     }
 
-    @LogicMapping(value = key + 11)
+    @LogicMapping(value = "key + 11")
     public void testMethodBody(@LogicRequestBody(value = "ints")
                                Integer[] ints
     ) {
 
     }
 
-    @LogicMapping(value = key + 12)
+    @LogicMapping(value = "key + 12")
     public void testMethodCommon(@LogicRequestParam(value = "ints", isCommon = true)
                                  Integer[] ints
     ) {
 
     }
 
-    @LogicMapping(value = key + 13)
+    @LogicMapping(value = "key + 13")
     public void testMethodBoolean(@LogicRequestParam(value = "bool")
                                   boolean bool
     ) {
 
     }
 
-    @LogicMapping(value = key + 14)
+    @LogicMapping(value = "key + 14")
     public void testMethodInner(@LogicRequestIp
                                 Integer[] ints
     ) {
 
     }
 
-    @LogicMapping(value = key + 15)
+    @LogicMapping(value = "key + 15")
     public void testMethodAll(@LogicRequestParam(value = "str", length = 20)
                               String str,
                               @LogicRequestParam(value = "dynamic", dynamicLength = true)
@@ -149,7 +148,7 @@ public class TestMethod {
                               @LogicRequestIp
                               String ip,
                               @LogicRequestBody
-                                  ICommonResponse re
+                              ICommonResponse re
     ) {
 
     }
@@ -159,7 +158,7 @@ public class TestMethod {
     public void testMethod() {
         MethodParse methodParse = new MethodParse();
         MapperStructConfig.setDev(true, "./target/", "./target/");
-        Map<Integer, MethodInfo> logic = methodParse.getLogic(this.getClass());
+        Map<String, MethodInfo> logic = methodParse.getLogic(this.getClass());
         for (MethodInfo methodInfo : logic.values()) {
             LogicModel logicModel = new LogicModel(null, methodInfo.getDirectMethod(), methodInfo.getMsgModels(), methodInfo.getDesc(), "beanName");
             logicModel.setSourceClass(this.getClass());

@@ -2,8 +2,9 @@ package io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.
 
 import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.ExtraFieldConverter;
 import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.ClassMethodCoreGenerator;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.IData2Object2;
 import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.generator.FieldParserBody;
- import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ClassWriter;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ClassWriter;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @author: liaojinlong
  * @date: 2022/5/21 22:01
  */
-public abstract class AbstractExtraClassMethodGenerator extends ClassMethodCoreGenerator {
+public abstract class AbstractExtraClassMethodGenerator<C extends IData2Object2> extends ClassMethodCoreGenerator<C> {
     @Override
     public <T> List<FieldParserBody> initMethod(ClassWriter cw,
                                                 String owner,
@@ -32,9 +33,5 @@ public abstract class AbstractExtraClassMethodGenerator extends ClassMethodCoreG
                                              String className,
                                              ClassWriter cw,
                                              Class<? extends ExtraFieldConverter> filedValueConverter);
-
-
-    @Override
-    public abstract Class getTargetConverter();
 
 }

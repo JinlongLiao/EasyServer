@@ -48,3 +48,11 @@
 /easy.server.swagger/target/
 /easy.server.script/easy.server.script.iml
 /easy.server.swagger/easy.server.swagger.iml
+/.vscode
+/easy.server.script/target/
+/easy.server.demo/easy.server.boot.demo/target/
+/easy.server.demo/easy.server.netty.demo/target/
+/easy.server.demo/easy.server.tomcat.demo/target/
+/easy.server.demo/easy.server.boot.demo/easy.server.boot.demo.iml
+/easy.server.demo/easy.server.netty.demo/easy.server.netty.demo.iml
+/easy.server.demo/easy.server.tomcat.demo/easy.server.tomcat.demo.iml

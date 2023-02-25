@@ -45,7 +45,7 @@ public class GeneratorResponseLoaderGenerator implements LoaderGenerator {
         for (String className : classNames) {
             try {
                 Class<?> aClass = AsmProxyCodeGenerator.MAPPER_CLASS_LOADER.loadClass(className);
-                Map<Integer, MethodInfo> logic = methodParse.getLogic(aClass);
+                Map<String, MethodInfo> logic = methodParse.getLogic(aClass);
                 for (MethodInfo methodInfo : logic.values()) {
                     LogicModel logicModel = new LogicModel(null,
                             methodInfo.getDirectMethod(),

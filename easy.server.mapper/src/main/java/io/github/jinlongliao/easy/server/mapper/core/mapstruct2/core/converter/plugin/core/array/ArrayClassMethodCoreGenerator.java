@@ -2,6 +2,7 @@ package io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.
 
 
 import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.ExtraFieldConverter;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.IData2Object2;
 import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.plugin.AbstractExtraClassMethodGenerator;
 import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.generator.FieldParserBody;
 import io.github.jinlongliao.easy.server.mapper.utils.CLassUtils;
@@ -21,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author: liaojinlong
  * @date: 2022/5/21 22:01
  */
-public class ArrayClassMethodCoreGenerator extends AbstractExtraClassMethodGenerator {
+public class ArrayClassMethodCoreGenerator extends AbstractExtraClassMethodGenerator<IArrayData2Object2> {
 
     @Override
     public <T> void initExtraMethod(List<FieldParserBody> filedParserBodies,
@@ -102,11 +103,11 @@ public class ArrayClassMethodCoreGenerator extends AbstractExtraClassMethodGener
         methodVisitor.visitVarInsn(ASTORE, maxLocals.getAndIncrement());
     }
 
+
     @Override
-    public Class getTargetConverter() {
+    public Class<IArrayData2Object2> getTargetConverter() {
         return IArrayData2Object2.class;
     }
-
 
     @Override
     public String getSuperName() {
