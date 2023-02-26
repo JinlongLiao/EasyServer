@@ -34,7 +34,43 @@
             </releases>
         </repository>
     </repositories>
+
+
+    <name>easy.server</name>
+    <url>https://github.com/JinlongLiao/EasyServer</url>
+    <description>基于Spring 实现对于Web,Socket 等不同消息来源，使用相同的业务模式处理</description>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <tag>main</tag>
+        <url>git@github.com:JinlongLiao/EasyServer.git</url>
+        <connection>scm:git:git@github.com:JinlongLiao/EasyServer.git</connection>
+        <developerConnection>scm:git:git@github.com:JinlongLiao/EasyServer.git</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>jinlongliao</name>
+            <email>jinlongliao@foxmail.com</email>
+            <organization>jinlongliao</organization>
+        </developer>
+    </developers>
     <distributionManagement>
+        <snapshotRepository>
+            <id>nexus</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>nexus</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
     </distributionManagement>
     <properties>
         <slf4j.version>1.7.36</slf4j.version>
@@ -73,6 +109,37 @@
                     <testTarget>${jdk.test.version}</testTarget>
                     <testSource>${jdk.test.version}</testSource>
                     <encoding>${charsetEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <additionalJOptions>
+                        <additionalJOption>-Xdoclint:none</additionalJOption>
+                    </additionalJOptions>
                 </configuration>
             </plugin>
             <!-- 生成sources源码包的插件 -->

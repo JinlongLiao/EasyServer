@@ -53,8 +53,8 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为byte
      *
-     * @param data
-     * @return byte
+     * @param data /
+     * @return byte /
      */
     public static Byte getByte2(Object data) {
         if (data == null) {
@@ -69,7 +69,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为 Boolean
      *
-     * @param data
+     * @param data /
      * @return Boolean
      */
     public static boolean getBoolean(Object data) {
@@ -79,7 +79,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为Boolean
      *
-     * @param data
+     * @param data /
      * @return Boolean
      */
     public static Boolean getBoolean2(Object data) {
@@ -95,7 +95,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为Short
      *
-     * @param data
+     * @param data /
      * @return Short
      */
     public static short getShort(Object data) {
@@ -111,7 +111,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为Short
      *
-     * @param data
+     * @param data /
      * @return Short
      */
     public static Short getShort2(Object data) {
@@ -127,7 +127,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为float
      *
-     * @param data
+     * @param data /
      * @return float
      */
     public static float getFloat(Object data) {
@@ -143,7 +143,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为float
      *
-     * @param data
+     * @param data /
      * @return float
      */
     public static Float getFloat2(Object data) {
@@ -159,7 +159,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为double
      *
-     * @param data
+     * @param data /
      * @return double
      */
     public static double getDouble(Object data) {
@@ -175,7 +175,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为double
      *
-     * @param data
+     * @param data /
      * @return double
      */
     public static Double getDouble2(Object data) {
@@ -191,7 +191,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为long
      *
-     * @param data
+     * @param data /
      * @return long
      */
     public static long getLong(Object data) {
@@ -207,7 +207,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为long
      *
-     * @param data
+     * @param data /
      * @return long
      */
     public static Long getLong2(Object data) {
@@ -223,7 +223,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为int
      *
-     * @param data
+     * @param data /
      * @return int
      */
     public static int getInt(Object data) {
@@ -242,7 +242,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为int
      *
-     * @param data
+     * @param data /
      * @return int
      */
     public static Integer getInt2(Object data) {
@@ -261,7 +261,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为String
      *
-     * @param data
+     * @param data /
      * @return String
      */
     public static String getStr(Object data) {
@@ -274,7 +274,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为 char
      *
-     * @param data
+     * @param data /
      * @return char
      */
     public static char getChar(Object data) {
@@ -284,7 +284,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为 char
      *
-     * @param data
+     * @param data /
      * @return char
      */
     public static Character getChar2(Object data) {
@@ -294,7 +294,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为 Date
      *
-     * @param data
+     * @param data /
      * @return Date
      */
     public static Date geDate(Object data) {
@@ -304,7 +304,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为 List
      *
-     * @param data
+     * @param data /
      * @return List
      */
     public static List<Object> getList(Object data) {
@@ -315,7 +315,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为 Map
      *
-     * @param data
+     * @param data /
      * @return Map
      */
     public static Map getMap(Object data) {
@@ -325,7 +325,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为 Integer[]
      *
-     * @param data
+     * @param data /
      * @return Integer[]
      */
     public static Integer[] getIntArr(Object data) {
@@ -352,7 +352,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为 int[]
      *
-     * @param data
+     * @param data /
      * @return int[]
      */
     public static int[] getInt2Arr(Object data) {
@@ -381,7 +381,7 @@ public class InnerCoreDataConverter {
     /**
      * 数据转换为 String[]
      *
-     * @param data
+     * @param data /
      * @return String[]
      */
     public static String[] getStringArr(Object data) {
@@ -391,9 +391,9 @@ public class InnerCoreDataConverter {
     /**
      * 泛型转换
      *
-     * @param data
-     * @param tClass
-     * @param <T>
+     * @param data   /
+     * @param tClass /
+     * @param <T>    /
      * @return /
      */
     public static <T> T getT(Class<T> tClass, Object data) {

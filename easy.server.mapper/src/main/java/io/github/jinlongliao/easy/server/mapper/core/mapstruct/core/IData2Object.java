@@ -29,7 +29,7 @@ public interface IData2Object<T> {
     /**
      * 转换接口
      *
-     * @param data
+     * @param data /
      * @return T
      */
     T toMapConverter(Map<String, Object> data);
@@ -37,7 +37,7 @@ public interface IData2Object<T> {
     /**
      * Array转换接口(70w以下，性能最优)
      *
-     * @param data
+     * @param data /
      * @return T
      */
     T toArrayConverter(Object[] data);
@@ -45,7 +45,7 @@ public interface IData2Object<T> {
     /**
      * {@link javax.servlet.http.HttpServletRequest}转换接口
      *
-     * @param request
+     * @param request /
      * @return T
      */
     T toHttpServletRequestConverter(HttpServletRequest request);
