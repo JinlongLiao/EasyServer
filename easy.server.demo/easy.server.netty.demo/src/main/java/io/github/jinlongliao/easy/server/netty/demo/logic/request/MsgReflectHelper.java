@@ -4,6 +4,7 @@ import io.github.jinlongliao.easy.server.core.core.MethodParse;
 import io.github.jinlongliao.easy.server.core.model.LogicModel;
 import io.github.jinlongliao.easy.server.core.parser.ParseAdapter;
 import io.github.jinlongliao.easy.server.extend.parser.StaticRequestParseRule;
+import io.github.jinlongliao.easy.server.netty.demo.core.tcp.conn.TcpConnection;
 import io.github.jinlongliao.easy.server.netty.demo.core.tcp.conn.TcpConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,10 +36,11 @@ public class MsgReflectHelper {
     /**
      * transfer msg info from request stream.
      *
-     * @param request 请求
-     * @return
+     * @param request       请求
+     * @param tcpConnection
+     * @return /
      */
-    public LogicRequest transferMsgInfo(RequestStreamFactory request) {
+    public LogicRequest transferMsgInfo(RequestStreamFactory request, TcpConnection tcpConnection) {
         // 获取签名密钥
         String logicId = request.readInt() + "";
         int userId = request.readInt();
@@ -49,12 +51,11 @@ public class MsgReflectHelper {
         }
         LogicRequest requestMsgInfo = new LogicRequest(logicModel);
         this.putCommonValue(requestMsgInfo, logicId, userId);
-        request.setRequest(requestMsgInfo);
         ParseAdapter parseRule = parseRuleMap.computeIfAbsent(logicId, k -> new ParseAdapter(new StaticRequestParseRule(logicModel), new TcpMsgParserCallBack()));
         if (log.isDebugEnabled()) {
             log.debug("[gold interface msg : {}]", requestMsgInfo);
         }
-        requestMsgInfo.setArgs(parseRule.parseHexMsg(request));
+        requestMsgInfo.setArgs(parseRule.parseHexMsg(request, tcpConnection, request, requestMsgInfo));
         return requestMsgInfo;
     }
 

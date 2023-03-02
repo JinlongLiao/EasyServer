@@ -19,7 +19,6 @@ import java.util.*;
  * @since 2021/1/22 20:12
  */
 public abstract class AbstractRequestParseRule implements IRequestParseRule {
-    public static final String REQUEST_ARG = "__REQUEST_ARG__";
     protected final IDefaultValueConverter defaultValueConverter;
     /**
      * 构建规则

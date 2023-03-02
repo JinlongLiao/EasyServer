@@ -14,7 +14,10 @@ import io.github.jinlongliao.easy.server.core.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ApplicationObjectSupport;
+import org.springframework.util.Assert;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -51,8 +54,15 @@ public class LogicBean extends ApplicationObjectSupport {
     }
 
     @LogicMapping(value = "101", desc = "Hex Response")
-    public TestResponse testHex(@UserId(newV = "newUserId") int userId, @LogicRequestIp String clientIp) {
+    public TestResponse testHex(@UserId(newV = "newUserId") int userId,
+                                @HttpRequest
+                                HttpServletRequest request,
+                                @HttpResponse
+                                HttpServletResponse response,
+                                @LogicRequestIp String clientIp) {
         log.info("userId: {}\t clientIp: {}", userId, clientIp);
+        Assert.notNull(request, "NOT NULL");
+        Assert.notNull(response, "NOT NULL");
         return new TestResponse(userId, "ABCD", "ABCD");
     }
 

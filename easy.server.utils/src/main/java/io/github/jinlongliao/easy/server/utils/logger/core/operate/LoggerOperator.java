@@ -21,8 +21,8 @@ public interface LoggerOperator {
     /**
      * 设置指定路径的日志级别
      *
-     * @param path
-     * @param level
+     * @param path  代码路径
+     * @param level 等级
      * @return /
      */
     boolean setLoggerLevel(String path, LoggerLevel level);

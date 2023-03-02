@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
  * @date: 2022-06-20 14:52
  */
 @Controller
-public class NotificationUiProxyController {
+public class NettyTcpAipDemoProxyController {
     private static final HashSet<String> COMMON_PARAM_NAME = new HashSet<>(8, 1L);
 
     static {
@@ -57,11 +57,11 @@ public class NotificationUiProxyController {
     private final MethodParse parse;
 
 
-    public NotificationUiProxyController(ApiConfig apiConfig,
-                                         ApiCleanHelper apiCleanHelper,
-                                         LogicRegisterContext logicRegisterContext,
-                                         JsonHelper jsonHelper,
-                                         TcpClient tcpClient) {
+    public NettyTcpAipDemoProxyController(ApiConfig apiConfig,
+                                          ApiCleanHelper apiCleanHelper,
+                                          LogicRegisterContext logicRegisterContext,
+                                          JsonHelper jsonHelper,
+                                          TcpClient tcpClient) {
         this.apiConfig = apiConfig;
         this.apiCleanHelper = apiCleanHelper;
         this.jsonHelper = jsonHelper;

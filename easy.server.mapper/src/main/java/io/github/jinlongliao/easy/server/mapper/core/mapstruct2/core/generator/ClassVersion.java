@@ -43,21 +43,7 @@ class DefaultClassVersion implements ClassVersion {
 
     @Override
     public int version() {
-        return Objects.isNull(defaultVersion) ? defaultVersion = AccessController.doPrivileged((PrivilegedAction<Integer>) () -> {
-            int classVersion = Opcodes.V1_8;
-            int base = 44;
-            try {
-                String javaVersionStr = System.getProperty("java.specification.version");
-                if (javaVersionStr.contains(".")) {
-                    classVersion = Integer.parseInt(javaVersionStr.split("\\.")[1]) + base;
-                } else {
-                    classVersion = Integer.parseInt(javaVersionStr) + base;
-                }
-            } catch (Exception e) {
-
-            }
-            return classVersion;
-        }) : defaultVersion;
+        return Opcodes.V1_8;
     }
 
     private static DefaultClassVersion single;

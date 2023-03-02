@@ -34,11 +34,8 @@ public class TestRequestParseRule extends AbstractRequestParseRule {
      * @return 二进制中消息
      */
     @Override
-    public Object[] readHexMsg(IRequestStreamFactory request, IMessageParserCallBack msgHexParserCallBack) {
+    public Object[] readHexMsg(IRequestStreamFactory request, IMessageParserCallBack msgHexParserCallBack, Object... args) {
         Object[] data = new Object[11];
-        Object arg = request.getArg();
-
-
         String readDynamicString = request.readString(request.readInt());
         if (this.rules.get(0).hasDef()) {
             if (readDynamicString == null || readDynamicString.isEmpty()) {
@@ -95,9 +92,9 @@ public class TestRequestParseRule extends AbstractRequestParseRule {
         }
         data[6] = arr2;
 
-        data[7] = msgHexParserCallBack.parserCommonParam(request, this.rules.get(7), arg);
-        data[8] = msgHexParserCallBack.parserParamBody(request, this.rules.get(8), arg);
-        data[9] = msgHexParserCallBack.parserInnerFiled(request, this.rules.get(9), arg);
+        data[7] = msgHexParserCallBack.parserCommonParam(request, this.rules.get(7), args);
+        data[8] = msgHexParserCallBack.parserParamBody(request, this.rules.get(8), args);
+        data[9] = msgHexParserCallBack.parserInnerFiled(request, this.rules.get(9), args);
         data[10] = request.readBool();
         return data;
     }
@@ -108,10 +105,9 @@ public class TestRequestParseRule extends AbstractRequestParseRule {
      * @return Servlet中的消息
      */
     @Override
-    public Object[] readServletMsg(HttpServletRequest request, IMessageParserCallBack msgHexParserCallBack) {
+    public Object[] readServletMsg(HttpServletRequest request, IMessageParserCallBack msgHexParserCallBack, Object... args) {
         Object[] data = new Object[10];
         //        包转参数
-        Object attribute = request.getAttribute(REQUEST_ARG);
         Object xxx = request.getParameter("xxx");
         if (xxx == null || ((String) xxx).isEmpty()) {
             if (this.rules.get(0).hasDef()) {
@@ -120,13 +116,13 @@ public class TestRequestParseRule extends AbstractRequestParseRule {
         }
         data[0] = InnerConverter.getByte2(xxx);
 
-        data[1] = msgHexParserCallBack.parserParamBody(request, this.rules.get(1), attribute);
+        data[1] = msgHexParserCallBack.parserParamBody(request, this.rules.get(1), args);
 
         //                 内部属性解析
-        data[2] = msgHexParserCallBack.parserInnerFiled(request, this.rules.get(2), attribute);
+        data[2] = msgHexParserCallBack.parserInnerFiled(request, this.rules.get(2), args);
 
         //                 公共参数
-        data[3] = msgHexParserCallBack.parserCommonParam(request, this.rules.get(3), attribute);
+        data[3] = msgHexParserCallBack.parserCommonParam(request, this.rules.get(3), args);
 
         String[] xxxes = request.getParameterValues("xxx");
         List<Integer> ints = new ArrayList<>(xxxes.length);

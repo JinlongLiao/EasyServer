@@ -38,23 +38,22 @@ public class RequestParseRule extends AbstractRequestParseRule {
      * @return 二进制中消息
      */
     @Override
-    public Object[] readHexMsg(IRequestStreamFactory request, IMessageParserCallBack msgHexParserCallBack) {
+    public Object[] readHexMsg(IRequestStreamFactory request, IMessageParserCallBack msgHexParserCallBack, Object... args) {
         Object[] data = new Object[rules.size()];
-        Object arg = request.getArg();
         for (int i = 0; i < rules.size(); i++) {
             MeType meType = rules.get(i);
             // 包装参数 skip
             if (meType.isBody()) {
-                data[i] = msgHexParserCallBack.parserParamBody(request, meType, arg);
+                data[i] = msgHexParserCallBack.parserParamBody(request, meType, args);
                 continue;
             }
             // 内部属性解析
             if (meType.isInnerField()) {
-                data[i] = msgHexParserCallBack.parserInnerFiled(request, meType, arg);
+                data[i] = msgHexParserCallBack.parserInnerFiled(request, meType, args);
                 continue;
             }
             if (meType.isCommon()) {
-                data[i] = msgHexParserCallBack.parserCommonParam(request, meType, arg);
+                data[i] = msgHexParserCallBack.parserCommonParam(request, meType, args);
                 continue;
             }
             Class<?> type = meType.getType();
@@ -141,23 +140,23 @@ public class RequestParseRule extends AbstractRequestParseRule {
      * @return Servlet中的消息
      */
     @Override
-    public Object[] readServletMsg(HttpServletRequest request, IMessageParserCallBack msgHexParserCallBack) {
+    public Object[] readServletMsg(HttpServletRequest request, IMessageParserCallBack msgHexParserCallBack, Object... args) {
         Object[] data = new Object[rules.size()];
         for (int i = 0; i < rules.size(); i++) {
             MeType meType = rules.get(i);
             // 包转参数
             if (meType.isBody()) {
-                data[i] = msgHexParserCallBack.parserParamBody(request, meType, request.getAttribute(REQUEST_ARG));
+                data[i] = msgHexParserCallBack.parserParamBody(request, meType, args);
                 continue;
             }
             // 内部属性解析
             if (meType.isInnerField()) {
-                data[i] = msgHexParserCallBack.parserInnerFiled(request, meType, request.getAttribute(REQUEST_ARG));
+                data[i] = msgHexParserCallBack.parserInnerFiled(request, meType, args);
                 continue;
             }
             // 公共参数
             if (meType.isCommon()) {
-                data[i] = msgHexParserCallBack.parserCommonParam(request, meType, request.getAttribute(REQUEST_ARG));
+                data[i] = msgHexParserCallBack.parserCommonParam(request, meType, args);
                 continue;
             }
 
@@ -174,7 +173,7 @@ public class RequestParseRule extends AbstractRequestParseRule {
      * @return /
      */
     protected Object converterData(String parameter, final MeType meType) {
-        Class type = meType.getType();
+        Class<?> type = meType.getType();
         if (parameter == null) {
             if (meType.hasDef()) {
                 return meType.getDefaultValue();

@@ -15,23 +15,15 @@ import java.nio.charset.StandardCharsets;
  */
 public class RequestStreamFactory implements IRequestStreamFactory, Closeable {
     private final ByteBuf byteBuf;
-    private IRequest request;
-    private TcpConnection tcpConnection;
 
-    public RequestStreamFactory(ByteBuf byteBuf, TcpConnection tcpConnection) {
+    public RequestStreamFactory(ByteBuf byteBuf) {
         this.byteBuf = byteBuf;
-        this.tcpConnection = tcpConnection;
     }
 
     @Override
     public int readInt() {
         return this.byteBuf.readIntLE();
     }
-
-    public int readUnsignedShortLE() {
-        return this.byteBuf.readUnsignedShortLE();
-    }
-
 
     public short readShort() {
         return this.byteBuf.readShortLE();
@@ -71,15 +63,6 @@ public class RequestStreamFactory implements IRequestStreamFactory, Closeable {
         this.byteBuf.release();
     }
 
-    public void setRequest(IRequest request) {
-        this.request = request;
-    }
-
-    @Override
-    public Object getArg() {
-        return this.request;
-    }
-
     @Override
     public String getClientIp() {
         return null;
@@ -87,17 +70,5 @@ public class RequestStreamFactory implements IRequestStreamFactory, Closeable {
 
     public ByteBuf getByteBuf() {
         return byteBuf;
-    }
-
-    public IRequest getRequest() {
-        return request;
-    }
-
-    public TcpConnection getTcpConnection() {
-        return tcpConnection;
-    }
-
-    public void setTcpConnection(TcpConnection tcpConnection) {
-        this.tcpConnection = tcpConnection;
     }
 }

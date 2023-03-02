@@ -19,22 +19,22 @@ public class DemoMessageParserCallBack implements IMessageParserCallBack {
     }
 
     @Override
-    public Object parserParamBody(IRequestStreamFactory request, MeType meType, Object arg) {
+    public Object parserParamBody(IRequestStreamFactory request, MeType meType, Object... args) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Object parserParamBody(HttpServletRequest request, MeType meType, Object arg) {
-        return this.beanMapper.servletBeanMapper(meType.getType(), request);
-    }
-
-    @Override
-    public Object parserCommonParam(IRequestStreamFactory request, MeType meType, Object arg) {
+    public Object parserParamBody(HttpServletRequest request, MeType meType, Object... args) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Object parserCommonParam(HttpServletRequest request, MeType meType, Object arg) {
+    public Object parserCommonParam(IRequestStreamFactory request, MeType meType, Object... args) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Object parserCommonParam(HttpServletRequest request, MeType meType, Object... args) {
         throw new UnsupportedOperationException();
     }
 

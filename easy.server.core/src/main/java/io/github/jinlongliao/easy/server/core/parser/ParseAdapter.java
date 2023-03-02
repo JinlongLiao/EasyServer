@@ -22,19 +22,21 @@ public class ParseAdapter {
      * Hex Parser Message
      *
      * @param requestStreamFactory Hex Factory
+     * @param args                 透传参数
      * @return /
      */
-    public Object[] parseHexMsg(IRequestStreamFactory requestStreamFactory) {
-        return this.parseRule.readHexMsg(requestStreamFactory, msgHexParserCallBack);
+    public Object[] parseHexMsg(IRequestStreamFactory requestStreamFactory, Object... args) {
+        return this.parseRule.readHexMsg(requestStreamFactory, msgHexParserCallBack, args);
     }
 
     /**
      * Servlet Parser Message
      *
      * @param request Servlet
+     * @param args    透传参数
      * @return /
      */
-    public Object[] parseMsg(HttpServletRequest request) {
-        return this.parseRule.readServletMsg(request, msgHexParserCallBack);
+    public Object[] parseMsg(HttpServletRequest request, Object... args) {
+        return this.parseRule.readServletMsg(request, msgHexParserCallBack, args);
     }
 }

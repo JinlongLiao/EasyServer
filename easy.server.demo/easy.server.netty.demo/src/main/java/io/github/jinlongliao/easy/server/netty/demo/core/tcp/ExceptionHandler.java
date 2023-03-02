@@ -34,8 +34,8 @@ public final class ExceptionHandler {
         }
 
 
-        if (cause instanceof MethodInvokeException ) {
-            cause = ((MethodInvokeException)cause).getTargetException();
+        if (cause instanceof MethodInvokeException) {
+            cause = ((MethodInvokeException) cause).getTargetException();
         }
         if (log.isDebugEnabled()) {
             log.debug("from class {} ex{}", aClass.getName(), cause.getClass().getName());
@@ -47,7 +47,7 @@ public final class ExceptionHandler {
         if (Objects.nonNull(localTcpConnection)) {
             userId = localTcpConnection.getUserId();
         }
-        ErrorResponse response = new ErrorResponse(ErrorCode.SYS_ERROR.getErrorCode(), ErrorCode.SYS_ERROR.getErrMsg());
+        ErrorResponse response = new ErrorResponse(ErrorCode.SYS_ERROR.getErrorCode(), cause.getMessage());
         if (channel.isActive()) {
             channel.writeAndFlush(response);
         }
