@@ -15,19 +15,21 @@ public interface IRequestParseRule {
     /**
      * 读取 HEX
      *
-     * @param request
-     * @param msgHexParserCallBack
+     * @param request               请求
+     * @param messageParserCallBack 回调 处理函数
+     * @param extraParams           扩展 参数
      * @return /
      */
-    Object[] readHexMsg(IRequestStreamFactory request, IMessageParserCallBack msgHexParserCallBack);
+    Object[] readHexMsg(IRequestStreamFactory request, IMessageParserCallBack messageParserCallBack, Object... extraParams);
 
     /**
      * 读取 Form-Data
      *
-     * @param request
-     * @param msgHexParserCallBack
+     * @param request               请求
+     * @param messageParserCallBack 回调 处理函数
+     * @param extraParams           扩展 参数
      * @return /
      */
-    Object[] readServletMsg(HttpServletRequest request, IMessageParserCallBack msgHexParserCallBack);
+    Object[] readServletMsg(HttpServletRequest request, IMessageParserCallBack messageParserCallBack, Object... extraParams);
 
 }

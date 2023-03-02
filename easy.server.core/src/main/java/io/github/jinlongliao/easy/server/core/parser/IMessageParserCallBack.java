@@ -16,49 +16,51 @@ public interface IMessageParserCallBack {
      *
      * @param request
      * @param meType
-     * @param arg     扩展参数
+     * @param args    扩展参数
      * @return 解析后的数据
      */
-    Object parserParamBody(IRequestStreamFactory request, MeType meType, Object arg);
+    Object parserParamBody(IRequestStreamFactory request, MeType meType, Object... args);
 
     /**
      * 读取HttpServletRequest消息，包装为对象
      *
      * @param request
      * @param meType
-     * @param arg     扩展参数
+     * @param args    扩展参数
      * @return 解析后的数据
      */
-    Object parserParamBody(HttpServletRequest request, MeType meType, Object arg);
+    Object parserParamBody(HttpServletRequest request, MeType meType, Object... args);
 
     /**
      * 读取16进制消息体消息，包装为公共属性
      *
      * @param request
      * @param meType
-     * @param arg     扩展参数
+     * @param args    扩展参数
      * @return 解析后的数据
      */
-    Object parserCommonParam(IRequestStreamFactory request, MeType meType, Object arg);
+    Object parserCommonParam(IRequestStreamFactory request, MeType meType, Object... args);
 
     /**
      * 读取HttpServletRequest消息，公共属性
      *
      * @param request
      * @param meType
-     * @param arg     扩展参数
+     * @param args    扩展参数
      * @return 解析后的数据
      */
-    Object parserCommonParam(HttpServletRequest request, MeType meType, Object arg);
+    Object parserCommonParam(HttpServletRequest request, MeType meType, Object... args);
 
-    default Object parserInnerFiled(Object args, MeType meType, Object arg) {
-        if (meType.getParamName().equals("__CLIENT_IP__")) {
-            if (args instanceof HttpServletRequest) {
-                return IPAddressUtil.getIp((HttpServletRequest) args);
-            } else if (args instanceof IRequestStreamFactory) {
-                return ((IRequestStreamFactory) args).getClientIp();
-            }
+    default Object parserInnerFiled(Object source, MeType meType, Object... args) {
+        HttpServletRequest request = (HttpServletRequest) args[0];
+        String paramName = meType.getParamName();
+        if ("__CLIENT_IP__".equals(paramName)) {
+            return IPAddressUtil.getIp(request);
+        } else if ("http_request".equals(paramName)) {
+            return args[0];
+        } else if ("http_response".equals(paramName)) {
+            return args[1];
         }
-        return IPAddressUtil.DEFAULT;
+        return null;
     }
 }

@@ -1,7 +1,7 @@
 package io.github.jinlongliao.easy.server.netty.demo.config.swagger.config;
 
 import io.github.jinlongliao.easy.server.core.core.spring.LogicRegisterContext;
-import io.github.jinlongliao.easy.server.netty.demo.config.swagger.config.api.NotificationUiApiGenerator;
+import io.github.jinlongliao.easy.server.netty.demo.config.swagger.config.api.NettyTcpApiGenerator;
 import io.github.jinlongliao.easy.server.swagger.config.ApiConfig;
 import io.github.jinlongliao.easy.server.swagger.config.ApiSpringAutoConfig;
 import io.github.jinlongliao.easy.server.swagger.model.ApiDocInfo;
@@ -28,9 +28,9 @@ public class DeveloperConfig {
     @Bean
     public ApiConfig apiConfig() {
         ApiDocInfo apiDocInfo = new ApiDocInfo();
-        apiDocInfo.setTitle("notification Ui");
+        apiDocInfo.setTitle("Netty Tcp Api demo");
         apiDocInfo.setVersion("v1");
-        apiDocInfo.setDescription("消息推送");
+        apiDocInfo.setDescription("Netty Tcp Api demo");
         Map<String, Object> contact = new HashMap<>(4, 1.5f);
         contact.put("name", "jinlongliao");
         contact.put("email", "jinlongliao@foxmail.com");
@@ -47,8 +47,8 @@ public class DeveloperConfig {
 
 
     @Bean
-    public NotificationUiApiGenerator notificationUiApiGenerator(LogicRegisterContext logicRegisterContext, ApiConfig apiConfig) {
-        return new NotificationUiApiGenerator(logicRegisterContext, apiConfig, Collections.emptyList());
+    public NettyTcpApiGenerator notificationUiApiGenerator(LogicRegisterContext logicRegisterContext, ApiConfig apiConfig) {
+        return new NettyTcpApiGenerator(logicRegisterContext, apiConfig, Collections.emptyList());
     }
 
 }

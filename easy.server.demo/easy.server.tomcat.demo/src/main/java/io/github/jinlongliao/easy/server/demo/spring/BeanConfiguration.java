@@ -87,7 +87,7 @@ public class BeanConfiguration {
     @Bean
     public ApiConfig apiConfig() {
         ApiDocInfo apiDocInfo = new ApiDocInfo();
-        apiDocInfo.setTitle("ApiDemo");
+        apiDocInfo.setTitle("Tomcat ApiDemo");
         apiDocInfo.setVersion("v1");
         apiDocInfo.setTermsOfService("Easy Server");
         apiDocInfo.setDescription("测试展示");

@@ -24,8 +24,9 @@ import java.util.Objects;
  */
 public class TcpMessageDecoder extends LengthFieldBasedFrameDecoder {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    private final TcpConnectionFactory tcpConnectionFactory ;
+    private final TcpConnectionFactory tcpConnectionFactory;
     private final MsgReflectHelper msgReflectHelper;
+
     public TcpMessageDecoder(TcpConnectionFactory tcpConnectionFactory, MsgReflectHelper msgReflectHelper) {
         super(ByteOrder.BIG_ENDIAN, 4 * 1024 * 1024, 2, 2, -4, 4, true);
         this.tcpConnectionFactory = tcpConnectionFactory;
@@ -46,13 +47,13 @@ public class TcpMessageDecoder extends LengthFieldBasedFrameDecoder {
         }
 
         ByteBuf decodedByteBuf = (ByteBuf) decode;
-        try (RequestStreamFactory requestStreamFactory = new RequestStreamFactory(decodedByteBuf, tcpConnectionFactory.getLocalTcpConnection(ctx))) {
-             return this. msgReflectHelper.transferMsgInfo(requestStreamFactory);
+        try (RequestStreamFactory requestStreamFactory = new RequestStreamFactory(decodedByteBuf)) {
+            return this.msgReflectHelper.transferMsgInfo(requestStreamFactory, tcpConnectionFactory.getLocalTcpConnection(ctx));
         }
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-         ExceptionHandler.exceptionCaught(tcpConnectionFactory, ctx, cause, MethodHandles.lookup().lookupClass());
+        ExceptionHandler.exceptionCaught(tcpConnectionFactory, ctx, cause, MethodHandles.lookup().lookupClass());
     }
 }

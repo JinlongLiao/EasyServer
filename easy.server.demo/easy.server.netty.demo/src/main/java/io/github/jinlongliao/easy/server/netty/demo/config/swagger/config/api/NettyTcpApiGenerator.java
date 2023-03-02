@@ -19,10 +19,10 @@ import java.util.*;
  * @author: liaojinlong
  * @date: 2022-06-21 11:04
  */
-public class NotificationUiApiGenerator extends AbstractDefaultApiGenerator {
+public class NettyTcpApiGenerator extends AbstractDefaultApiGenerator {
     private final Field[] parentFields = IRequest.class.getDeclaredFields();
 
-    public NotificationUiApiGenerator(LogicRegisterContext logicRegisterContext, ApiConfig apiConfig, List<ExtraApiDocGenerator> extraApiDocGenerators) {
+    public NettyTcpApiGenerator(LogicRegisterContext logicRegisterContext, ApiConfig apiConfig, List<ExtraApiDocGenerator> extraApiDocGenerators) {
         super(logicRegisterContext, apiConfig, extraApiDocGenerators);
     }
 

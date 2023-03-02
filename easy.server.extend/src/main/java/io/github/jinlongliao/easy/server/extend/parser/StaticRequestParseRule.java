@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  **/
 
 public class StaticRequestParseRule extends AbstractRequestParseRule {
-    private IRequestParseRule inner_0;
+    private IRequestParseRule inner0;
 
     public StaticRequestParseRule(LogicModel logicModel) {
         this(IDefaultValueConverter.DEFAULT, logicModel);
@@ -38,29 +38,29 @@ public class StaticRequestParseRule extends AbstractRequestParseRule {
 
     private void init0() {
         String proxyObjectName = getProxyObjectName(logicModel);
-        inner_0 = REQUEST_PARSE_RULE_CACHE.get(proxyObjectName);
-        if (Objects.isNull(inner_0)) {
+        inner0 = REQUEST_PARSE_RULE_CACHE.get(proxyObjectName);
+        if (Objects.isNull(inner0)) {
             synchronized (logicModel) {
-                if (Objects.isNull(inner_0)) {
-                    inner_0 = StaticRequestParseRuleBuilder.buildRequestParseRule(proxyObjectName,
+                if (Objects.isNull(inner0)) {
+                    inner0 = StaticRequestParseRuleBuilder.buildRequestParseRule(proxyObjectName,
                             this.defaultValueConverter,
                             this.logicModel,
                             this.rules);
-                    REQUEST_PARSE_RULE_CACHE.put(proxyObjectName, inner_0);
+                    REQUEST_PARSE_RULE_CACHE.put(proxyObjectName, inner0);
                 }
             }
         }
     }
 
     @Override
-    public Object[] readHexMsg(IRequestStreamFactory request, IMessageParserCallBack msgHexParserCallBack) {
-        return this.inner_0.readHexMsg(request, msgHexParserCallBack);
+    public Object[] readHexMsg(IRequestStreamFactory request, IMessageParserCallBack msgHexParserCallBack,Object...args) {
+        return this.inner0.readHexMsg(request, msgHexParserCallBack,args);
     }
 
 
     @Override
-    public Object[] readServletMsg(HttpServletRequest request, IMessageParserCallBack msgHexParserCallBack) {
-        return this.inner_0.readServletMsg(request, msgHexParserCallBack);
+    public Object[] readServletMsg(HttpServletRequest request, IMessageParserCallBack msgHexParserCallBack,Object...args) {
+        return this.inner0.readServletMsg(request, msgHexParserCallBack,args);
     }
 
     private static String getProxyObjectName(LogicModel logicModel) {

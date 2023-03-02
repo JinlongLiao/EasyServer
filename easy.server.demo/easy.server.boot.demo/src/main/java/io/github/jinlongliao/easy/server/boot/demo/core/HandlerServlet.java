@@ -75,7 +75,7 @@ public class HandlerServlet extends BaseHttpServlet<UserModel> {
         resp.setContentType("application/json;charset=UTF-8");
 
         try {
-            Object[] args = getArgs(req, logicModel);
+            Object[] args = getArgs(req, resp, logicModel);
             LogicDispatcher logicDispatcher = getLogicDispatcher(logicId);
             String result = logicDispatcher.dispatcher(logicId, args);
             resp.getWriter().write(result);
@@ -124,11 +124,11 @@ public class HandlerServlet extends BaseHttpServlet<UserModel> {
         return logicDispatcher;
     }
 
-    private Object[] getArgs(HttpServletRequest req, LogicModel logicModel) {
+    private Object[] getArgs(HttpServletRequest req, HttpServletResponse resp, LogicModel logicModel) {
 
         ParseAdapter parseAdapter = PARSE_ADAPTER_CACHE.computeIfAbsent(logicModel, key ->
                 new ParseAdapter(new StaticRequestParseRule(logicModel), new DemoMessageParserCallBack(beanMapper)));
-        return parseAdapter.parseMsg(req);
+        return parseAdapter.parseMsg(req, req, resp);
     }
 
     @Override

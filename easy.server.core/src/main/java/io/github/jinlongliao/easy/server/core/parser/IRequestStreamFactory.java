@@ -61,15 +61,6 @@ public interface IRequestStreamFactory {
     byte[] readBytes(int iByteSize);
 
     /**
-     * 获取额外参数
-     *
-     * @return /
-     */
-    default Object getArg() {
-        return null;
-    }
-
-    /**
      * @return ip
      */
     String getClientIp();

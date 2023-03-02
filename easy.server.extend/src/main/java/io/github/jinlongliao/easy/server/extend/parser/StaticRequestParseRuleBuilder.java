@@ -99,20 +99,15 @@ public final class StaticRequestParseRuleBuilder {
     }
 
     private static void buildServletMethod(ClassWriter classWriter, String proxyObjectName, List<MeType> meTypes) {
-        AtomicInteger localNum = new AtomicInteger(3);
+        AtomicInteger localNum = new AtomicInteger(4);
         MethodVisitor methodVisitor = classWriter.visitMethod(ACC_PUBLIC,
                 "readServletMsg",
-                "(L" + HTTP_SERVLET_REQUEST + ";L" + MESSAGE_PARSER_CALLBACK + ";)[Ljava/lang/Object;",
+                "(L" + HTTP_SERVLET_REQUEST + ";L" + MESSAGE_PARSER_CALLBACK + ";[Ljava/lang/Object;)[Ljava/lang/Object;",
                 null, null);
 
         methodVisitor.visitCode();
         CLassUtils.putInt(methodVisitor, meTypes.size());
         methodVisitor.visitTypeInsn(ANEWARRAY, "java/lang/Object");
-        methodVisitor.visitVarInsn(ASTORE, localNum.getAndIncrement());
-
-        methodVisitor.visitVarInsn(ALOAD, 1);
-        methodVisitor.visitLdcInsn("__REQUEST_ARG__");
-        methodVisitor.visitMethodInsn(INVOKEINTERFACE, HTTP_SERVLET_REQUEST, "getAttribute", "(Ljava/lang/String;)Ljava/lang/Object;", true);
         methodVisitor.visitVarInsn(ASTORE, localNum.getAndIncrement());
 
         AtomicInteger index = new AtomicInteger(0);
@@ -122,28 +117,28 @@ public final class StaticRequestParseRuleBuilder {
                 methodVisitor.visitMethodInsn(INVOKEINTERFACE,
                         MESSAGE_PARSER_CALLBACK,
                         "parserParamBody",
-                        "(L" + HTTP_SERVLET_REQUEST + ";" + CLassUtils.getClassType(MeType.class) + "Ljava/lang/Object;)Ljava/lang/Object;",
+                        "(L" + HTTP_SERVLET_REQUEST + ";" + CLassUtils.getClassType(MeType.class) + "[Ljava/lang/Object;)Ljava/lang/Object;",
                         true);
             } else if (meType.isInnerField()) {
                 common(proxyObjectName, methodVisitor, index);
                 methodVisitor.visitMethodInsn(INVOKEINTERFACE,
                         MESSAGE_PARSER_CALLBACK,
                         "parserInnerFiled",
-                        "(Ljava/lang/Object;" + CLassUtils.getClassType(MeType.class) + "Ljava/lang/Object;)Ljava/lang/Object;",
+                        "(Ljava/lang/Object;" + CLassUtils.getClassType(MeType.class) + "[Ljava/lang/Object;)Ljava/lang/Object;",
                         true);
             } else if (meType.isCommon()) {
                 common(proxyObjectName, methodVisitor, index);
                 methodVisitor.visitMethodInsn(INVOKEINTERFACE,
                         MESSAGE_PARSER_CALLBACK,
                         "parserCommonParam",
-                        "(L" + HTTP_SERVLET_REQUEST + ";" + CLassUtils.getClassType(MeType.class) + "Ljava/lang/Object;)Ljava/lang/Object;",
+                        "(L" + HTTP_SERVLET_REQUEST + ";" + CLassUtils.getClassType(MeType.class) + "[Ljava/lang/Object;)Ljava/lang/Object;",
                         true);
             } else {
                 Class<?> meTypeType = meType.getType();
                 if (!InnerConverter.containDateConverter(meTypeType) && meTypeType != DynamicString.class) {
                     int varIndex = index.get();
 
-                    methodVisitor.visitVarInsn(ALOAD, 3);
+                    methodVisitor.visitVarInsn(ALOAD, 4);
                     methodVisitor.visitIntInsn(BIPUSH, varIndex);
                     methodVisitor.visitLdcInsn(Type.getType(CLassUtils.getClassType(meTypeType)));
 
@@ -217,7 +212,7 @@ public final class StaticRequestParseRuleBuilder {
                                 false);
                         methodVisitor.visitVarInsn(ASTORE, paramIndex);
                         methodVisitor.visitLabel(label1);
-                        methodVisitor.visitVarInsn(ALOAD, 3);
+                        methodVisitor.visitVarInsn(ALOAD, 4);
                         CLassUtils.putInt(methodVisitor, varIndex);
                         methodVisitor.visitVarInsn(ALOAD, paramIndex);
                         if (type == DynamicString.class) {
@@ -245,7 +240,7 @@ public final class StaticRequestParseRuleBuilder {
             methodVisitor.visitInsn(AASTORE);
             index.incrementAndGet();
         }
-        methodVisitor.visitVarInsn(ALOAD, 3);
+        methodVisitor.visitVarInsn(ALOAD, 4);
         methodVisitor.visitInsn(ARETURN);
         methodVisitor.visitMaxs(0, localNum.get());
         methodVisitor.visitEnd();
@@ -330,18 +325,14 @@ public final class StaticRequestParseRuleBuilder {
     }
 
     private static void buildHexMethod(ClassWriter classWriter, String proxyObjectName, List<MeType> meTypes) {
-        AtomicInteger localNum = new AtomicInteger(3);
+        AtomicInteger localNum = new AtomicInteger(4);
         MethodVisitor methodVisitor = classWriter.visitMethod(ACC_PUBLIC,
                 "readHexMsg",
-                "(L" + REQUEST_STREAM_FACTORY + ";L" + MESSAGE_PARSER_CALLBACK + ";)[Ljava/lang/Object;",
+                "(L" + REQUEST_STREAM_FACTORY + ";L" + MESSAGE_PARSER_CALLBACK + ";[Ljava/lang/Object;)[Ljava/lang/Object;",
                 null, null);
         methodVisitor.visitCode();
         CLassUtils.putInt(methodVisitor, meTypes.size());
         methodVisitor.visitTypeInsn(ANEWARRAY, "java/lang/Object");
-        methodVisitor.visitVarInsn(ASTORE, localNum.getAndIncrement());
-
-        methodVisitor.visitVarInsn(ALOAD, 1);
-        methodVisitor.visitMethodInsn(INVOKEINTERFACE, REQUEST_STREAM_FACTORY, "getArg", "()Ljava/lang/Object;", true);
         methodVisitor.visitVarInsn(ASTORE, localNum.getAndIncrement());
 
         AtomicInteger index = new AtomicInteger(0);
@@ -351,14 +342,14 @@ public final class StaticRequestParseRuleBuilder {
                 methodVisitor.visitMethodInsn(INVOKEINTERFACE,
                         MESSAGE_PARSER_CALLBACK,
                         "parserParamBody",
-                        "(L" + REQUEST_STREAM_FACTORY + ";" + CLassUtils.getClassType(MeType.class) + "Ljava/lang/Object;)Ljava/lang/Object;",
+                        "(L" + REQUEST_STREAM_FACTORY + ";" + CLassUtils.getClassType(MeType.class) + "[Ljava/lang/Object;)Ljava/lang/Object;",
                         true);
             } else if (meType.isInnerField()) {
                 common(proxyObjectName, methodVisitor, index);
                 methodVisitor.visitMethodInsn(INVOKEINTERFACE,
                         MESSAGE_PARSER_CALLBACK,
                         "parserInnerFiled",
-                        "(Ljava/lang/Object;" + CLassUtils.getClassType(MeType.class) + "Ljava/lang/Object;)Ljava/lang/Object;",
+                        "(Ljava/lang/Object;" + CLassUtils.getClassType(MeType.class) + "[Ljava/lang/Object;)Ljava/lang/Object;",
                         true);
 
             } else if (meType.isCommon()) {
@@ -366,7 +357,7 @@ public final class StaticRequestParseRuleBuilder {
                 methodVisitor.visitMethodInsn(INVOKEINTERFACE,
                         MESSAGE_PARSER_CALLBACK,
                         "parserCommonParam",
-                        "(L" + REQUEST_STREAM_FACTORY + ";" + CLassUtils.getClassType(MeType.class) + "Ljava/lang/Object;)Ljava/lang/Object;",
+                        "(L" + REQUEST_STREAM_FACTORY + ";" + CLassUtils.getClassType(MeType.class) + "[Ljava/lang/Object;)Ljava/lang/Object;",
                         true);
             } else {
                 Class<?> type = meType.getType();
@@ -412,7 +403,7 @@ public final class StaticRequestParseRuleBuilder {
                             index,
                             localNum);
                 } else if (CLassUtils.isBool(type)) {
-                    methodVisitor.visitVarInsn(ALOAD, 3);
+                    methodVisitor.visitVarInsn(ALOAD, 4);
                     CLassUtils.putInt(methodVisitor, index.get());
                     methodVisitor.visitVarInsn(ALOAD, 1);
                     methodVisitor.visitMethodInsn(INVOKEINTERFACE, REQUEST_STREAM_FACTORY, "readBool", "()Z", true);
@@ -491,20 +482,20 @@ public final class StaticRequestParseRuleBuilder {
             methodVisitor.visitInsn(AASTORE);
             index.incrementAndGet();
         }
-        methodVisitor.visitVarInsn(ALOAD, 3);
+        methodVisitor.visitVarInsn(ALOAD, 4);
         methodVisitor.visitInsn(ARETURN);
         methodVisitor.visitMaxs(0, localNum.get());
         methodVisitor.visitEnd();
     }
 
     private static void common(String proxyObjectName, MethodVisitor methodVisitor, AtomicInteger index) {
-        methodVisitor.visitVarInsn(ALOAD, 3);
+        methodVisitor.visitVarInsn(ALOAD, 4);
         int paramIndex = index.get();
         CLassUtils.putInt(methodVisitor, paramIndex);
         methodVisitor.visitVarInsn(ALOAD, 2);
         methodVisitor.visitVarInsn(ALOAD, 1);
         loadMeType(proxyObjectName, methodVisitor, index);
-        methodVisitor.visitVarInsn(ALOAD, 4);
+        methodVisitor.visitVarInsn(ALOAD, 3);
     }
 
     private static void buildIntArr(AtomicInteger localNum, MethodVisitor methodVisitor, AtomicInteger index, boolean isIntArr) {
@@ -542,8 +533,8 @@ public final class StaticRequestParseRuleBuilder {
         }
         methodVisitor.visitJumpInsn(GOTO, label0);
         methodVisitor.visitLabel(label1);
-        methodVisitor.visitVarInsn(ALOAD, 3);
-        CLassUtils.putInt(methodVisitor, index.getAndIncrement());
+        methodVisitor.visitVarInsn(ALOAD, 4);
+        CLassUtils.putInt(methodVisitor, index.get());
         methodVisitor.visitVarInsn(ALOAD, arrayIndex);
     }
 
@@ -572,8 +563,8 @@ public final class StaticRequestParseRuleBuilder {
         methodVisitor.visitInsn(POP);
         methodVisitor.visitJumpInsn(GOTO, label0);
         methodVisitor.visitLabel(label1);
-        methodVisitor.visitVarInsn(ALOAD, 3);
-        CLassUtils.putInt(methodVisitor, index.getAndIncrement());
+        methodVisitor.visitVarInsn(ALOAD, 4);
+        CLassUtils.putInt(methodVisitor, index.get());
         methodVisitor.visitVarInsn(ALOAD, listIndex);
     }
 
@@ -598,7 +589,7 @@ public final class StaticRequestParseRuleBuilder {
         methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Object", "toString", "()Ljava/lang/String;", false);
         methodVisitor.visitVarInsn(ASTORE, varIndex);
         methodVisitor.visitLabel(label0);
-        methodVisitor.visitVarInsn(ALOAD, 3);
+        methodVisitor.visitVarInsn(ALOAD, 4);
         CLassUtils.putInt(methodVisitor, index.get());
         methodVisitor.visitVarInsn(ALOAD, localNum.getAndIncrement());
     }
@@ -626,7 +617,7 @@ public final class StaticRequestParseRuleBuilder {
         methodVisitor.visitLabel(label0);
 
 
-        methodVisitor.visitVarInsn(ALOAD, 3);
+        methodVisitor.visitVarInsn(ALOAD, 4);
         CLassUtils.putInt(methodVisitor, index.get());
         methodVisitor.visitVarInsn(loadOpcodes, localNum.getAndIncrement());
         methodVisitor.visitMethodInsn(INVOKESTATIC, unpackDesc.getOwner(), unpackDesc.getPackMethodName(), unpackDesc.getPackDescriptor(), false);

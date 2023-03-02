@@ -69,7 +69,7 @@ public class BeanConfiguration {
     @Bean
     public ApiConfig apiConfig() {
         ApiDocInfo apiDocInfo = new ApiDocInfo();
-        String name = "APiDemo";
+        String name = "SpringBoot APiDemo";
         apiDocInfo.setTitle(name);
         apiDocInfo.setVersion("v1");
         apiDocInfo.setTermsOfService("https://www.boke.com/");
