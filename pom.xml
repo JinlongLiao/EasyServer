@@ -130,9 +130,15 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.1.1</version>
                 <configuration>
-                    <show>protected</show>
-                    <failOnError>false</failOnError>
+                    <doclint>none</doclint>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <!-- 生成sources源码包的插件 -->
             <plugin>
