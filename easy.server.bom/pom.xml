@@ -11,7 +11,7 @@
 
     <artifactId>easy.server.bom</artifactId>
     <properties>
-        <spring.version>5.3.21</spring.version>
+        <spring.version>5.3.25</spring.version>
     </properties>
     <dependencies>
         <dependency>
