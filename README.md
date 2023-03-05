@@ -24,3 +24,15 @@ easy.server 是一个屏蔽网络消息交互协议的公用业务逻辑的项�
 - [plugins](plugins) maven 插件 用于 easy.server.mapper 代码的自动生成，提高初始加载时的性能
 - [easy.server.demo](easy.server.demo)easy.server.mapper 项目示例 提供了基于 spring+tomcat ，springboot web，netty tcp 的示例
 
+
+### 项目依赖
+
+```xml
+<!-- https://mvnrepository.com/artifact/io.github.jinlongliao/easy.server.bom -->
+<dependency>
+    <groupId>io.github.jinlongliao</groupId>
+    <artifactId>easy.server.bom</artifactId>
+    <version>1.2.0</version>
+</dependency>
+
+```
