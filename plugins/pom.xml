@@ -6,8 +6,7 @@
     <parent>
         <groupId>io.github.jinlongliao</groupId>
         <artifactId>easy.server</artifactId>
-        <version>1.2.0</version>
-    </parent>
+        <version>1.2.1.snapshot</version>    </parent>
     <packaging>pom</packaging>
     <modules>
         <module>common-generator-plugin</module>

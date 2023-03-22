@@ -5,6 +5,8 @@ import io.github.jinlongliao.easy.server.swagger.model.ApiDoc;
 import io.github.jinlongliao.easy.server.swagger.model.ApiResource;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author: liaojinlong
@@ -27,11 +29,14 @@ public interface ApiGenerator {
     Collection<ApiResource> generatorApiDocApiResource();
 
     /**
-     * 用于扩展
-     * @param apiResource
-     * @param apiDoc
+     * 扩展使用
+     *
+     * @param apiResource  /
+     * @param apiDoc       /
+     * @param apiResources /
+     * @param apiDocMap    /
      */
-    void extraApiDoc(ApiResource apiResource, ApiDoc apiDoc);
+    void extraApiDoc(int tag, ApiResource apiResource, ApiDoc apiDoc, Set<ApiResource> apiResources, Map<ApiResource, ApiDoc> apiDocMap);
 
     /**
      * 重新刷新

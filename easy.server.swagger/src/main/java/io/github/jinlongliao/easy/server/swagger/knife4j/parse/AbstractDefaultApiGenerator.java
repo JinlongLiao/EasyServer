@@ -25,7 +25,9 @@ public abstract class AbstractDefaultApiGenerator implements ApiGenerator {
     protected final LogicRegisterContext logicRegisterContext;
     protected final ApiConfig apiConfig;
     protected final List<ExtraApiDocGenerator> extraApiDocGenerators;
-    private Map<Class<?>, Tag> tags;
+    protected Map<Class<?>, Tag> tags;
+    protected Set<ApiResource> apiResources;
+    protected Map<ApiResource, ApiDoc> apiDocMap;
 
     public AbstractDefaultApiGenerator(LogicRegisterContext logicRegisterContext,
                                        ApiConfig apiConfig,
@@ -35,16 +37,16 @@ public abstract class AbstractDefaultApiGenerator implements ApiGenerator {
         this.logicRegisterContext = logicRegisterContext;
     }
 
-    private Set<ApiResource> apiResources;
-    private Map<ApiResource, ApiDoc> apiDocMap;
 
     protected void parseConfig() {
         MethodParse parse = this.logicRegisterContext.getParse();
         Map<String, LogicModel> logicDefineCache = parse.getLogicDefineCache();
         apiResources = new HashSet<>(2, 1.5f);
         apiDocMap = new HashMap<>(2, 1.5f);
+        this.extraApiDoc(1, null, null, this.apiResources, this.apiDocMap);
         this.buildLogicApiDoc(logicDefineCache);
         this.buildServletApiDoc();
+        this.extraApiDoc(4, null, null, this.apiResources, this.apiDocMap);
     }
 
     protected void buildServletApiDoc() {
@@ -64,7 +66,7 @@ public abstract class AbstractDefaultApiGenerator implements ApiGenerator {
         }
         ApiDoc apiDoc = this.buildServletAipDoc(servletMap);
         apiDocMap.put(apiResource, apiDoc);
-        this.extraApiDoc(apiResource, apiDoc);
+        this.extraApiDoc(3, apiResource, apiDoc, this.apiResources, this.apiDocMap);
     }
 
 
@@ -82,7 +84,7 @@ public abstract class AbstractDefaultApiGenerator implements ApiGenerator {
         apiResources.add(apiResource);
         ApiDoc apiDoc = this.buildLogicAipDoc(logicDefineCache);
         apiDocMap.put(apiResource, apiDoc);
-        this.extraApiDoc(apiResource, apiDoc);
+        this.extraApiDoc(2, apiResource, apiDoc, this.apiResources, this.apiDocMap);
     }
 
 
@@ -325,9 +327,9 @@ public abstract class AbstractDefaultApiGenerator implements ApiGenerator {
     }
 
     @Override
-    public void extraApiDoc(ApiResource apiResource, ApiDoc apiDoc) {
+    public void extraApiDoc(int tag, ApiResource apiResource, ApiDoc apiDoc, Set<ApiResource> apiResources, Map<ApiResource, ApiDoc> apiDocMap) {
         for (ExtraApiDocGenerator extraApiDocGenerator : extraApiDocGenerators) {
-            extraApiDocGenerator.generatorApiDoc(apiResource, apiDoc);
+            extraApiDocGenerator.generatorApiDoc(tag, apiResource, apiDoc, apiResources, apiDocMap);
         }
     }
 
