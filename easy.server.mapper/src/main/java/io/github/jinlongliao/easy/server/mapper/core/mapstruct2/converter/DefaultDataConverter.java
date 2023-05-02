@@ -171,6 +171,9 @@ public class DefaultDataConverter implements IDataConverter {
      */
     @Override
     public <T> T getT(Class<T> tClass, Object extra, Object data) {
+        if (tClass.isInstance(data)) {
+            return (T) data;
+        }
         throw new ConverterException("not implements " + tClass.getName() + " extra: " + extra);
     }
 }
