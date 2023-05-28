@@ -9,7 +9,6 @@ import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.Node;
 import org.apache.logging.log4j.core.config.plugins.*;
 import org.apache.logging.log4j.core.layout.*;
-import org.apache.logging.log4j.core.pattern.PatternParser;
 import org.apache.logging.log4j.core.pattern.RegexReplacement;
 import org.apache.logging.log4j.util.PropertiesUtil;
 
@@ -28,13 +27,14 @@ public class WrapperPatternLayout extends AbstractStringLayout {
 
     @Override
     public void encode(final LogEvent event, final ByteBufferDestination destination) {
-        final StringBuilder text = toText(this.patternLayout.getEventSerializer(), event, getStringBuilder());
+        StringBuilder text = toText(this.patternLayout.getEventSerializer(), event, getStringBuilder());
+        for (LoggerCallback loggerCallback : LoggerCallbackFactory.LOGGER_CALLBACKS) {
+            text = loggerCallback.loggerCall(text);
+        }
         final Encoder<StringBuilder> encoder = getStringBuilderEncoder();
         encoder.encode(text, destination);
         trimToMaxSize(text);
-        for (LoggerCallback loggerCallback : LoggerCallbackFactory.LOGGER_CALLBACKS) {
-            loggerCallback.loggerCall(String.valueOf(text));
-        }
+
     }
 
     /**
