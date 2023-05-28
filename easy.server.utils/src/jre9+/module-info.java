@@ -5,6 +5,9 @@ module easy.server.utils {
     exports io.github.jinlongliao.easy.server.utils.logger.core.operate;
     exports io.github.jinlongliao.easy.server.utils.logger.core.operate.inner;
     exports io.github.jinlongliao.easy.server.utils.logger.core.constant;
+    exports io.github.jinlongliao.easy.server.utils.logger.core.callback;
+    exports io.github.jinlongliao.easy.server.utils.logger.core.log4j2;
+    exports io.github.jinlongliao.easy.server.utils.logger.core.logback;
 
     requires org.slf4j;
 
@@ -17,6 +20,7 @@ module easy.server.utils {
     requires static javax.servlet.api;
 
     uses io.github.jinlongliao.easy.server.utils.logger.core.operate.LoggerOperator;
+    uses io.github.jinlongliao.easy.server.utils.logger.core.callback.LoggerCallback;
 
     provides io.github.jinlongliao.easy.server.utils.logger.core.operate.LoggerOperator with
             io.github.jinlongliao.easy.server.utils.logger.core.operate.inner.LogBackLoggerOperator,

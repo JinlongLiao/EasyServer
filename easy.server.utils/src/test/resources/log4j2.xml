@@ -12,12 +12,12 @@
             <!--            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>-->
             <!--这个都知道是输出日志的格式-->
             <!--<PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %L %M - %msg%xEx%n"/>-->
-            <SimplePatternLayout charset="UTF-8">
+            <WrapperPatternLayout charset="UTF-8">
                 <pattern>%highlight{%d{yyyy-MM-dd HH:mm:ss} %5p [%t] (%F:%L) %m%n}{FATAL=Bright Red,
                     ERROR=Bright
                     Magenta, WARN=Bright Yellow, INFO=Bright Green, DEBUG=Bright Cyan, TRACE=Bright White}
                 </pattern>
-            </SimplePatternLayout>
+            </WrapperPatternLayout>
         </Console>
     </appenders>
     <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->

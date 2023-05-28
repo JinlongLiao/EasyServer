@@ -6,7 +6,7 @@ import ch.qos.logback.classic.LoggerContext;
 import io.github.jinlongliao.easy.server.utils.logger.LoggerUtils;
 import io.github.jinlongliao.easy.server.utils.logger.core.constant.LogType;
 import io.github.jinlongliao.easy.server.utils.logger.core.constant.LoggerLevel;
-import org.slf4j.impl.StaticLoggerBinder;
+import org.slf4j.LoggerFactory;
 
 /**
  * LogBack 日志操作实现
@@ -21,7 +21,7 @@ public class LogBackLoggerOperator extends AbstractLog4jLoggerOperator {
 
     static {
         if (LoggerUtils.getCurrentLogType() == LogType.LOGBACK) {
-            LOGGERCONTEXT = (LoggerContext) StaticLoggerBinder.getSingleton().getLoggerFactory();
+            LOGGERCONTEXT = (LoggerContext) LoggerFactory.getILoggerFactory();
         }
     }
 

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="false" scanPeriod="60 seconds" debug="false">
+
+    <conversionRule conversionWord="end"
+                    converterClass="io.github.jinlongliao.easy.server.utils.logger.core.callback.LogbackEndConverter"/>
     <!-- ch.qos.logback.core.ConsoleAppender 表示控制台输出 -->
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <!--
@@ -11,7 +14,7 @@
             %msg：日志消息，
             %n是换行符
         -->
-        <layout class="io.github.jinlongliao.easy.server.utils.logger.format.logback.SimplePatternLayout">
+        <layout class="io.github.jinlongliao.easy.server.utils.logger.core.callback.logback.WrapperPatternLayout">
             <pattern>%black(控制台-) %red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level)
                 %boldMagenta(%logger{10}) - %cyan(%msg%n)
             </pattern>
