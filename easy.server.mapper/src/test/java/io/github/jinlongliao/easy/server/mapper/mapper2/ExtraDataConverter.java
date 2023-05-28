@@ -11,6 +11,6 @@ import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.converter.Defaul
 public class ExtraDataConverter extends DefaultDataConverter {
     @Override
     public <T> T getT(Class<T> tClass, Object extra, Object data) {
-        return (T) data;
+        return super.getT(tClass, extra, data);
     }
 }

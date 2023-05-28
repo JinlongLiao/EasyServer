@@ -17,7 +17,7 @@ public enum LogType {
     /**
      * logback
      */
-    LOGBACK("ch.qos.logback.classic.util.ContextSelectorStaticBinder"),
+    LOGBACK("ch.qos.logback.classic.LoggerContext"),
     /**
      * log4j2
      */

@@ -19,7 +19,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MapperClassLoader extends ClassLoader {
     private static final ProtectionDomain PROTECTION_DOMAIN = AccessController.doPrivileged((PrivilegedAction<ProtectionDomain>) MapperClassLoader.class::getProtectionDomain);
-    private final Map<String, Class<?>> loadClasses = new ConcurrentHashMap<>(32);
 
 
     static {

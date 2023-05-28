@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 
+import java.util.Date;
+
 public class SpringTest {
     private IBeanMapper beanMapper;
 
@@ -29,7 +31,7 @@ public class SpringTest {
         long l = 3423424;
         float f = 1022f;
         double d = 1.84968;
-        Object[] param = {b, b, bool, bool, c, c, s, s, i, i, l, l, f, f, d, d};
+        Object[] param = {b, b, bool, bool, c, c, s, s, i, i, l, l, f, f, d, d,new Date()};
         Mapper mapper = beanMapper.arrayBeanMapper(Mapper.class, param);
         System.out.println("mapper = " + mapper);
     }

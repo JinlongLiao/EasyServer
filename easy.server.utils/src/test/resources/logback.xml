@@ -11,11 +11,21 @@
             %msg：日志消息，
             %n是换行符
         -->
-        <layout class="io.github.jinlongliao.easy.server.utils.logger.format.logback.SimplePatternLayout">
+        <layout class="io.github.jinlongliao.easy.server.utils.logger.core.callback.logback.WrapperPatternLayout">
             <pattern>%black(控制台-) %red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level)
                 %boldMagenta(%logger{10}) - %cyan(%msg%n)
             </pattern>
-        </layout>
+        </layout><!-- ConsoleAppender 控制台输出日志 -->
+
+    </appender>
+    <appender name="stdout2" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder
+                class="io.github.jinlongliao.easy.server.utils.logger.core.callback.logback.WrapperPatternLayoutEncoder">
+            <pattern>%black(控制台2-) %red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level)
+                %boldMagenta(%logger{10}) - %cyan(%msg%n)
+            </pattern>
+        </encoder>
+
     </appender>
 
     <!--
@@ -24,6 +34,6 @@ root与logger是父子关系，没有特别定义则默认为root，任何一个
 -->
     <root level="info">
         <appender-ref ref="stdout"/>
-        <!--        <appender-ref ref="appLogAppender"/>-->
+        <appender-ref ref="stdout2"/>
     </root>
 </configuration>

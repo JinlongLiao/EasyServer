@@ -1,6 +1,7 @@
 package io.github.jinlongliao.easy.server.mapper.core.mapstruct2.converter;
 
 import io.github.jinlongliao.easy.server.mapper.exception.ConverterException;
+import io.github.jinlongliao.easy.server.mapper.utils.Objects;
 
 public class DefaultDataConverter implements IDataConverter {
     /**
@@ -171,6 +172,12 @@ public class DefaultDataConverter implements IDataConverter {
      */
     @Override
     public <T> T getT(Class<T> tClass, Object extra, Object data) {
+        if (Objects.isNull(data)) {
+            return null;
+        }
+        if (tClass.isInstance(data)) {
+            return (T) data;
+        }
         throw new ConverterException("not implements " + tClass.getName() + " extra: " + extra);
     }
 }

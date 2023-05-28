@@ -1,7 +1,7 @@
 package io.github.jinlongliao.easy.server.utils.logger;
 
 import io.github.jinlongliao.easy.server.utils.logger.core.constant.LogType;
-import org.slf4j.impl.StaticLoggerBinder;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author liaojinlong
@@ -15,8 +15,7 @@ public class LoggerUtils {
      */
     public static LogType getCurrentLogType() {
         try {
-            final StaticLoggerBinder staticLoggerBinder = StaticLoggerBinder.getSingleton();
-            return LogType.valuesOf(staticLoggerBinder.getLoggerFactoryClassStr());
+            return LogType.valuesOf(LoggerFactory.getILoggerFactory().getClass().getName());
         } catch (NoClassDefFoundError e) {
         }
         return LogType.UN_KNOW;
