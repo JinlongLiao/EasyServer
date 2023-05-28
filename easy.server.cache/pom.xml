@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.github.jinlongliao</groupId>
         <artifactId>easy.server</artifactId>
-        <version>1.2.1.snapshot</version>    </parent>
+        <version>1.2.2.snapshot</version>    </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>easy.server.cache</artifactId>
@@ -54,7 +54,7 @@
         <dependency>
             <groupId>io.github.jinlongliao</groupId>
             <artifactId>easy.server.core</artifactId>
-            <version>1.2.1.snapshot</version>            <scope>compile</scope>
+            <version>1.2.2.snapshot</version>            <scope>compile</scope>
         </dependency>
     </dependencies>
     <build>
