@@ -9,14 +9,12 @@ import io.github.jinlongliao.easy.server.swagger.servlet.help.ApiResourceHelper;
 import io.github.jinlongliao.easy.server.swagger.servlet.help.CleanupApiCache;
 import io.github.jinlongliao.easy.server.utils.json.JsonHelper;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
 /**
  * @author: liaojinlong
  * @date: 2022/6/19 20:22
  */
-@Configuration
 public class ApiSpringAutoConfig {
     @Bean
     public ApiResourceHelper apiResourceHelper(JsonHelper jsonHelper, AbstractDefaultApiGenerator apiGenerator) {
@@ -29,8 +27,8 @@ public class ApiSpringAutoConfig {
     }
 
     @Bean
-    public ApiMapping apiMapping(ApiConfig apiConfig, ApiResourceHelper apiResourceHelper, ResourcePatternResolver resourcePatternResolver) {
-        return new ApiMapping(apiConfig, apiResourceHelper, resourcePatternResolver);
+    public ApiMapping apiMapping(ApiConfig apiConfig, ApiResourceHelper apiResourceHelper) {
+        return new ApiMapping(apiConfig, apiResourceHelper);
     }
 
     @Bean

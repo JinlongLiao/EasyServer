@@ -1,16 +1,18 @@
 package io.github.jinlongliao.easy.server.swagger.servlet.help;
 
 import io.github.jinlongliao.easy.server.swagger.config.ApiConfig;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.ResourcePatternResolver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Locale;
+import java.lang.invoke.MethodHandles;
+import java.net.URL;
 import java.util.regex.Pattern;
 
 /**
@@ -18,18 +20,16 @@ import java.util.regex.Pattern;
  * @date: 2022-06-20 10:37
  */
 public class ApiMapping {
+    private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final ApiConfig apiConfig;
     private final ApiResourceHelper apiResourceHelper;
-    private final ResourcePatternResolver resourcePatternResolver;
     private final String basePath;
     private final String basePath2;
 
     public ApiMapping(ApiConfig apiConfig,
-                      ApiResourceHelper apiResourceHelper,
-                      ResourcePatternResolver resourcePatternResolver) {
+                      ApiResourceHelper apiResourceHelper) {
         this.apiConfig = apiConfig;
         this.apiResourceHelper = apiResourceHelper;
-        this.resourcePatternResolver = resourcePatternResolver;
         this.basePath = apiConfig.getBasePath();
         this.basePath2 = apiConfig.getBasePath().substring(0, this.basePath.length() - 1);
     }
@@ -130,14 +130,17 @@ public class ApiMapping {
         requestURI = requestURI.replace(apiConfig.getBasePath(), "");
 
         requestURI = requestURI.replaceAll("/{2,}", "/");
-        Resource resource = this.resourcePatternResolver.getResource("classpath:/io/github/jinlongliao/easy/server/swagger/resource/knife/" + requestURI);
-          if (resource.exists()) {
-            try (InputStream resourceAsStream = resource.getInputStream()) {
-                this.copy(resourceAsStream, response.getOutputStream());
-            } catch (Exception ignored) {
+        try {
+            URL url = this.getClass().getResource("/io/github/jinlongliao/easy/server/swagger/resource/knife/" + requestURI);
+            InputStream resourceAsStream = url.openStream();
+            this.copy(resourceAsStream, response.getOutputStream());
+        } catch (Exception ignored) {
+            if (log.isDebugEnabled()) {
+                log.debug(ignored.getMessage(), ignored);
             }
         }
     }
+
 
     private void copy(InputStream inputStream, OutputStream outputStream) throws IOException {
         byte[] buf = new byte[8192];

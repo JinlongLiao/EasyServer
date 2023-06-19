@@ -7,11 +7,11 @@ module easy.server.core {
     exports io.github.jinlongliao.easy.server.core.annotation.validate.impl;
     exports io.github.jinlongliao.easy.server.core.core;
     exports io.github.jinlongliao.easy.server.core.core.spring;
+    exports io.github.jinlongliao.easy.server.core.core.spring.register;
     exports io.github.jinlongliao.easy.server.core.exception;
     exports io.github.jinlongliao.easy.server.core.model;
     exports io.github.jinlongliao.easy.server.core.parser;
     exports io.github.jinlongliao.easy.server.core.parser.inner;
-    exports io.github.jinlongliao.easy.server.core.core.spring.register;
 
     requires org.slf4j;
     requires spring.aop;

@@ -12,9 +12,9 @@ module easy.server.utils {
     requires org.slf4j;
 
     requires static fastjson;
-    requires static com.alibaba.fastjson2;
-    requires static com.fasterxml.jackson.core;
-    requires static com.fasterxml.jackson.databind;
+    requires com.alibaba.fastjson2;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.databind;
     requires static ch.qos.logback.core;
     requires static ch.qos.logback.classic;
     requires static org.apache.logging.log4j;

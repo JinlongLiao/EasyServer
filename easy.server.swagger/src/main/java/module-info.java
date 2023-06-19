@@ -10,6 +10,7 @@ module easy.server.swagger {
     requires easy.server.utils;
     requires easy.server.mapper;
     requires easy.server.servlet;
+    requires org.slf4j;
 
     requires spring.core;
     requires spring.aop;

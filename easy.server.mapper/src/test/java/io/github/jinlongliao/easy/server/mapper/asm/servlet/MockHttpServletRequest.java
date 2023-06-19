@@ -144,10 +144,6 @@ public class MockHttpServletRequest implements HttpServletRequest {
         return false;
     }
 
-    @Override
-    public boolean isRequestedSessionIdFromUrl() {
-        return false;
-    }
 
     @Override
     public boolean authenticate(HttpServletResponse response) throws IOException, ServletException {
@@ -304,10 +300,6 @@ public class MockHttpServletRequest implements HttpServletRequest {
         return null;
     }
 
-    @Override
-    public String getRealPath(String path) {
-        return null;
-    }
 
     @Override
     public int getRemotePort() {
@@ -361,6 +353,21 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     @Override
     public DispatcherType getDispatcherType() {
+        return null;
+    }
+
+    @Override
+    public String getRequestId() {
+        return null;
+    }
+
+    @Override
+    public String getProtocolRequestId() {
+        return null;
+    }
+
+    @Override
+    public ServletConnection getServletConnection() {
         return null;
     }
 }

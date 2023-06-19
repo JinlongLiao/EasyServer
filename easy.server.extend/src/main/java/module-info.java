@@ -1,4 +1,4 @@
-module easy.server.project {
+open module easy.server.extend {
     exports io.github.jinlongliao.easy.server.extend.annotation;
     exports io.github.jinlongliao.easy.server.extend.annotation.process;
     exports io.github.jinlongliao.easy.server.extend.exception;
@@ -10,9 +10,8 @@ module easy.server.project {
     requires easy.server.mapper;
 
     requires static java.compiler;
-    requires static jakarta.activation;
-    requires static java.validation;
     requires static org.slf4j;
+    requires static jakarta.servlet;
 
     uses io.github.jinlongliao.easy.server.mapper.annotation.LoaderGenerator;
 
