@@ -5,13 +5,15 @@
     <parent>
         <groupId>io.github.jinlongliao</groupId>
         <artifactId>easy.server</artifactId>
-        <version>1.2.2.snapshot</version>        <relativePath>../pom.xml</relativePath>
+        <version>2.2.1</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <properties>
-        <spring.version>5.3.24</spring.version>
-        <servlet.version>4.0.1</servlet.version>
-        <hibernate.validator.version>6.2.5.Final</hibernate.validator.version>
+        <spring.version>6.0.9</spring.version>
+        <validate.version>3.0.2</validate.version>
+        <servlet.version>6.0.0</servlet.version>
+        <hibernate.validator.version>7.0.5.Final</hibernate.validator.version>
     </properties>
     <artifactId>easy.server.core</artifactId>
     <dependencies>
@@ -37,41 +39,22 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
             <version>${servlet.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>${validate.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate.validator.version}</version>
         </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.moditect</groupId>
-                <artifactId>moditect-maven-plugin</artifactId>
-                <version>1.0.0.RC2</version>
-                <executions>
-                    <execution>
-                        <id>add-module-infos</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>add-module-info</goal>
-                        </goals>
-                        <configuration>
-                            <overwriteExistingFiles>true</overwriteExistingFiles>
-                            <module>
-                                <moduleInfoFile>
-                                    src/jre9+/module-info.java
-                                </moduleInfoFile>
-                            </module>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>

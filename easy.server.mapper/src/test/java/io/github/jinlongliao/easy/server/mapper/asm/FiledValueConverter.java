@@ -1,6 +1,6 @@
 package io.github.jinlongliao.easy.server.mapper.asm;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.ExtraFieldConverter;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.ExtraFieldConverter;
 
 public class FiledValueConverter implements ExtraFieldConverter {
     @Override

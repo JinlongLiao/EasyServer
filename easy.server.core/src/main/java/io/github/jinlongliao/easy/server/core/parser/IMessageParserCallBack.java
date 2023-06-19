@@ -1,8 +1,8 @@
 package io.github.jinlongliao.easy.server.core.parser;
 
 import io.github.jinlongliao.easy.server.utils.common.IPAddressUtil;
+import jakarta.servlet.http.HttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 针对16进制数据 ，包装类的数据解析

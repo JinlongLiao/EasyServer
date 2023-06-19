@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class LocalMapCache<T> {
     private static final AtomicInteger index = new AtomicInteger();
-    private static Logger log = LoggerFactory.getLogger(LocalMapCache.class);
+    private static final Logger log = LoggerFactory.getLogger(LocalMapCache.class);
     private static final ThreadPoolTaskExecutor TF;
     /**
      * 缓存最大个数

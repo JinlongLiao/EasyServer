@@ -5,22 +5,17 @@
     <parent>
         <groupId>io.github.jinlongliao</groupId>
         <artifactId>easy.server</artifactId>
-        <version>1.2.2.snapshot</version>    </parent>
+        <version>2.2.1</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>easy.server.mapper</artifactId>
 
     <properties>
-        <asm.version>9.4</asm.version>
-        <javassist.version>3.29.2-GA</javassist.version>
-        <spring.version>5.3.24</spring.version>
-        <servlet.version>4.0.1</servlet.version>
+        <asm.version>9.5</asm.version>
+        <spring.version>6.0.9</spring.version>
+        <servlet.version>6.0.0</servlet.version>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>org.javassist</groupId>
-            <artifactId>javassist</artifactId>
-            <version>${javassist.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm-util</artifactId>
@@ -28,8 +23,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
             <version>${servlet.version}</version>
         </dependency>
         <dependency>
@@ -50,28 +45,6 @@
                     <target>${jdk.version}</target>
                     <proc>none</proc>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.moditect</groupId>
-                <artifactId>moditect-maven-plugin</artifactId>
-                <version>1.0.0.RC2</version>
-                <executions>
-                    <execution>
-                        <id>add-module-infos</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>add-module-info</goal>
-                        </goals>
-                        <configuration>
-                            <overwriteExistingFiles>true</overwriteExistingFiles>
-                            <module>
-                                <moduleInfoFile>
-                                    src/jre9+/module-info.java
-                                </moduleInfoFile>
-                            </module>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

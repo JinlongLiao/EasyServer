@@ -1,6 +1,6 @@
 package io.github.jinlongliao.easy.server.core.model;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.method.DirectMethod;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.method.DirectMethod;
 
 import java.util.List;
 import java.util.Objects;

@@ -1,10 +1,10 @@
 package io.github.jinlongliao.easy.server.demo.logic.param;
 
 import io.github.jinlongliao.easy.server.mapper.annotation.GeneratorCopy;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.annotation.Mapping2;
+import io.github.jinlongliao.easy.server.mapper.annotation.Mapping;
 import io.github.jinlongliao.easy.server.core.annotation.LogicRequestParam;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * @author liaojinlong
@@ -18,7 +18,7 @@ public class UserModel {
     @LogicRequestParam("age")
     private Integer age;
     @LogicRequestParam("key")
-    @Mapping2(sourceName = "logicId")
+    @Mapping(sourceName = "logicId")
     private Integer key;
 
     public String getUserId() {

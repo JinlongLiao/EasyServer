@@ -3,8 +3,8 @@ package io.github.jinlongliao.easy.server.core.annotation.validate.impl;
 
 import io.github.jinlongliao.easy.server.core.annotation.validate.Phone;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 /**
  * validate mobile phone number
@@ -13,10 +13,7 @@ import javax.validation.ConstraintValidatorContext;
  * @since 1.0
  */
 public class PhoneNumberValidator implements ConstraintValidator<Phone, String> {
-    @Override
-    public void initialize(Phone constraintAnnotation) {
 
-    }
 
     /**
      * Implements the validation logic.

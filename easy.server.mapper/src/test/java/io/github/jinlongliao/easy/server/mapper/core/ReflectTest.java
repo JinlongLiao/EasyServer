@@ -16,11 +16,9 @@
 package io.github.jinlongliao.easy.server.mapper.core;
 
 
+import io.github.jinlongliao.easy.server.mapper.annotation.Ignore;
 import io.github.jinlongliao.easy.server.mapper.core.mapstruct.BeanCopierUtils;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct.annotation.Ignore;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.IData2Object;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.BeanCopier2Utils;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.plugin.core.wrap.ICoreData2Object2;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.converter.plugin.core.wrap.ICoreData2Object2;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -45,7 +43,7 @@ public class ReflectTest {
         put("array", new int[]{1, 2, 3});
     }};
     private Object[] dataArray = new Object[]{13, "liaojl", 26, new Date(), Arrays.asList("2312", "12423"), data, new int[]{1, 2, 3}};
-    private final ICoreData2Object2<Person> data2Object2 = BeanCopier2Utils.getFullData2Object(Person.class);
+    private final ICoreData2Object2<Person> data2Object2 = BeanCopierUtils.getFullData2Object(Person.class);
 
     @org.junit.Ignore
     @Test

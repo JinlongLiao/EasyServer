@@ -1,7 +1,7 @@
 package io.github.jinlongliao.easy.server.core;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.generator.AsmProxyCodeGenerator;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.method.DirectMethod;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.generator.AsmProxyCodeGenerator;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.method.DirectMethod;
 import io.github.jinlongliao.easy.server.core.exception.ParamValidateException;
 import io.github.jinlongliao.easy.server.core.exception.ReturnValidateException;
 import io.github.jinlongliao.easy.server.core.exception.ValidateException;
@@ -11,8 +11,9 @@ import org.hibernate.validator.HibernateValidatorConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.validation.*;
-import javax.validation.executable.ExecutableValidator;
+import jakarta.validation.*;
+import jakarta.validation.executable.ExecutableValidator;
+
 import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.Set;

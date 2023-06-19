@@ -1,7 +1,7 @@
 package io.github.jinlongliao.easy.server.mapper.mapper2;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.BeanCopier2Utils;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.plugin.core.wrap.ICoreData2Object2;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.BeanCopierUtils;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.converter.plugin.core.wrap.ICoreData2Object2;
 import org.junit.Test;
 
 import java.util.Date;
@@ -9,7 +9,7 @@ import java.util.Date;
 public class MapperTest {
     @Test
     public void mapperTest() {
-        ICoreData2Object2<Mapper> data2Object = BeanCopier2Utils.getData2Object(Mapper.class);
+        ICoreData2Object2<Mapper> data2Object = BeanCopierUtils.getData2Object(Mapper.class);
         byte b = 1;
         boolean bool = false;
         char c = 65;

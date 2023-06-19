@@ -6,7 +6,8 @@
     <parent>
         <groupId>io.github.jinlongliao</groupId>
         <artifactId>easy.server.demo</artifactId>
-        <version>1.2.2.snapshot</version>        <relativePath>../pom.xml</relativePath>
+        <version>2.2.1</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>easy.server.tomcat.demo</artifactId>
     <packaging>war</packaging>

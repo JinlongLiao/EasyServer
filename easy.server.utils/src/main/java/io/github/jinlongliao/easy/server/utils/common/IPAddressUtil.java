@@ -1,7 +1,7 @@
 package io.github.jinlongliao.easy.server.utils.common;
 
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 /**

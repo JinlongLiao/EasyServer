@@ -128,7 +128,7 @@ public class MapperStructConfig {
 
         @Override
         public void saveClassFile(String path, String qualifiedName, String entryName, String content, int[] mapping) {
-            content = content.replace("public class", "@javax.annotation.Generated(value=\"easy.server.mapper Generated\"," +
+            content = content.replace("public class", "@jakarta.annotation.Generated(value=\"easy.server.mapper Generated\"," +
                     "date = \"" + LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME) + "\"," +
                     " comments = \"common-mapper 动态生成\")\npublic class");
             super.saveClassFile(path, qualifiedName, entryName, content, mapping);

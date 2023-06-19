@@ -1,8 +1,7 @@
 package io.github.jinlongliao.easy.server.mapper;
 
 import io.github.jinlongliao.easy.server.mapper.asm.B;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.Proxy;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.generator.AsmProxyCodeGenerator;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.generator.AsmProxyCodeGenerator;
 import io.github.jinlongliao.easy.server.mapper.utils.MapperStructConfig;
 import org.junit.Test;
 import org.objectweb.asm.Opcodes;
@@ -15,13 +14,9 @@ public class All {
     @Test
     public void test1() {
         AsmProxyCodeGenerator asmProxyCodeGen = new AsmProxyCodeGenerator();
-        Proxy proxy = new Proxy();
-        int count = 1;
+         int count = 1;
         long l1 = System.nanoTime();
-        int size = count;
-        while (size-- > 0) {
-            proxy.getProxyObject(B.class, true);
-        }
+
         long l2 = System.nanoTime();
         int size2 = count;
         while (size2-- > 0) {

@@ -1,7 +1,7 @@
 package io.github.jinlongliao.easy.server.mapper.asm.servlet;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

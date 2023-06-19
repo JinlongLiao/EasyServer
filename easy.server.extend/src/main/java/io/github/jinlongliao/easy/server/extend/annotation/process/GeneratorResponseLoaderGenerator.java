@@ -5,7 +5,7 @@ import io.github.jinlongliao.easy.server.extend.response.proxy.ProxyResponseFact
 import io.github.jinlongliao.easy.server.mapper.annotation.LoaderGenerator;
 import io.github.jinlongliao.easy.server.mapper.annotation.GeneratorHelper;
 import io.github.jinlongliao.easy.server.mapper.annotation.process.GeneratorMethodAnnotationProcessor;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.generator.AsmProxyCodeGenerator;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.generator.AsmProxyCodeGenerator;
 import io.github.jinlongliao.easy.server.mapper.utils.CLassUtils;
 import io.github.jinlongliao.easy.server.extend.response.ICommonResponse;
 import io.github.jinlongliao.easy.server.core.core.MethodInfo;

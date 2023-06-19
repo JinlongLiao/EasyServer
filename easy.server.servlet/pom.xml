@@ -5,11 +5,12 @@
     <parent>
         <groupId>io.github.jinlongliao</groupId>
         <artifactId>easy.server</artifactId>
-        <version>1.2.2.snapshot</version>    </parent>
+        <version>2.2.1</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
     <properties>
-        <spring.version>5.3.24</spring.version>
-        <servlet.version>4.0.1</servlet.version>
+        <spring.version>6.0.9</spring.version>
+        <servlet.version>6.0.0</servlet.version>
     </properties>
     <artifactId>easy.server.servlet</artifactId>
 
@@ -25,8 +26,8 @@
             <version>${spring.version}</version>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
             <version>${servlet.version}</version>
         </dependency>
         <dependency>
@@ -35,30 +36,4 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.moditect</groupId>
-                <artifactId>moditect-maven-plugin</artifactId>
-                <version>1.0.0.RC2</version>
-                <executions>
-                    <execution>
-                        <id>add-module-infos</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>add-module-info</goal>
-                        </goals>
-                        <configuration>
-                            <overwriteExistingFiles>true</overwriteExistingFiles>
-                            <module>
-                                <moduleInfoFile>
-                                    src/jre9+/module-info.java
-                                </moduleInfoFile>
-                            </module>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>

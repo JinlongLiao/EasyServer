@@ -10,7 +10,7 @@ module easy.server.project {
     requires easy.server.mapper;
 
     requires static java.compiler;
-    requires static javax.servlet.api;
+    requires static jakarta.activation;
     requires static java.validation;
     requires static org.slf4j;
 

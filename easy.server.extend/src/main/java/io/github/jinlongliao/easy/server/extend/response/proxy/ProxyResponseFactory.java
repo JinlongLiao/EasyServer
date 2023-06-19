@@ -1,10 +1,9 @@
 package io.github.jinlongliao.easy.server.extend.response.proxy;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.annotation.Ignore2;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.annotation.Mapping2;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.converter.InnerConverter;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.generator.AsmProxyCodeGenerator;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.generator.FieldParserBody;
+import io.github.jinlongliao.easy.server.mapper.annotation.Ignore;
+import io.github.jinlongliao.easy.server.mapper.annotation.Mapping;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.generator.AsmProxyCodeGenerator;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.generator.FieldParserBody;
 import io.github.jinlongliao.easy.server.mapper.exception.ConverterNotFountException;
 import io.github.jinlongliao.easy.server.mapper.utils.CLassUtils;
 import io.github.jinlongliao.easy.server.mapper.utils.MapperStructConfig;
@@ -133,14 +132,14 @@ public class ProxyResponseFactory {
 
     private static int getIndex(List<ExtraFieldParserBody> fields, int index, Field declaredField,
                                 boolean parentField) {
-        Ignore2 ignore = declaredField.getAnnotation(Ignore2.class);
+        Ignore ignore = declaredField.getAnnotation(Ignore.class);
         if (Objects.nonNull(ignore) && ignore.value()) {
             return index;
         }
         if (Modifier.isStatic(declaredField.getModifiers())) {
             return index;
         }
-        final Mapping2 mapping = declaredField.getAnnotation(Mapping2.class);
+        final Mapping mapping = declaredField.getAnnotation(Mapping.class);
         final boolean nonNull = Objects.nonNull(mapping);
         String sourceName = nonNull ? mapping.sourceName() : declaredField.getName();
         if (sourceName.length() < 1) {

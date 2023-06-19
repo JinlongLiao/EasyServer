@@ -8,7 +8,7 @@ import java.security.PrivilegedAction;
  * @date: 2022-06-17 11:22
  */
 public final class ClassUtils {
-    private static final ClassLoader LOADER = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
+    private static final ClassLoader LOADER = AccessController.doPrivileged(new PrivilegedAction<>() {
         @Override
         public ClassLoader run() {
             return getClass().getClassLoader();

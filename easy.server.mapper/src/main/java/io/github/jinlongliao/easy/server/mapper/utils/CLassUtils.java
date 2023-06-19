@@ -1,7 +1,7 @@
 package io.github.jinlongliao.easy.server.mapper.utils;
 
 import io.github.jinlongliao.easy.server.mapper.core.field.DynamicField;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.generator.AsmProxyCodeGenerator;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.generator.AsmProxyCodeGenerator;
 import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ClassWriter;
 import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.MethodVisitor;
 

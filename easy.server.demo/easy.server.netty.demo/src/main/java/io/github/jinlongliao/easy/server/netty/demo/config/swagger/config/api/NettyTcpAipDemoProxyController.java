@@ -4,8 +4,8 @@ import io.github.jinlongliao.easy.server.core.core.MethodParse;
 import io.github.jinlongliao.easy.server.core.core.spring.LogicRegisterContext;
 import io.github.jinlongliao.easy.server.core.model.LogicModel;
 import io.github.jinlongliao.easy.server.core.model.MsgModel;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.BeanCopier2Utils;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.plugin.servlet.IServletData2Object;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.BeanCopierUtils;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.converter.plugin.servlet.IServletData2Object;
 import io.github.jinlongliao.easy.server.mapper.utils.CLassUtils;
 import io.github.jinlongliao.easy.server.netty.demo.config.swagger.tcp.TcpClient;
 import io.github.jinlongliao.easy.server.netty.demo.constant.LogicId;
@@ -22,9 +22,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
@@ -66,7 +66,7 @@ public class NettyTcpAipDemoProxyController {
         this.apiCleanHelper = apiCleanHelper;
         this.jsonHelper = jsonHelper;
         this.tcpClient = tcpClient;
-        this.servletConverter = BeanCopier2Utils.getData2WebObject(EmptyRequest.class);
+        this.servletConverter = BeanCopierUtils.getData2WebObject(EmptyRequest.class);
         this.parse = logicRegisterContext.getParse();
     }
 

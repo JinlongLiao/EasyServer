@@ -8,7 +8,7 @@ import io.github.jinlongliao.easy.server.core.parser.IRequestParseRule;
 import io.github.jinlongliao.easy.server.core.parser.IRequestStreamFactory;
 import io.github.jinlongliao.easy.server.core.parser.inner.AbstractRequestParseRule;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;

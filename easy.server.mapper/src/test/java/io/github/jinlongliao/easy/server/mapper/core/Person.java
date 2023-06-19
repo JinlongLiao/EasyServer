@@ -15,10 +15,8 @@
  */
 package io.github.jinlongliao.easy.server.mapper.core;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct.annotation.Ignore;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct.annotation.Mapping;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.annotation.Ignore2;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.annotation.Mapping2;
+import io.github.jinlongliao.easy.server.mapper.annotation.Ignore;
+import io.github.jinlongliao.easy.server.mapper.annotation.Mapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,12 +28,10 @@ import java.util.Map;
 public class Person extends Grep implements IAnimal {
     private static final Logger log = LoggerFactory.getLogger(Person.class);
     @Ignore
-    @Ignore2
     private int ignore;
     private String name;
     private int age;
-    @Mapping(method = "setN")
-    @Mapping2(putMethod = "setN")
+    @Mapping(putMethod = "setN")
     private Date birthday;
     private List<String> arr;
     private Map<String, Object> arr2;

@@ -1,6 +1,6 @@
 package io.github.jinlongliao.easy.server.cached.field.simple;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.method.DirectMethod;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.method.DirectMethod;
 import io.github.jinlongliao.easy.server.cached.CacheType;
 
 import java.lang.annotation.Annotation;

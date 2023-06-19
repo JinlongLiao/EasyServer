@@ -5,14 +5,15 @@
     <parent>
         <groupId>io.github.jinlongliao</groupId>
         <artifactId>easy.server</artifactId>
-        <version>1.2.2.snapshot</version>    </parent>
+        <version>2.2.1</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>easy.server.cache</artifactId>
 
     <properties>
-        <logback.version>1.2.11</logback.version>
-        <spring.version>5.3.24</spring.version>
+        <logback.version>1.4.7</logback.version>
+        <spring.version>6.0.9</spring.version>
     </properties>
     <dependencies>
         <dependency>
@@ -51,37 +52,5 @@
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>io.github.jinlongliao</groupId>
-            <artifactId>easy.server.core</artifactId>
-            <version>1.2.2.snapshot</version>            <scope>compile</scope>
-        </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.moditect</groupId>
-                <artifactId>moditect-maven-plugin</artifactId>
-                <version>1.0.0.RC2</version>
-                <executions>
-                    <execution>
-                        <id>add-module-infos</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>add-module-info</goal>
-                        </goals>
-                        <configuration>
-                            <overwriteExistingFiles>true</overwriteExistingFiles>
-                            <module>
-                                <moduleInfoFile>
-                                    src/jre9+/module-info.java
-                                </moduleInfoFile>
-                            </module>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>

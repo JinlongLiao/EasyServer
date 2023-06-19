@@ -1,15 +1,16 @@
 package io.github.jinlongliao.easy.server.swagger.knife4j.auth;
 
 import io.github.jinlongliao.easy.server.swagger.config.ApiConfig;
-import org.springframework.util.Base64Utils;
 
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 /**
  * @author: liaojinlong
@@ -46,7 +47,7 @@ public class SecurityBasicAuthFilter {
                     writeForbiddenCode(httpServletResponse);
                     return false;
                 }
-                String userAndPass = new String(Base64Utils.decodeFromString(auth.substring(6)), StandardCharsets.UTF_8);
+                String userAndPass = new String(Base64.getDecoder().decode(auth.substring(6)), StandardCharsets.UTF_8);
                 String[] upArr = userAndPass.split(":");
                 if (upArr.length != 2) {
                     writeForbiddenCode(httpServletResponse);

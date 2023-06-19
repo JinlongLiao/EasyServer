@@ -5,8 +5,8 @@
 
 package io.github.jinlongliao.easy.server.mapper.asm;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.converter.InnerConverter;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.IData2Object2;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.converter.InnerConverter;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.converter.IData2Object2;
 
 import java.util.Map;
 

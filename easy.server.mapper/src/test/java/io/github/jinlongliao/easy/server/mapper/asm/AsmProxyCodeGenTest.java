@@ -1,10 +1,10 @@
 package io.github.jinlongliao.easy.server.mapper.asm;
 
 import io.github.jinlongliao.easy.server.mapper.asm.servlet.MockHttpServletRequest;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.plugin.core.wrap.ICoreData2Object2;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.plugin.servlet.IServletData2Object;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.plugin.servlet.ServletExtraClassMethodGenerator;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.generator.AsmProxyCodeGenerator;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.converter.plugin.core.wrap.ICoreData2Object2;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.converter.plugin.servlet.IServletData2Object;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.converter.plugin.servlet.ServletExtraClassMethodGenerator;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.generator.AsmProxyCodeGenerator;
 import org.junit.Test;
 
 import java.util.HashMap;
