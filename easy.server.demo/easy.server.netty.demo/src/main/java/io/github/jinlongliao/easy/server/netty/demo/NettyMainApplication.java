@@ -5,6 +5,8 @@ import io.github.jinlongliao.easy.server.netty.demo.config.BeanConfiguration;
 import io.github.jinlongliao.easy.server.netty.demo.config.WebConfig;
 import io.github.jinlongliao.easy.server.cached.annotation.EnableMethodCache;
 import io.github.jinlongliao.easy.server.core.annotation.LogicContextScan;
+import io.github.jinlongliao.easy.server.script.groovy.annotation.EnableRefresh;
+import io.github.jinlongliao.easy.server.script.groovy.config.DynamicRefreshBeanConfiguration;
 import io.github.jinlongliao.easy.server.swagger.config.ApiSpringAutoConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,6 +21,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ * @author liaojinlong
+ */
 @SpringBootApplication(exclude = {
         DataSourceAutoConfiguration.class,
         WebSocketServletAutoConfiguration.class,
@@ -36,11 +41,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableAsync
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
+@EnableRefresh(scriptPaths = {"classpath:/groovy/*.groovy"}, refreshDelay = 1)
 @Import(value = {
         WebConfig.class,
         DeveloperConfig.class,
         BeanConfiguration.class,
-        ApiSpringAutoConfig.class
+        ApiSpringAutoConfig.class,
+        DynamicRefreshBeanConfiguration.class,
 })
 public class NettyMainApplication {
     public static void main(String[] args) {

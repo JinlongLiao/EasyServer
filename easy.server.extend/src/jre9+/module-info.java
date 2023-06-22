@@ -1,4 +1,4 @@
-module easy.server.project {
+module easy.server.extend {
     exports io.github.jinlongliao.easy.server.extend.annotation;
     exports io.github.jinlongliao.easy.server.extend.annotation.process;
     exports io.github.jinlongliao.easy.server.extend.exception;

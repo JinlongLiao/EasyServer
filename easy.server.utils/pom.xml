@@ -5,7 +5,7 @@
     <parent>
         <artifactId>easy.server</artifactId>
         <groupId>io.github.jinlongliao</groupId>
-        <version>1.2.2.snapshot</version>
+        <version>1.2.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -70,13 +70,11 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>${fastjson.version}</version>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
             <version>${fastjson2.version}</version>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
@@ -84,12 +82,10 @@
             <version>${fastjson2.version}</version>
             <optional>true</optional>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackjson.version}</version>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -120,28 +116,6 @@
                                     src/jre9+/module-info.java
                                 </moduleInfoFile>
                             </module>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <executions>
-                    <execution>
-                        <id>log4j-plugin-processor</id>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                        <phase>process-classes</phase>
-                        <configuration>
-                            <proc>only</proc>
-                            <annotationProcessors>
-                                <annotationProcessor>
-                                    org.apache.logging.log4j.core.config.plugins.processor.PluginProcessor
-                                </annotationProcessor>
-                            </annotationProcessors>
                         </configuration>
                     </execution>
                 </executions>

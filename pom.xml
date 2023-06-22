@@ -7,7 +7,7 @@
     <groupId>io.github.jinlongliao</groupId>
     <artifactId>easy.server</artifactId>
     <packaging>pom</packaging>
-    <version>1.2.2.snapshot</version>
+    <version>1.2.3</version>
     <modules>
         <module>easy.server.core</module>
         <module>easy.server.cache</module>
@@ -24,7 +24,7 @@
     <repositories>
         <repository>
             <id>maven</id>
-            <url>https://maven.aliyun.com/repository/central/</url>
+            <url>https://maven.aliyun.com/repository/public/</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>true</enabled>
@@ -34,7 +34,19 @@
             </releases>
         </repository>
     </repositories>
-
+    <pluginRepositories>
+        <pluginRepository>
+            <id>maven-plugin</id>
+            <url>https://maven.aliyun.com/repository/spring-plugin</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
 
     <name>easy.server</name>
     <url>https://github.com/JinlongLiao/EasyServer</url>
@@ -78,6 +90,7 @@
         <jdk.version>1.8</jdk.version>
         <jdk.test.version>1.8</jdk.test.version>
         <charsetEncoding>UTF-8</charsetEncoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
         <dependency>
@@ -128,7 +141,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.4.1</version>
                 <configuration>
                     <doclint>none</doclint>
                 </configuration>
@@ -144,7 +157,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.2.1</version>
                 <configuration>
                     <attach>true</attach>
                 </configuration>
