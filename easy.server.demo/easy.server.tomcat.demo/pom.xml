@@ -118,7 +118,7 @@
             </plugin>
             <plugin>
                 <groupId>io.github.jinlongliao</groupId>
-                <artifactId>maven-generator-plugin</artifactId>
+                <artifactId>maven-generator-maven-plugin</artifactId>
                 <version>${project.version}</version>
                 <executions>
                     <execution>
@@ -138,7 +138,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.2.2</version>
+                <version>3.3.2</version>
             </plugin>
         </plugins>
     </build>

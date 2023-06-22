@@ -6,11 +6,12 @@
     <parent>
         <groupId>io.github.jinlongliao</groupId>
         <artifactId>easy.server</artifactId>
-        <version>2.2.1</version>    </parent>
+        <version>2.2.1</version>
+    </parent>
     <packaging>pom</packaging>
     <modules>
-        <module>common-generator-plugin</module>
-        <module>maven-generator-plugin</module>
+        <module>common-generator-maven-plugin</module>
+        <module>maven-generator-maven-plugin</module>
     </modules>
     <artifactId>plugins</artifactId>
 </project>

@@ -271,7 +271,7 @@ public @interface Mapping2 {
       MapperStructConfig.setDev(true, "./target/", "./target/");
 ```
 
-2. 通过 maven 插件实现 [maven-generator-plugin](https://github.com/JinlongLiao/EasyServer/tree/main/plugins/maven-generator-plugin)  
+2. 通过 maven 插件实现 [maven-generator-maven-plugin](https://github.com/JinlongLiao/EasyServer/tree/main/plugins/maven-generator-maven-plugin)  
 
 ```xml
     <build>
@@ -297,7 +297,7 @@ public @interface Mapping2 {
             </plugin>
             <plugin>
                 <groupId>io.github.jinlongliao</groupId>
-                <artifactId>maven-generator-plugin</artifactId>
+                <artifactId>maven-generator-maven-plugin</artifactId>
                 <version>${project.version}</version>
                 <executions>
                     <execution>

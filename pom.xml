@@ -78,6 +78,7 @@
         <jdk.version>17</jdk.version>
         <jdk.test.version>17</jdk.test.version>
         <charsetEncoding>UTF-8</charsetEncoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
         <dependency>
@@ -128,9 +129,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.4.1</version>
                 <configuration>
                     <doclint>none</doclint>
+                    <release>${jdk.version}</release>
                 </configuration>
                 <executions>
                     <execution>
@@ -144,7 +146,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.2.1</version>
                 <configuration>
                     <attach>true</attach>
                 </configuration>
