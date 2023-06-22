@@ -56,7 +56,7 @@
 /easy.server.demo/easy.server.boot.demo/easy.server.boot.demo.iml
 /easy.server.demo/easy.server.netty.demo/easy.server.netty.demo.iml
 /easy.server.demo/easy.server.tomcat.demo/easy.server.tomcat.demo.iml
-/easy.server.script/target/
 /plugins/target/
-/easy.server.script/target/
 /plugins/common-generator-maven-plugin/target/
+/plugins/maven-generator-plugin/
+/plugins/common-generator-plugin/
