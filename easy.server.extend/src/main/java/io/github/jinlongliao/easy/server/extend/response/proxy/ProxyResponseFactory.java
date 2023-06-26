@@ -36,7 +36,7 @@ import static io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.as
 
 public class ProxyResponseFactory {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    private static final String RESPONSE＿STREAM＿FACTORY＿CLASS_TYPE = CLassUtils.getClassType(IResponseStreamFactory.class);
+    private static final String RESPONSE_STREAM_FACTORY_CLASS_TYPE = CLassUtils.getClassType(IResponseStreamFactory.class);
     private static final Map<Class<? extends ICommonResponse>, ProxyResponse> PROXY_RESPONSE_MAP = new ConcurrentHashMap<>(32, 1L);
 
     public static ProxyResponse getProxyResponse(ICommonResponse response) {
@@ -70,7 +70,7 @@ public class ProxyResponseFactory {
                                         Class<? extends ICommonResponse> responseClass) {
         MethodVisitor methodVisitor = classWriter.visitMethod(ACC_PUBLIC,
                 "genResHex",
-                "(" + RESPONSE＿STREAM＿FACTORY＿CLASS_TYPE + CLassUtils.getClassType(ICommonResponse.class) + ")[B",
+                "(" + RESPONSE_STREAM_FACTORY_CLASS_TYPE + CLassUtils.getClassType(ICommonResponse.class) + ")[B",
                 null,
                 null);
 
@@ -103,13 +103,13 @@ public class ProxyResponseFactory {
             methodVisitor.visitMethodInsn(INVOKESTATIC,
                     CLassUtils.getJvmClass(convertClass),
                     convertMethod,
-                    "(" + RESPONSE＿STREAM＿FACTORY＿CLASS_TYPE + classType + "I)V",
+                    "(" + RESPONSE_STREAM_FACTORY_CLASS_TYPE + classType + "I)V",
                     false);
         } else {
             methodVisitor.visitMethodInsn(INVOKESTATIC,
                     CLassUtils.getJvmClass(convertClass),
                     convertMethod,
-                    "(" + RESPONSE＿STREAM＿FACTORY＿CLASS_TYPE + classType + ")V",
+                    "(" + RESPONSE_STREAM_FACTORY_CLASS_TYPE + classType + ")V",
                     false);
         }
     }
