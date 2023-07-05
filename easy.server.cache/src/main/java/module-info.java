@@ -1,4 +1,7 @@
 module easy.server.cached {
+    exports io.github.jinlongliao.easy.server.cached;
+    exports io.github.jinlongliao.easy.server.cached.aop;
+    exports io.github.jinlongliao.easy.server.cached.aop.el;
     exports io.github.jinlongliao.easy.server.cached.annotation;
     exports io.github.jinlongliao.easy.server.cached.aop.spring;
     exports io.github.jinlongliao.easy.server.cached.aop.spring.handler;

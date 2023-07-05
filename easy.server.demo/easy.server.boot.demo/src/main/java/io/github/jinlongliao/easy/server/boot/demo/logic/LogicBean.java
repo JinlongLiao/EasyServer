@@ -37,7 +37,7 @@ public class LogicBean extends ApplicationObjectSupport {
     }
 
 
-    @SimpleGetCache(second = 10)
+    @SimpleGetCache(milliSecond = 10000L)
     @Logic({MsgId.TEST1, MsgId.TEST0})
     public Object test1(@NotNull @LogicRequestParam("userId") String userId, @LogicRequestParam("age") int age, @LogicRequestBody UserModel userModel) {
         return this.groovyService.getTest(userModel);

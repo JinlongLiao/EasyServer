@@ -52,7 +52,7 @@ public class DefaultSimpleCacheHandler implements ISimpleCacheHandler {
         Object obj = cache.getCache(cacheKey);
         if (obj == null) {
             obj = directMethod.invoke(target, params);
-            cache.setCache(cacheKey, obj, getCache.second() * 1000);
+            cache.setCache(cacheKey, obj, getCache.milliSecond());
         }
         return obj;
     }

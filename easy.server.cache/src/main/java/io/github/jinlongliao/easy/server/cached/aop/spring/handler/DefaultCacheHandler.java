@@ -35,7 +35,7 @@ public class DefaultCacheHandler implements ICacheHandler {
         Object obj = cache.getCache(cacheKey);
         if (obj == null) {
             obj = invocation.proceed();
-            cache.setCache(cacheKey, obj, getCache.second() * 1000);
+            cache.setCache(cacheKey, obj, getCache.milliSecond());
         }
         return obj;
     }

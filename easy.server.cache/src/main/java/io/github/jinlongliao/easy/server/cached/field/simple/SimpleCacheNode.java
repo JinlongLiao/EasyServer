@@ -4,6 +4,7 @@ import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.method.Direc
 import io.github.jinlongliao.easy.server.cached.CacheType;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 /**
  * @author liaojinlong
@@ -15,13 +16,21 @@ public class SimpleCacheNode {
     private final CacheType cacheType;
     private final Annotation annotation;
 
+    private final String methodFullName;
+
     public SimpleCacheNode(DirectMethod directMethod, Annotation annotation, Class<?> targetClass, CacheType cacheType) {
         this.directMethod = directMethod;
         this.targetClass = targetClass;
         this.annotation = annotation;
         this.cacheType = cacheType;
+        Method method = directMethod.getMethod();
+        int h = method.hashCode();
+        this.methodFullName = method.getDeclaringClass().getName() + ":" + method.getName() + ":" + (h ^ (h >>> 16));
     }
 
+    public String getMethodFullName() {
+        return methodFullName;
+    }
 
     public DirectMethod getDirectMethod() {
         return directMethod;
