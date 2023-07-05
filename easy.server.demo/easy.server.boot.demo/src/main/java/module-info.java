@@ -12,5 +12,6 @@ open module easy.server.boot.demo {
     requires jakarta.annotation;
     requires spring.boot;
     requires spring.boot.autoconfigure;
+    requires static lombok;
 
 }

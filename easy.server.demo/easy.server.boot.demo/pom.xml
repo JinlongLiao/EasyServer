@@ -11,6 +11,7 @@
     </parent>
     <artifactId>easy.server.boot.demo</artifactId>
     <properties>
+        <lombok.version>1.18.28</lombok.version>
         <maven.compiler.debug>false</maven.compiler.debug>
         <maven.compiler.debuglevel>none</maven.compiler.debuglevel>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -60,6 +61,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -96,6 +103,11 @@
                     <testSource>${maven.compiler.target}</testSource>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <annotationProcessorPaths>
+                        <annotationProcessorPath>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </annotationProcessorPath>
                         <annotationProcessorPath>
                             <groupId>io.github.jinlongliao</groupId>
                             <artifactId>easy.server.mapper</artifactId>
