@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @EnableCache
 @Component
 public class TestA {
-    @GetCache(second = 4)
+    @GetCache(milliSecond = 4)
     public String say() {
         return "before:" + System.currentTimeMillis();
     }

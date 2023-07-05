@@ -1,7 +1,7 @@
 package io.github.jinlongliao.easy.server.mapper.core.mapstruct.converter;
 
 import io.github.jinlongliao.easy.server.mapper.exception.ConverterException;
-import io.github.jinlongliao.easy.server.mapper.utils.Objects;
+import java.util.Objects;
 
 public class DefaultDataConverter implements IDataConverter {
     /**

@@ -1,12 +1,13 @@
 package io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.generator;
 
 import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Opcodes;
-import io.github.jinlongliao.easy.server.mapper.utils.Objects;
 
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+import java.util.Objects;
+
+
 import java.util.Iterator;
 import java.util.ServiceLoader;
+import java.util.function.Supplier;
 
 /**
  * @date 2023-01-29 10:43
@@ -15,7 +16,7 @@ import java.util.ServiceLoader;
  **/
 
 public interface ClassVersion {
-    ClassVersion CLASS_VERSION = AccessController.doPrivileged((PrivilegedAction<ClassVersion>) () -> {
+    ClassVersion CLASS_VERSION = ((Supplier<ClassVersion>) () -> {
         Iterator<ClassVersion> classVersionIterator = ServiceLoader.load(ClassVersion.class).iterator();
         ClassVersion classVersion = null;
         while (classVersionIterator.hasNext()) {
@@ -26,7 +27,7 @@ public interface ClassVersion {
             classVersion = DefaultClassVersion.getSingle();
         }
         return classVersion;
-    });
+    }).get();
 
     default ClassVersion getClassVersion() {
         return CLASS_VERSION;

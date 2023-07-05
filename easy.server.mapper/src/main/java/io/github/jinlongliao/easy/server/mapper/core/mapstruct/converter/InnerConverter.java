@@ -1,14 +1,15 @@
 package io.github.jinlongliao.easy.server.mapper.core.mapstruct.converter;
 
 import io.github.jinlongliao.easy.server.mapper.annotation.Ignore;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.generator.ClassVersion;
 import io.github.jinlongliao.easy.server.mapper.exception.ConverterNotFountException;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 /**
  * 内部转换
@@ -37,14 +38,12 @@ public class InnerConverter {
             VALUE_CONVERTER_CACHE.put(type, method);
         }
         List<IDataConverter> dataConverters = new ArrayList<>();
-        CONVERTER = AccessController.doPrivileged((PrivilegedAction<IDataConverter>) () -> {
-            Iterator<IDataConverter> iterator = ServiceLoader.load(IDataConverter.class).iterator();
-            while (iterator.hasNext()) {
-                dataConverters.add(iterator.next());
-            }
-            Collections.sort(dataConverters);
-            return dataConverters.stream().findFirst().orElse(IDataConverter.getDefault());
-        });
+        Iterator<IDataConverter> iterator = ServiceLoader.load(IDataConverter.class).iterator();
+        while (iterator.hasNext()) {
+            dataConverters.add(iterator.next());
+        }
+        Collections.sort(dataConverters);
+        CONVERTER = dataConverters.stream().findFirst().orElse(IDataConverter.getDefault());
     }
 
     @Ignore

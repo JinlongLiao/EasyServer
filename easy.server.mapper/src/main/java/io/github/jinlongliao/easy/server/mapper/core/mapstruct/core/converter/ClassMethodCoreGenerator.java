@@ -6,7 +6,9 @@ import io.github.jinlongliao.easy.server.mapper.core.mapstruct.converter.InnerCo
 import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.ExtraFieldConverter;
 import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.generator.FieldParserBody;
 import io.github.jinlongliao.easy.server.mapper.utils.CLassUtils;
-import io.github.jinlongliao.easy.server.mapper.utils.Objects;
+
+import java.util.Objects;
+
 import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ClassWriter;
 import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.FieldVisitor;
 import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.MethodVisitor;

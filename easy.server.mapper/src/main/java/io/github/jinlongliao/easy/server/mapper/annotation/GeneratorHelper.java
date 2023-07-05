@@ -8,8 +8,7 @@ import javax.lang.model.element.Element;
 import java.io.*;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -22,7 +21,7 @@ import java.util.stream.Collectors;
 public class GeneratorHelper {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    public static final ClassLoader CLASS_LOADER = AccessController.doPrivileged((PrivilegedAction<ClassLoader>) () -> Thread.currentThread().getContextClassLoader());
+    public static final ClassLoader CLASS_LOADER = MethodHandles.lookup().lookupClass().getClassLoader();
 
     public static List<String> loadAllConfigClass(String path) {
         List<String> strs = null;

@@ -1,6 +1,5 @@
 package io.github.jinlongliao.easy.server.extend.parser;
 
-import io.github.jinlongliao.easy.server.mapper.utils.StringUtil;
 import io.github.jinlongliao.easy.server.core.model.LogicModel;
 import io.github.jinlongliao.easy.server.core.parser.IDefaultValueConverter;
 import io.github.jinlongliao.easy.server.core.parser.IMessageParserCallBack;
@@ -8,7 +7,9 @@ import io.github.jinlongliao.easy.server.core.parser.IRequestParseRule;
 import io.github.jinlongliao.easy.server.core.parser.IRequestStreamFactory;
 import io.github.jinlongliao.easy.server.core.parser.inner.AbstractRequestParseRule;
 
+import io.github.jinlongliao.easy.server.mapper.utils.StringUtil;
 import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -53,14 +54,14 @@ public class StaticRequestParseRule extends AbstractRequestParseRule {
     }
 
     @Override
-    public Object[] readHexMsg(IRequestStreamFactory request, IMessageParserCallBack msgHexParserCallBack,Object...args) {
-        return this.inner0.readHexMsg(request, msgHexParserCallBack,args);
+    public Object[] readHexMsg(IRequestStreamFactory request, IMessageParserCallBack msgHexParserCallBack, Object... args) {
+        return this.inner0.readHexMsg(request, msgHexParserCallBack, args);
     }
 
 
     @Override
-    public Object[] readServletMsg(HttpServletRequest request, IMessageParserCallBack msgHexParserCallBack,Object...args) {
-        return this.inner0.readServletMsg(request, msgHexParserCallBack,args);
+    public Object[] readServletMsg(HttpServletRequest request, IMessageParserCallBack msgHexParserCallBack, Object... args) {
+        return this.inner0.readServletMsg(request, msgHexParserCallBack, args);
     }
 
     private static String getProxyObjectName(LogicModel logicModel) {

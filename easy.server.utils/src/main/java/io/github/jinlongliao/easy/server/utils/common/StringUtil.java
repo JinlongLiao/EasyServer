@@ -5,7 +5,7 @@
  * copy and modify the code freely for non-commercial purposes.
  */
 
-package io.github.jinlongliao.easy.server.mapper.utils;
+package io.github.jinlongliao.easy.server.utils.common;
 
 
 import java.util.Objects;

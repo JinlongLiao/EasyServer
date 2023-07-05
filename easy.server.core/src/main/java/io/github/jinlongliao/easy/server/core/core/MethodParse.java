@@ -21,9 +21,9 @@ import java.lang.annotation.Annotation;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -34,22 +34,22 @@ public class MethodParse implements AutoCloseable {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final Map<String, LogicModel> logicDefineCache = new HashMap<>(32);
     private final List<MethodPostProcess> methodPostProcesses;
-    private static final Collection<ExtraMethodAnnotationProcess> extraMethodAnnotationProcesses = AccessController
-            .doPrivileged((PrivilegedAction<Collection<ExtraMethodAnnotationProcess>>) () -> {
-                List<ExtraMethodAnnotationProcess> extraMethodAnnotationProcesses = null;
-                for (ExtraMethodAnnotationProcess extraMethodAnnotationProcess : ServiceLoader.load(ExtraMethodAnnotationProcess.class)) {
-                    if (Objects.isNull(extraMethodAnnotationProcesses)) {
-                        extraMethodAnnotationProcesses = new ArrayList<>();
-                    }
-                    extraMethodAnnotationProcesses.add(extraMethodAnnotationProcess);
-                }
-                if (Objects.isNull(extraMethodAnnotationProcesses)) {
-                    extraMethodAnnotationProcesses = Collections.emptyList();
-                } else {
-                    extraMethodAnnotationProcesses = Collections.unmodifiableList(extraMethodAnnotationProcesses);
-                }
-                return extraMethodAnnotationProcesses;
-            });
+    private static final Collection<ExtraMethodAnnotationProcess> EXTRA_METHOD_ANNOTATION_PROCESSES = ((Supplier<Collection<ExtraMethodAnnotationProcess>>) () -> {
+
+        List<ExtraMethodAnnotationProcess> extraMethodAnnotationProcesses = null;
+        for (ExtraMethodAnnotationProcess extraMethodAnnotationProcess : ServiceLoader.load(ExtraMethodAnnotationProcess.class)) {
+            if (Objects.isNull(extraMethodAnnotationProcesses)) {
+                extraMethodAnnotationProcesses = new ArrayList<>();
+            }
+            extraMethodAnnotationProcesses.add(extraMethodAnnotationProcess);
+        }
+        if (Objects.isNull(extraMethodAnnotationProcesses)) {
+            extraMethodAnnotationProcesses = Collections.emptyList();
+        } else {
+            extraMethodAnnotationProcesses = Collections.unmodifiableList(extraMethodAnnotationProcesses);
+        }
+        return extraMethodAnnotationProcesses;
+    }).get();
 
     /**
      * Spring 代理实现 获取方法参数名称
@@ -115,7 +115,7 @@ public class MethodParse implements AutoCloseable {
         if (Objects.nonNull(logicMapping)) {
             logicIds = (Arrays.stream(logicMapping.value()).collect(Collectors.toList()));
         }
-        for (ExtraMethodAnnotationProcess extraMethodAnnotationProcess : extraMethodAnnotationProcesses) {
+        for (ExtraMethodAnnotationProcess extraMethodAnnotationProcess : EXTRA_METHOD_ANNOTATION_PROCESSES) {
             ExtraMethodDesc extraMethodDesc = extraMethodAnnotationProcess.extraProcessMethod(data, method);
             if (Objects.nonNull(extraMethodDesc)) {
                 if (Objects.isNull(extraLogicIds)) {

@@ -2,21 +2,16 @@ package io.github.jinlongliao.easy.server.mapper.spring;
 
 import org.springframework.beans.factory.FactoryBean;
 
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Proxy;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+
 
 /**
  * @author: liaojinlong
  * @date: 2022-06-16 17:53
  */
 public class BeanMapperFactoryBean implements FactoryBean<IBeanMapper> {
-    private static final ClassLoader LOADER = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
-        @Override
-        public ClassLoader run() {
-            return this.getClass().getClassLoader();
-        }
-    });
+    private static final ClassLoader LOADER = MethodHandles.lookup().lookupClass().getClassLoader();
 
     private final IBeanMapper beanMapper;
 

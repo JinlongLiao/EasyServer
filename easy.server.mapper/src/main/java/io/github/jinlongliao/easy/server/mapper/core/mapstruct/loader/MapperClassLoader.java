@@ -2,9 +2,10 @@ package io.github.jinlongliao.easy.server.mapper.core.mapstruct.loader;
 
 import io.github.jinlongliao.easy.server.mapper.exception.ConverterNotFountException;
 
+
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+
 import java.security.ProtectionDomain;
 import java.util.Arrays;
 import java.util.Optional;
@@ -16,7 +17,7 @@ import java.util.Optional;
  * @date: 2022/5/21 21:17
  */
 public class MapperClassLoader extends ClassLoader {
-    private static final ProtectionDomain PROTECTION_DOMAIN = AccessController.doPrivileged((PrivilegedAction<ProtectionDomain>) MapperClassLoader.class::getProtectionDomain);
+    private static final ProtectionDomain PROTECTION_DOMAIN = MethodHandles.lookup().lookupClass().getProtectionDomain();
 
 
     static {
@@ -24,12 +25,7 @@ public class MapperClassLoader extends ClassLoader {
     }
 
     public MapperClassLoader() {
-        super(AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
-            @Override
-            public ClassLoader run() {
-                return Thread.currentThread().getContextClassLoader();
-            }
-        }));
+        super(Thread.currentThread().getContextClassLoader());
     }
 
     /**
