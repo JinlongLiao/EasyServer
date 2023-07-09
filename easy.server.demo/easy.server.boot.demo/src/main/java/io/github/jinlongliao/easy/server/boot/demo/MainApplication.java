@@ -30,9 +30,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         scanBasePackages = {
                 "io.github.jinlongliao.easy.server.boot.demo",
         })
+@EnableMethodCache(basePackages = "io.github.jinlongliao.easy.server.boot.demo")
 @LogicContextScan("io.github.jinlongliao.easy.server.boot.demo")
 @Configuration(proxyBeanMethods = false)
-@EnableMethodCache(basePackages = "io.github.jinlongliao.easy.server.demo")
 @EnableRefresh(scriptPaths = {"classpath:/groovy/*.groovy"}, refreshDelay = 1)
 @EnableScheduling
 @EnableAsync

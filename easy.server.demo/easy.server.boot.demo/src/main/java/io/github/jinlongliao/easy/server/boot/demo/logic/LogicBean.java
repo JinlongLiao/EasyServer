@@ -6,6 +6,7 @@ import io.github.jinlongliao.easy.server.boot.demo.logic.annotation.Logic;
 import io.github.jinlongliao.easy.server.boot.demo.logic.annotation.UserId;
 import io.github.jinlongliao.easy.server.cached.annotation.EnableCache;
 import io.github.jinlongliao.easy.server.cached.annotation.simple.SimpleGetCache;
+import io.github.jinlongliao.easy.server.cached.aop.simple.handler.SimpleLimitPerAccessFilterHandler;
 import io.github.jinlongliao.easy.server.core.annotation.*;
 import io.github.jinlongliao.easy.server.boot.demo.logic.param.UserModel;
 import io.github.jinlongliao.easy.server.boot.demo.logic.service.IGroovyService;
@@ -44,6 +45,7 @@ public class LogicBean extends ApplicationObjectSupport {
     }
 
     @Logic(MsgId.TEST2)
+    @SimpleGetCache(keyValueEl = "userId and age", handler = SimpleLimitPerAccessFilterHandler.class)
     public Object test2(@LogicRequestBody UserModel userModel) {
         return this.groovyService.getTest(userModel);
     }

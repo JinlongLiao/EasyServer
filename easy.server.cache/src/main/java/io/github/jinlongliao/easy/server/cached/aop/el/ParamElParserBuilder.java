@@ -46,12 +46,12 @@ public class ParamElParserBuilder {
     }
 
 
-    public static void putElValue(StringBuilder stringBuilder, Object param, Method method, String keyValueEl) {
+    public static String putElValue(StringBuilder stringBuilder, Object param, Method method, String keyValueEl) {
         if (StringUtil.isEmpty(keyValueEl)) {
-            return;
+            return stringBuilder.toString();
         }
         Class<?> paramClass = param.getClass();
-        Objects.requireNonNull(cache.computeIfAbsent(keyValueEl, k -> build(k, method, paramClass))).parseValue(stringBuilder, paramClass);
+        return Objects.requireNonNull(cache.computeIfAbsent(keyValueEl, k -> build(k, method, paramClass))).parseValue(stringBuilder, param);
     }
 
 

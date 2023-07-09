@@ -3,7 +3,6 @@ package io.github.jinlongliao.easy.server.demo.spring;
 
 import io.github.jinlongliao.easy.server.mapper.spring.BeanMapperFactoryBean;
 import io.github.jinlongliao.easy.server.cached.annotation.EnableMethodCache;
-import io.github.jinlongliao.easy.server.cached.aop.simple.SimplePointcutAndHandler;
 import io.github.jinlongliao.easy.server.swagger.config.ApiConfig;
 import io.github.jinlongliao.easy.server.swagger.config.ApiSpringAutoConfig;
 import io.github.jinlongliao.easy.server.swagger.knife4j.parse.ExtraApiDocGenerator;
@@ -17,7 +16,6 @@ import io.github.jinlongliao.easy.server.utils.json.JsonHelper;
 import io.github.jinlongliao.easy.server.utils.json.extra.JackJsonJsonHelper;
 import io.github.jinlongliao.easy.server.core.annotation.LogicContextScan;
 import io.github.jinlongliao.easy.server.core.core.spring.LogicRegisterContext;
-import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.context.annotation.*;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -36,12 +34,12 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @since : 2020/11/10 16:55
  */
 @EnableScheduling
+@EnableMethodCache(basePackages = "io.github.jinlongliao.easy.server.demo")
 @Configuration(proxyBeanMethods = false)
 @ComponentScan("io.github.jinlongliao.easy.server.demo")
 @Import({DynamicRefreshBeanConfiguration.class, ApiSpringAutoConfig.class})
 @LogicContextScan("io.github.jinlongliao.easy.server.demo.logic")
 @EnableAspectJAutoProxy
-@EnableMethodCache(basePackages = "io.github.jinlongliao.easy.server.demo")
 @EnableRefresh(scriptPaths = {"classpath:/groovy/*.groovy"}, refreshDelay = 1)
 @EnableAsync
 public class BeanConfiguration {
@@ -122,10 +120,5 @@ public class BeanConfiguration {
     @Bean
     public DemoProxyAccessServlet demoProxyAccessServlet(ApiConfig apiConfig, JsonHelper jsonHelper) {
         return new DemoProxyAccessServlet(apiConfig, jsonHelper);
-    }
-
-    @Bean
-    public SimplePointcutAndHandler simplePointcutAndHandler(ListableBeanFactory listableBeanFactory) {
-        return new SimplePointcutAndHandler(listableBeanFactory, new String[]{"io.github.jinlongliao.easy.server.demo.logic"});
     }
 }

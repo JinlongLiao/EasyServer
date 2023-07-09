@@ -14,8 +14,5 @@ public class WebConfig {
         return new SpringServletBeanConfig();
     }
 
-    @Bean
-    public SimplePointcutAndHandler simplePointcutAndHandler(ListableBeanFactory listableBeanFactory) {
-        return new SimplePointcutAndHandler(listableBeanFactory, new String[]{"io.github.jinlongliao.easy.server.demo.logic"});
-    }
+
 }

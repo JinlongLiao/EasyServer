@@ -12,9 +12,10 @@ import java.lang.annotation.*;
  * @author liaojinlong
  * @since 2022-02-14 16:23
  */
+@Inherited
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD})
 public @interface SimpleGetCache {
     /**
      * ID 前缀

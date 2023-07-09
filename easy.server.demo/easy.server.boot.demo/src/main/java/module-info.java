@@ -1,3 +1,6 @@
+import io.github.jinlongliao.easy.server.boot.demo.logic.annotation.LogicExtraMethodAnnotationProcess;
+import io.github.jinlongliao.easy.server.core.core.spring.register.ExtraMethodAnnotationProcess;
+
 open module easy.server.boot.demo {
     requires easy.server.bom;
 
@@ -13,5 +16,7 @@ open module easy.server.boot.demo {
     requires spring.boot;
     requires spring.boot.autoconfigure;
     requires static lombok;
+
+    provides ExtraMethodAnnotationProcess with LogicExtraMethodAnnotationProcess;
 
 }

@@ -3,6 +3,7 @@ module easy.server.cached {
     exports io.github.jinlongliao.easy.server.cached.aop;
     exports io.github.jinlongliao.easy.server.cached.aop.el;
     exports io.github.jinlongliao.easy.server.cached.annotation;
+    exports io.github.jinlongliao.easy.server.cached.annotation.process;
     exports io.github.jinlongliao.easy.server.cached.aop.spring;
     exports io.github.jinlongliao.easy.server.cached.aop.spring.handler;
     exports io.github.jinlongliao.easy.server.cached.aop.simple;
@@ -19,4 +20,11 @@ module easy.server.cached {
     requires spring.aop;
     requires easy.server.mapper;
     requires easy.server.core;
+    requires java.compiler;
+
+
+    uses io.github.jinlongliao.easy.server.mapper.annotation.LoaderGenerator;
+
+    provides io.github.jinlongliao.easy.server.mapper.annotation.LoaderGenerator with
+            io.github.jinlongliao.easy.server.cached.annotation.process.GetCacheLoaderGenerator;
 }
