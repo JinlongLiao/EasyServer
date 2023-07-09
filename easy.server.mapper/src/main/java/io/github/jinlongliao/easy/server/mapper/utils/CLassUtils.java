@@ -17,119 +17,119 @@ import static io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.as
 public class CLassUtils {
     public static final String OBJECT_SUPER_NAME = CLassUtils.getJvmClass(Object.class);
 
-    public static boolean isBoolType(Class type) {
+    public static boolean isBoolType(Class<?> type) {
         return Boolean.TYPE.equals(type);
     }
 
-    public static boolean isBoolClass(Class type) {
+    public static boolean isBoolClass(Class<?> type) {
         return Boolean.class.equals(type);
     }
 
-    public static boolean isBool(Class type) {
+    public static boolean isBool(Class<?> type) {
         return isBoolType(type) || isBoolClass(type);
     }
 
-    public static boolean isByteType(Class type) {
+    public static boolean isByteType(Class<?> type) {
         return Byte.TYPE.equals(type);
     }
 
-    public static boolean isByteClass(Class type) {
+    public static boolean isByteClass(Class<?> type) {
         return Byte.class.equals(type);
     }
 
-    public static boolean isByte(Class type) {
+    public static boolean isByte(Class<?> type) {
         return isByteClass(type) || isByteType(type);
     }
 
-    public static boolean isCharacterType(Class type) {
+    public static boolean isCharacterType(Class<?> type) {
         return Character.TYPE.equals(type);
     }
 
-    public static boolean isCharacterClass(Class type) {
+    public static boolean isCharacterClass(Class<?> type) {
         return Character.class.equals(type);
     }
 
-    public static boolean isCharacter(Class type) {
+    public static boolean isCharacter(Class<?> type) {
         return isCharacterClass(type) || isCharacterType(type);
     }
 
-    public static boolean isShortType(Class type) {
+    public static boolean isShortType(Class<?> type) {
         return Short.TYPE.equals(type);
     }
 
-    public static boolean isShortClass(Class type) {
+    public static boolean isShortClass(Class<?> type) {
         return Short.class.equals(type);
     }
 
-    public static boolean isShort(Class type) {
+    public static boolean isShort(Class<?> type) {
         return isShortClass(type) || isShortType(type);
     }
 
-    public static boolean isIntegerType(Class type) {
+    public static boolean isIntegerType(Class<?> type) {
         return Integer.TYPE.equals(type);
     }
 
-    public static boolean isIntegerClass(Class type) {
+    public static boolean isIntegerClass(Class<?> type) {
         return Integer.class.equals(type);
     }
 
-    public static boolean isInteger(Class type) {
+    public static boolean isInteger(Class<?> type) {
         return isIntegerClass(type) || isIntegerType(type);
     }
 
-    public static boolean isLongType(Class type) {
+    public static boolean isLongType(Class<?> type) {
         return Long.TYPE.equals(type);
     }
 
-    public static boolean isLongClass(Class type) {
+    public static boolean isLongClass(Class<?> type) {
         return Long.class.equals(type);
     }
 
-    public static boolean isLong(Class type) {
+    public static boolean isLong(Class<?> type) {
         return isLongClass(type) || isLongType(type);
     }
 
-    public static boolean isFloatType(Class type) {
+    public static boolean isFloatType(Class<?> type) {
         return Float.TYPE.equals(type);
     }
 
-    public static boolean isFloatClass(Class type) {
+    public static boolean isFloatClass(Class<?> type) {
         return Float.class.equals(type);
     }
 
-    public static boolean isFloat(Class type) {
+    public static boolean isFloat(Class<?> type) {
         return isFloatClass(type) || isFloatType(type);
     }
 
-    public static boolean isDoubleType(Class type) {
+    public static boolean isDoubleType(Class<?> type) {
         return Double.TYPE.equals(type);
     }
 
-    public static boolean isDoubleClass(Class type) {
+    public static boolean isDoubleClass(Class<?> type) {
         return Double.class.equals(type);
     }
 
-    public static boolean isDouble(Class type) {
+    public static boolean isDouble(Class<?> type) {
         return isDoubleClass(type) || isDoubleType(type);
     }
 
-    public static boolean isStringClass(Class type) {
+    public static boolean isStringClass(Class<?> type) {
         return String.class.equals(type);
     }
 
-    public static boolean isDynamicFieldClass(Class type) {
+    public static boolean isDynamicFieldClass(Class<?> type) {
         return DynamicField.class.equals(type);
     }
 
-    public static String getClassType(Class type) {
+    public static String getClassType(Class<?> type) {
         return getCommonJvmClass(type, true, true);
     }
 
-    public static String getJvmClass(Class type) {
+    public static String getJvmClass(Class<?> type) {
         return getCommonJvmClass(type, false, false);
     }
 
-    public static String getCommonJvmClass(Class type, boolean addFirst, boolean addEnd) {
+    public static String getCommonJvmClass(Class<?> type, boolean addFirst, boolean addEnd) {
         if (type == null || Void.TYPE.equals(type) || Void.class.equals(type)) {
             return "V";
         }
@@ -172,7 +172,7 @@ public class CLassUtils {
     }
 
 
-    public static boolean isBaseType(Class type) {
+    public static boolean isBaseType(Class<?> type) {
         return isBoolType(type) ||
                 isCharacterType(type) ||
                 isByteType(type) ||
@@ -183,7 +183,7 @@ public class CLassUtils {
                 isDoubleType(type);
     }
 
-    public static Class getBaseType(Class type) {
+    public static Class getBaseType(Class<?> type) {
         return isBoolClass(type) ? Boolean.TYPE
                 : isCharacterClass(type) ? Character.TYPE
                 : isByteClass(type) ? Byte.TYPE
@@ -195,7 +195,7 @@ public class CLassUtils {
                 : type;
     }
 
-    public static Class getPackageType(Class type) {
+    public static Class getPackageType(Class<?> type) {
         return isBool(type) ? Boolean.class
                 : isCharacterType(type) ? Character.class
                 : isByteType(type) ? Byte.class
@@ -262,7 +262,7 @@ public class CLassUtils {
         methodVisitor.visitLdcInsn(ACONST_NULL);
     }
 
-    public static UnpackDesc getUnpackDesc(Class type) {
+    public static UnpackDesc getUnpackDesc(Class<?> type) {
         return isBool(type) ? UnpackDesc.BOOLEAN
                 : isCharacter(type) ? UnpackDesc.CHARACTER
                 : isByte(type) ? UnpackDesc.BYTE

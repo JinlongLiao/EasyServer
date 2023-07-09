@@ -26,18 +26,23 @@ public class ParamElParserBuilder {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private static final Map<String, ParamElParser> cache = new ConcurrentHashMap<>(16);
 
-    public static ParamElParser build(String el, Method method, Object param) {
+    public static ParamElParser build(String el, Method method, Class<?> paramClass) {
         String[] ands = el.trim().split("and");
         List<String[]> elList = new ArrayList<>(4);
         for (String and : ands) {
             String[] split = and.trim().split("\\.");
-            if (split.length < 2 || (!split[0].equals("base") && !split[0].equals("param"))) {
-                throw new IllegalArgumentException("illegal el [" + el);
-            }
+//            if (split.length < 2 || (!split[0].equals("base") && !split[0].equals("param"))) {
+//                throw new IllegalArgumentException("illegal el [" + el);
+//            }
             elList.add(split);
         }
 
-        return build0(el, elList, method, param);
+        try {
+            return build0(el, elList, method, paramClass);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return (stringBuilder, param) -> stringBuilder.toString();
+        }
     }
 
 
@@ -45,7 +50,8 @@ public class ParamElParserBuilder {
         if (StringUtil.isEmpty(keyValueEl)) {
             return;
         }
-        Objects.requireNonNull(cache.computeIfAbsent(keyValueEl, k -> build(k, method, param))).parseValue(stringBuilder, param);
+        Class<?> paramClass = param.getClass();
+        Objects.requireNonNull(cache.computeIfAbsent(keyValueEl, k -> build(k, method, paramClass))).parseValue(stringBuilder, paramClass);
     }
 
 
