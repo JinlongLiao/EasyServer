@@ -1,22 +1,23 @@
 package io.github.jinlongliao.easy.server.cached.aop.el;
 
 import io.github.jinlongliao.easy.server.mapper.exception.MethodInvokeException;
-import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ClassWriter;
-import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.MethodVisitor;
 import io.github.jinlongliao.easy.server.mapper.utils.CLassUtils;
 import io.github.jinlongliao.easy.server.mapper.utils.MapperStructConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.asm.ClassWriter;
+import org.springframework.asm.MethodVisitor;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.generator.AsmProxyCodeGenerator.JAVA_DEF_VERSION;
 import static io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.generator.AsmProxyCodeGenerator.MAPPER_CLASS_LOADER;
-import static io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Opcodes.*;
+import static org.springframework.asm.Opcodes.*;
 
 /**
  * param el 解析
@@ -28,7 +29,8 @@ public class ParamElParserGenerator {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private static final Class<?>[] INTERFACES = new Class[]{ParamElParser.class};
 
-    static ParamElParser build0(String el, List<String[]> elList, Method method, Class<?> paramClass) throws MethodInvokeException {
+    static ParamElParser build0(String el, List<String[]> elList, Method method, Map<Type, Type[]> generic,
+                                Class<?> paramClass) throws MethodInvokeException {
         String proxyObjectName = buildProxyClassName(method, el);
         try {
             String dynamicClassName = proxyObjectName.replace('/', '.');
@@ -52,19 +54,19 @@ public class ParamElParserGenerator {
         construct.visitMaxs(3, 1);
         construct.visitEnd();
 
-        Map<Class<?>, List<Field>> fieldCache = new HashMap<>(8, 1L);
-        List<List<Field>> elFields = new ArrayList<>(el.length());
+        Map<Class<?>, List<ElField>> fieldCache = new HashMap<>(8, 1L);
+        List<List<ElField>> elFields = new ArrayList<>(el.length());
         for (String[] elFieldsStr : elList) {
-            List<Field> elField = new ArrayList<>();
+            List<ElField> elField = new ArrayList<>();
             elFields.add(elField);
             Class<?> root = paramClass;
             for (String elFieldStr : elFieldsStr) {
-                List<Field> fields = parserField(fieldCache, root);
-                Field parserElField = fields.stream()
-                        .filter(field -> field.getName().equals(elFieldStr)).findFirst()
+                List<ElField> fields = parserField(fieldCache, root, generic);
+                ElField parserElField = fields.stream()
+                        .filter(field -> field.getFieldName().equals(elFieldStr)).findFirst()
                         .orElseThrow(() -> new MethodInvokeException("not found field: " + elFieldStr));
                 elField.add(parserElField);
-                root = parserElField.getType();
+                root = parserElField.getFieldClass();
             }
         }
         MethodVisitor methodVisitor = classWriter.visitMethod(ACC_PUBLIC, "parseValue", "(Ljava/lang/StringBuilder;Ljava/lang/Object;)Ljava/lang/String;", null, null);
@@ -74,11 +76,11 @@ public class ParamElParserGenerator {
         methodVisitor.visitVarInsn(ASTORE, 3);
         AtomicInteger localIndex = new AtomicInteger(3);
 
-        for (List<Field> elField : elFields) {
+        for (List<ElField> elField : elFields) {
             buildGetCode(methodVisitor, localIndex, elField);
         }
         int index = 0;
-        for (List<Field> elField : elFields) {
+        for (List<ElField> elField : elFields) {
             index = Math.max(index, elField.size());
         }
         methodVisitor.visitVarInsn(ALOAD, 1);
@@ -96,20 +98,30 @@ public class ParamElParserGenerator {
 
     }
 
-    private static void buildGetCode(MethodVisitor methodVisitor, AtomicInteger localIndex, List<Field> elField) {
+    private static void buildGetCode(MethodVisitor methodVisitor, AtomicInteger localIndex, List<ElField> elField) {
         if (elField.isEmpty()) {
             return;
         }
         Class<?> type = null;
         methodVisitor.visitVarInsn(ALOAD, 1);
         methodVisitor.visitVarInsn(ALOAD, 3);
-        for (Field field : elField) {
-            type = field.getType();
-            methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
-                    CLassUtils.getJvmClass(field.getDeclaringClass()),
-                    getGetMethod(field),
-                    "()" + CLassUtils.getClassType(type),
-                    false);
+        for (ElField field : elField) {
+            type = field.getFieldClass();
+
+            if (field.isGeneric()) {
+                methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
+                        CLassUtils.getJvmClass(field.getField().getDeclaringClass()),
+                        getGetMethod(field),
+                        "()" + CLassUtils.getClassType(Object.class),
+                        false);
+                methodVisitor.visitTypeInsn(CHECKCAST, CLassUtils.getJvmClass(type));
+            } else {
+                methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
+                        CLassUtils.getJvmClass(field.getField().getDeclaringClass()),
+                        getGetMethod(field),
+                        "()" + CLassUtils.getClassType(type),
+                        false);
+            }
 
         }
         boolean baseType = CLassUtils.isBaseType(type);
@@ -131,9 +143,9 @@ public class ParamElParserGenerator {
     }
 
 
-    private static String getGetMethod(Field field) {
-        String fieldName = field.getName();
-        Class<?> type = field.getType();
+    private static String getGetMethod(ElField field) {
+        String fieldName = field.getFieldName();
+        Class<?> type = field.getFieldClass();
         boolean bool = CLassUtils.isBool(type);
         String getName;
         char[] charArray = fieldName.toCharArray();
@@ -146,14 +158,26 @@ public class ParamElParserGenerator {
         return getName;
     }
 
-    private static List<Field> parserField(Map<Class<?>, List<Field>> fieldCache, Class<?> tC) {
+    private static List<ElField> parserField(Map<Class<?>, List<ElField>> fieldCache, Class<?> tC, Map<Type, Type[]> generic) {
         if (tC.equals(Object.class)) {
             return Collections.emptyList();
         }
         return fieldCache.computeIfAbsent(tC, key -> {
             Field[] declaredFields = tC.getDeclaredFields();
-            List<Field> fields = new ArrayList<>(Arrays.asList(declaredFields));
-            fields.addAll(parserField(fieldCache, tC.getSuperclass()));
+            List<ElField> fields = new ArrayList<>(declaredFields.length);
+            Type[] types = generic.get(tC);
+            int index = 0;
+            for (Field declaredField : declaredFields) {
+                Class<?> type = declaredField.getType();
+                String fieldName = declaredField.getName();
+                boolean genericFlag = false;
+                if (type == Object.class && Objects.nonNull(types)) {
+                    type = (Class<?>) types[index++];
+                    genericFlag = true;
+                }
+                fields.add(new ElField(declaredField, type, fieldName, genericFlag));
+            }
+            fields.addAll(parserField(fieldCache, tC.getSuperclass(), generic));
             return fields;
         });
 

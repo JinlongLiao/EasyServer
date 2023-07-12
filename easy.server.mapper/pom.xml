@@ -11,6 +11,8 @@
     <artifactId>easy.server.mapper</artifactId>
 
     <properties>
+        <charsetEncoding>UTF-8</charsetEncoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <asm.version>9.5</asm.version>
         <spring.version>6.0.9</spring.version>
         <servlet.version>6.0.0</servlet.version>
@@ -44,6 +46,7 @@
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
                     <proc>none</proc>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
         </plugins>
