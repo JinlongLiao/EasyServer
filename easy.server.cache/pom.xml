@@ -21,7 +21,6 @@
             <groupId>io.github.jinlongliao</groupId>
             <artifactId>easy.server.core</artifactId>
             <version>${project.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

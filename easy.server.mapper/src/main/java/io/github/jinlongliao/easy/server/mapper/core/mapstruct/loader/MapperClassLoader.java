@@ -1,14 +1,20 @@
 package io.github.jinlongliao.easy.server.mapper.core.mapstruct.loader;
 
 import io.github.jinlongliao.easy.server.mapper.exception.ConverterNotFountException;
+import io.github.jinlongliao.easy.server.mapper.utils.CLassUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
 
+import java.lang.reflect.InvocationTargetException;
 import java.security.ProtectionDomain;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * 自定义classLoader
@@ -18,7 +24,7 @@ import java.util.Optional;
  */
 public class MapperClassLoader extends ClassLoader {
     private static final ProtectionDomain PROTECTION_DOMAIN = MethodHandles.lookup().lookupClass().getProtectionDomain();
-
+    private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     static {
         ClassLoader.registerAsParallelCapable();
@@ -50,8 +56,14 @@ public class MapperClassLoader extends ClassLoader {
         String className = name.replace('/', '.');
         try {
             Class<Object> objectClass = this.reLoadClassBySupeClassloader(className, classes);
+            return newInstance(objectClass, args);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-
+    public <T> T newInstance(Class<?> objectClass, Object... args) {
+        try {
             Constructor<?> constructor = findClass(args.length, objectClass);
             if (args.length == 0) {
                 args = null;
@@ -62,7 +74,34 @@ public class MapperClassLoader extends ClassLoader {
         }
     }
 
-    private Constructor<?> findClass(int length, Class<Object> objectClass) {
+    public <T> T newInstanceWithEmpty(Class<?> objectClass) {
+        Object defaultValue = CLassUtils.getDefaultValue(objectClass);
+        if (Objects.isNull(defaultValue)) {
+            Optional<Constructor<?>> first = Arrays.stream(objectClass.getDeclaredConstructors())
+                    .findFirst();
+            if (first.isEmpty()) {
+                return null;
+            }
+            Constructor<?> constructor = first.get();
+            Class<?>[] parameterTypes = constructor.getParameterTypes();
+            try {
+                if (parameterTypes.length == 0) {
+                    defaultValue = constructor.newInstance();
+                } else {
+                    Object[] array = Arrays.stream(parameterTypes).map(CLassUtils::getDefaultValue).toList().toArray(new Object[0]);
+                    defaultValue = constructor.newInstance(array);
+                }
+            } catch (Exception e) {
+                log.info(e.getMessage(), e);
+            }
+        }
+
+        return (T) defaultValue;
+
+
+    }
+
+    private Constructor<?> findClass(int length, Class<?> objectClass) {
         Optional<Constructor<?>> first = Arrays.stream(objectClass.getDeclaredConstructors())
                 .filter(constructor -> constructor.getParameterTypes().length == length)
                 .findFirst();

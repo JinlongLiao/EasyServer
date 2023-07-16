@@ -5,6 +5,7 @@ import io.github.jinlongliao.easy.server.boot.demo.logic.response.TestResponse;
 import io.github.jinlongliao.easy.server.boot.demo.logic.annotation.Logic;
 import io.github.jinlongliao.easy.server.boot.demo.logic.annotation.UserId;
 import io.github.jinlongliao.easy.server.cached.annotation.EnableCache;
+import io.github.jinlongliao.easy.server.cached.annotation.GetCache;
 import io.github.jinlongliao.easy.server.cached.annotation.simple.SimpleGetCache;
 import io.github.jinlongliao.easy.server.cached.aop.simple.handler.SimpleLimitPerAccessFilterHandler;
 import io.github.jinlongliao.easy.server.core.annotation.*;
@@ -56,6 +57,7 @@ public class LogicBean extends ApplicationObjectSupport {
     }
 
     @LogicMapping(value = "101", desc = "Hex Response")
+    @GetCache(keyValueEl = "userId")
     public TestResponse testHex(@UserId(newV = "newUserId") int userId,
                                 @HttpRequest
                                 HttpServletRequest request,

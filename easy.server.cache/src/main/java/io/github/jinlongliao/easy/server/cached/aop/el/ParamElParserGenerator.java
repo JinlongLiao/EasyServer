@@ -3,6 +3,7 @@ package io.github.jinlongliao.easy.server.cached.aop.el;
 import io.github.jinlongliao.easy.server.mapper.exception.MethodInvokeException;
 import io.github.jinlongliao.easy.server.mapper.utils.CLassUtils;
 import io.github.jinlongliao.easy.server.mapper.utils.MapperStructConfig;
+import io.github.jinlongliao.easy.server.mapper.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.asm.ClassWriter;
@@ -186,19 +187,21 @@ public class ParamElParserGenerator {
 
     private static String buildProxyClassName(Method method, String el) {
         StringBuilder builder = new StringBuilder(ParamElParserGenerator.class.getPackageName())
-                .append(method.getDeclaringClass().getName())
                 .append("/")
-                .append(method.getName());
+                .append(method.getDeclaringClass().getSimpleName().toLowerCase())
+                .append("/")
+                .append((method.getName()))
+                .append('/');
         boolean upper = true;
         for (char c : el.toCharArray()) {
-            if (c == '.') {
+            if (Character.isSpaceChar(c)) {
                 continue;
             }
-            if (Character.isSpaceChar(c)) {
+            if (c == '.') {
                 upper = true;
             } else {
                 if (upper) {
-                    builder.append(Character.isUpperCase(c));
+                    builder.append(Character.toUpperCase(c));
                 } else {
                     builder.append((c));
                 }

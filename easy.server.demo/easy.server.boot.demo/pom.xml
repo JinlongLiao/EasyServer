@@ -118,6 +118,11 @@
                             <artifactId>easy.server.extend</artifactId>
                             <version>${project.version}</version>
                         </annotationProcessorPath>
+                        <annotationProcessorPath>
+                            <groupId>io.github.jinlongliao</groupId>
+                            <artifactId>easy.server.cache</artifactId>
+                            <version>${project.version}</version>
+                        </annotationProcessorPath>
                         <path>
                             <groupId>org.springframework.boot</groupId>
                             <artifactId>spring-boot-configuration-processor</artifactId>

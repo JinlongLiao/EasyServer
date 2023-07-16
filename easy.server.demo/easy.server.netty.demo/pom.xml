@@ -140,6 +140,11 @@
                             <artifactId>spring-boot-configuration-processor</artifactId>
                             <version>${spring.boot.version}</version>
                         </path>
+                        <annotationProcessorPath>
+                            <groupId>io.github.jinlongliao</groupId>
+                            <artifactId>easy.server.cache</artifactId>
+                            <version>${project.version}</version>
+                        </annotationProcessorPath>
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>

@@ -2,13 +2,12 @@ package io.github.jinlongliao.easy.server.cached.annotation.process;
 
 
 import io.github.jinlongliao.easy.server.cached.annotation.simple.SimpleGetCache;
-import io.github.jinlongliao.easy.server.mapper.annotation.GeneratorHelper;
+ import io.github.jinlongliao.easy.server.mapper.annotation.GeneratorHelper;
 import io.github.jinlongliao.easy.server.mapper.annotation.process.AbstractGeneratorAnnotationProcessor;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.*;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
@@ -40,7 +39,11 @@ public class SimpleGetCacheAnnotationProcessor extends AbstractGeneratorAnnotati
 
     @Override
     protected void writeCache(Set<? extends Element> elementsAnnotatedWith, RoundEnvironment roundEnv) throws IOException {
-        List<String> strings = elementsAnnotatedWith.stream().map(Element::toString).collect(Collectors.toList());
+
+        List<String> strings = elementsAnnotatedWith
+                .stream()
+                .map(this::parseMethod)
+                .collect(Collectors.toList());
         OutputStream outputStream = null;
         try {
             outputStream = getOutputStream(elementsAnnotatedWith);
@@ -52,6 +55,39 @@ public class SimpleGetCacheAnnotationProcessor extends AbstractGeneratorAnnotati
                 outputStream.close();
             }
         }
+    }
+
+    protected String parseMethod(Element element) {
+        SimpleGetCache annotation = element.getAnnotation(SimpleGetCache.class);
+        return parseMethod(element, annotation.argsIndex(), annotation.keyValueEl());
+    }
+
+    protected String parseMethod(Element element, int argIndex, String el) {
+        ExecutableElement executableElement = (ExecutableElement) element;
+        StringBuilder builder = new StringBuilder(el);
+        builder.append("_:_");
+        builder.append(argIndex);
+        builder.append("_:_");
+        builder.append(element.getEnclosingElement().toString().trim());
+        builder.append("_:_");
+        builder.append(executableElement.getSimpleName().toString().trim());
+        builder.append("_:_");
+        List<? extends VariableElement> parameters = executableElement.getParameters();
+        int size = parameters.size();
+        int index = 0;
+        for (VariableElement parameter : parameters) {
+            String str = parameter.asType().toString().trim();
+            String[] split = str.split(" ");
+            str = split[split.length - 1].trim();
+            str = str.replace(")", "");
+            builder.append(str);
+            builder.append("__");
+            builder.append(parameter.toString().trim());
+            if (size > ++index) {
+                builder.append("@");
+            }
+        }
+        return builder.toString();
     }
 
     @Override
