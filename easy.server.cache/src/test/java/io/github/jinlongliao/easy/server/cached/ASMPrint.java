@@ -39,7 +39,10 @@ public class ASMPrint {
     @Test
     public void testMethod() throws NoSuchMethodException {
         MapperStructConfig.setDev(true, "./target/", "./target/");
-        ParamElParserBuilder.build("a and b.b1 and b.b2 and c and d", ASMPrint.class.getDeclaredMethod("testMethod0", A.class), A.class);
+        A param = new A();
+        param.setB(new B());
+        param.setD("");
+        ParamElParserBuilder.putElValue(new StringBuilder(), param, 0, ASMPrint.class.getDeclaredMethod("testMethod0", A.class), "a and b.b1 and b.b2 and c and d");
     }
 
 

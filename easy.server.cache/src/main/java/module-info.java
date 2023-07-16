@@ -1,3 +1,4 @@
+
 module easy.server.cached {
     exports io.github.jinlongliao.easy.server.cached;
     exports io.github.jinlongliao.easy.server.cached.aop;
@@ -27,4 +28,9 @@ module easy.server.cached {
 
     provides io.github.jinlongliao.easy.server.mapper.annotation.LoaderGenerator with
             io.github.jinlongliao.easy.server.cached.annotation.process.GetCacheLoaderGenerator;
+
+    provides javax.annotation.processing.Processor with
+            io.github.jinlongliao.easy.server.cached.annotation.process.SimpleGetCacheAnnotationProcessor,
+            io.github.jinlongliao.easy.server.cached.annotation.process.GetCacheAnnotationProcessor;
+
 }

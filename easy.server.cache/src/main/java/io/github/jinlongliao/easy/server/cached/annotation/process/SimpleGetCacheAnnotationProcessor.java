@@ -8,6 +8,7 @@ import io.github.jinlongliao.easy.server.mapper.annotation.process.AbstractGener
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
@@ -29,6 +30,12 @@ public class SimpleGetCacheAnnotationProcessor extends AbstractGeneratorAnnotati
     @Override
     public Class<? extends Annotation> getAnnotation() {
         return SimpleGetCache.class;
+    }
+
+    @Override
+    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+        super.process(annotations, roundEnv);
+        return true;
     }
 
     @Override

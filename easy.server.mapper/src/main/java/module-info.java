@@ -34,4 +34,9 @@ module easy.server.mapper {
     provides io.github.jinlongliao.easy.server.mapper.annotation.LoaderGenerator with
             io.github.jinlongliao.easy.server.mapper.annotation.process.GeneratorCopyLoaderGenerator,
             io.github.jinlongliao.easy.server.mapper.annotation.process.GeneratorMethodLoaderGenerator;
+
+    provides javax.annotation.processing.Processor with
+            io.github.jinlongliao.easy.server.mapper.annotation.process.GeneratorCopyAnnotationProcessor,
+            io.github.jinlongliao.easy.server.mapper.annotation.process.GeneratorMethodAnnotationProcessor;
+
 }

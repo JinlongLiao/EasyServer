@@ -17,4 +17,7 @@ open module easy.server.extend {
 
     provides io.github.jinlongliao.easy.server.mapper.annotation.LoaderGenerator with
             io.github.jinlongliao.easy.server.extend.annotation.process.GeneratorResponseLoaderGenerator;
+
+    provides javax.annotation.processing.Processor with
+            io.github.jinlongliao.easy.server.extend.annotation.process.GeneratorResponseAnnotationProcessor;
 }

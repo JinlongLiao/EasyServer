@@ -8,6 +8,7 @@ import io.github.jinlongliao.easy.server.mapper.annotation.process.AbstractGener
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
@@ -30,7 +31,11 @@ public class GetCacheAnnotationProcessor extends AbstractGeneratorAnnotationProc
     public Class<? extends Annotation> getAnnotation() {
         return GetCache.class;
     }
-
+    @Override
+    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+        super.process(annotations, roundEnv);
+        return true;
+    }
     @Override
     protected void writeCache(Set<? extends Element> elementsAnnotatedWith, RoundEnvironment roundEnv) throws IOException {
         List<String> strings = elementsAnnotatedWith.stream().map(Element::toString).collect(Collectors.toList());

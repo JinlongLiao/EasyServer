@@ -32,7 +32,7 @@ public class PerAccessLimitFilterHandler implements ICacheHandler {
             String key;
             if (params.length >= i) {
                 Object argument = params[i];
-                key = ParamElParserBuilder.putElValue(keyBuffer, argument, method, getCache.keyValueEl());
+                key = ParamElParserBuilder.putElValue(keyBuffer, argument, i, method, getCache.keyValueEl());
             } else {
                 key = keyBuffer.toString();
             }

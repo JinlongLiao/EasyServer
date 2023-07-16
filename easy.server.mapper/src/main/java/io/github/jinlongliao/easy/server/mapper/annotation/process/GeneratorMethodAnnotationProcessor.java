@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * @description: 处理注解 @io.github.jinlongliao.easy.server.mapper.annotation.GeneratorMethod
  **/
 public class GeneratorMethodAnnotationProcessor extends AbstractGeneratorAnnotationProcessor {
-    public static final String PATH = "META-INF/com/common/mapper/mapper/annotation/GeneratorMethod.dat";
+    public static final String PATH = "META-INF/io/github/jinlongliao/easy/server/mapper/annotation/GeneratorMethod.dat";
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @Override

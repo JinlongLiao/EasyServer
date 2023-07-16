@@ -29,7 +29,7 @@ public class SimpleLimitPerAccessFilterHandler implements ISimpleCacheHandler {
             String key;
             if (params.length >= i) {
                 Object argument = params[i];
-                key = ParamElParserBuilder.putElValue(keyBuffer, argument, cacheNode.getDirectMethod().getMethod(), getCache.keyValueEl());
+                key = ParamElParserBuilder.putElValue(keyBuffer, argument, i, cacheNode.getDirectMethod().getMethod(), getCache.keyValueEl());
             } else {
                 key = keyBuffer.toString();
             }
