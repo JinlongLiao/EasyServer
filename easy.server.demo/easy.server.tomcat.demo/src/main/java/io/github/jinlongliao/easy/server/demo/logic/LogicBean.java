@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotNull;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * @author liaojinlong
@@ -37,7 +37,7 @@ public class LogicBean extends ApplicationObjectSupport {
     }
 
 
-    @SimpleGetCache(second = 10)
+    @SimpleGetCache(milliSecond = 10000L)
     @Logic({MsgId.TEST1, MsgId.TEST0})
     public Object test1(@NotNull @LogicRequestParam("userId") String userId, @LogicRequestParam("age") int age, @LogicRequestBody UserModel userModel) {
         return this.groovyService.getTest(userModel);

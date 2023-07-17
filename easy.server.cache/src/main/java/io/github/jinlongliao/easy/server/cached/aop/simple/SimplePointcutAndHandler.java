@@ -1,6 +1,6 @@
 package io.github.jinlongliao.easy.server.cached.aop.simple;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.method.DirectMethod;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.method.DirectMethod;
 import io.github.jinlongliao.easy.server.cached.CacheType;
 import io.github.jinlongliao.easy.server.cached.annotation.EnableCache;
 import io.github.jinlongliao.easy.server.cached.annotation.simple.SimpleDelCache;

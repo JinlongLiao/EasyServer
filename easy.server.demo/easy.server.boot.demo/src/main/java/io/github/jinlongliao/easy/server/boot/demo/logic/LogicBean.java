@@ -5,7 +5,9 @@ import io.github.jinlongliao.easy.server.boot.demo.logic.response.TestResponse;
 import io.github.jinlongliao.easy.server.boot.demo.logic.annotation.Logic;
 import io.github.jinlongliao.easy.server.boot.demo.logic.annotation.UserId;
 import io.github.jinlongliao.easy.server.cached.annotation.EnableCache;
+import io.github.jinlongliao.easy.server.cached.annotation.GetCache;
 import io.github.jinlongliao.easy.server.cached.annotation.simple.SimpleGetCache;
+import io.github.jinlongliao.easy.server.cached.aop.simple.handler.SimpleLimitPerAccessFilterHandler;
 import io.github.jinlongliao.easy.server.core.annotation.*;
 import io.github.jinlongliao.easy.server.boot.demo.logic.param.UserModel;
 import io.github.jinlongliao.easy.server.boot.demo.logic.service.IGroovyService;
@@ -16,9 +18,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotNull;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * @author liaojinlong
@@ -37,13 +39,14 @@ public class LogicBean extends ApplicationObjectSupport {
     }
 
 
-    @SimpleGetCache(second = 10)
+    @SimpleGetCache(milliSecond = 10000L)
     @Logic({MsgId.TEST1, MsgId.TEST0})
     public Object test1(@NotNull @LogicRequestParam("userId") String userId, @LogicRequestParam("age") int age, @LogicRequestBody UserModel userModel) {
         return this.groovyService.getTest(userModel);
     }
 
     @Logic(MsgId.TEST2)
+    @SimpleGetCache(keyValueEl = "userId and age", handler = SimpleLimitPerAccessFilterHandler.class)
     public Object test2(@LogicRequestBody UserModel userModel) {
         return this.groovyService.getTest(userModel);
     }
@@ -54,6 +57,7 @@ public class LogicBean extends ApplicationObjectSupport {
     }
 
     @LogicMapping(value = "101", desc = "Hex Response")
+    @GetCache(keyValueEl = "userId")
     public TestResponse testHex(@UserId(newV = "newUserId") int userId,
                                 @HttpRequest
                                 HttpServletRequest request,

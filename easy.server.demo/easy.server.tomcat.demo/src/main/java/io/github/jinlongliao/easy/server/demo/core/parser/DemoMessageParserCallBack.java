@@ -5,7 +5,7 @@ import io.github.jinlongliao.easy.server.core.parser.IMessageParserCallBack;
 import io.github.jinlongliao.easy.server.core.parser.IRequestStreamFactory;
 import io.github.jinlongliao.easy.server.core.parser.MeType;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author: liaojinlong

@@ -1,6 +1,6 @@
 package io.github.jinlongliao.easy.server.extend.response.proxy;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.generator.FieldParserBody;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.generator.FieldParserBody;
 
 public class ExtraFieldParserBody extends FieldParserBody {
     private final boolean isStr;

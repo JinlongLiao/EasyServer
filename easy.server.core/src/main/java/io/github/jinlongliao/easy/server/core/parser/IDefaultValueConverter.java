@@ -1,6 +1,6 @@
 package io.github.jinlongliao.easy.server.core.parser;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.converter.InnerConverter;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.converter.InnerConverter;
 import io.github.jinlongliao.easy.server.mapper.utils.CLassUtils;
 import io.github.jinlongliao.easy.server.core.model.MsgModel;
 

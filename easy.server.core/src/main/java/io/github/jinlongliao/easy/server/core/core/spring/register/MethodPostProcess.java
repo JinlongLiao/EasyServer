@@ -1,6 +1,6 @@
 package io.github.jinlongliao.easy.server.core.core.spring.register;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.method.DirectMethod;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.method.DirectMethod;
 
 /**
  * 执行方法 实力化后处理类

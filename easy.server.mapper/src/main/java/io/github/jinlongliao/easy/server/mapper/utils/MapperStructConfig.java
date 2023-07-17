@@ -12,8 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.nio.file.Files;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -31,10 +30,10 @@ public class MapperStructConfig {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     public static final String DEBUG = "io.github.jinlongliao.easy.server.mapper.debug";
     public static final String SAVE_CLASS_PATH = "io.github.jinlongliao.easy.server.mapper.debug.classpath";
-    public static final String SAVE_JAVA_PATH = "io.github.jinlongliao.easy.server.mapper.debug.sourcepath";
-    private static boolean saveClassFile = AccessController.doPrivileged((PrivilegedAction<Boolean>) () -> Boolean.parseBoolean(System.getProperty(DEBUG, "false")));
-    private static String saveClassFilePath = AccessController.doPrivileged((PrivilegedAction<String>) () -> System.getProperty(SAVE_CLASS_PATH, "./"));
-    private static String saveJavaFilePath = AccessController.doPrivileged((PrivilegedAction<String>) () -> System.getProperty(SAVE_JAVA_PATH, "./"));
+    public static final String SAVE_JAVA_PATH = "io.github.jinlongliao.easy.server.mapper.debug.source_path";
+    private static boolean saveClassFile = Boolean.parseBoolean(System.getProperty(DEBUG, "false"));
+    private static String saveClassFilePath = System.getProperty(SAVE_CLASS_PATH, "./");
+    private static String saveJavaFilePath = System.getProperty(SAVE_JAVA_PATH, "./");
 
     static Map<String, Object> options = new HashMap<>();
 
@@ -128,7 +127,7 @@ public class MapperStructConfig {
 
         @Override
         public void saveClassFile(String path, String qualifiedName, String entryName, String content, int[] mapping) {
-            content = content.replace("public class", "@javax.annotation.Generated(value=\"easy.server.mapper Generated\"," +
+            content = content.replace("public class", "@jakarta.annotation.Generated(value=\"easy.server.mapper Generated\"," +
                     "date = \"" + LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME) + "\"," +
                     " comments = \"common-mapper 动态生成\")\npublic class");
             super.saveClassFile(path, qualifiedName, entryName, content, mapping);

@@ -3,7 +3,7 @@ package io.github.jinlongliao.easy.server.extend.response.proxy;
 import io.github.jinlongliao.easy.server.extend.exception.UnSupportFieldException;
 import io.github.jinlongliao.easy.server.extend.response.ICommonResponse;
 import io.github.jinlongliao.easy.server.extend.response.IResponseStreamFactory;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.annotation.Ignore2;
+import io.github.jinlongliao.easy.server.mapper.annotation.Ignore;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -29,7 +29,7 @@ public final class InnerWriteResponseProxyMethod {
         final Class<InnerWriteResponseProxyMethod> innerCoreDataConverterClass = InnerWriteResponseProxyMethod.class;
         final Method[] methods = innerCoreDataConverterClass.getDeclaredMethods();
         for (Method method : methods) {
-            Ignore2 annotation = method.getAnnotation(Ignore2.class);
+            Ignore annotation = method.getAnnotation(Ignore.class);
             if (annotation != null && annotation.value()) {
                 continue;
             }
@@ -46,12 +46,12 @@ public final class InnerWriteResponseProxyMethod {
         }
     }
 
-    @Ignore2
+    @Ignore
     public static void addGlobalConverter(Type type, Method method) {
         MAP.put(type, method);
     }
 
-    @Ignore2
+    @Ignore
     public static Method getGlobalConverter(Type type) {
         return MAP.get(type);
     }

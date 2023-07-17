@@ -1,14 +1,13 @@
 package io.github.jinlongliao.easy.server.extend.response.proxy;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.annotation.Ignore2;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.annotation.Mapping2;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.converter.InnerConverter;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.generator.AsmProxyCodeGenerator;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.generator.FieldParserBody;
+import io.github.jinlongliao.easy.server.mapper.annotation.Ignore;
+import io.github.jinlongliao.easy.server.mapper.annotation.Mapping;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.generator.AsmProxyCodeGenerator;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.generator.FieldParserBody;
 import io.github.jinlongliao.easy.server.mapper.exception.ConverterNotFountException;
 import io.github.jinlongliao.easy.server.mapper.utils.CLassUtils;
 import io.github.jinlongliao.easy.server.mapper.utils.MapperStructConfig;
-import io.github.jinlongliao.easy.server.mapper.utils.Objects;
+import java.util.Objects;
 import io.github.jinlongliao.easy.server.extend.response.ICommonResponse;
 import io.github.jinlongliao.easy.server.extend.response.IResponseStreamFactory;
 import io.github.jinlongliao.easy.server.core.annotation.LogicRequestParam;
@@ -37,7 +36,7 @@ import static io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.as
 
 public class ProxyResponseFactory {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    private static final String RESPONSE＿STREAM＿FACTORY＿CLASS_TYPE = CLassUtils.getClassType(IResponseStreamFactory.class);
+    private static final String RESPONSE_STREAM_FACTORY_CLASS_TYPE = CLassUtils.getClassType(IResponseStreamFactory.class);
     private static final Map<Class<? extends ICommonResponse>, ProxyResponse> PROXY_RESPONSE_MAP = new ConcurrentHashMap<>(32, 1L);
 
     public static ProxyResponse getProxyResponse(ICommonResponse response) {
@@ -71,7 +70,7 @@ public class ProxyResponseFactory {
                                         Class<? extends ICommonResponse> responseClass) {
         MethodVisitor methodVisitor = classWriter.visitMethod(ACC_PUBLIC,
                 "genResHex",
-                "(" + RESPONSE＿STREAM＿FACTORY＿CLASS_TYPE + CLassUtils.getClassType(ICommonResponse.class) + ")[B",
+                "(" + RESPONSE_STREAM_FACTORY_CLASS_TYPE + CLassUtils.getClassType(ICommonResponse.class) + ")[B",
                 null,
                 null);
 
@@ -104,13 +103,13 @@ public class ProxyResponseFactory {
             methodVisitor.visitMethodInsn(INVOKESTATIC,
                     CLassUtils.getJvmClass(convertClass),
                     convertMethod,
-                    "(" + RESPONSE＿STREAM＿FACTORY＿CLASS_TYPE + classType + "I)V",
+                    "(" + RESPONSE_STREAM_FACTORY_CLASS_TYPE + classType + "I)V",
                     false);
         } else {
             methodVisitor.visitMethodInsn(INVOKESTATIC,
                     CLassUtils.getJvmClass(convertClass),
                     convertMethod,
-                    "(" + RESPONSE＿STREAM＿FACTORY＿CLASS_TYPE + classType + ")V",
+                    "(" + RESPONSE_STREAM_FACTORY_CLASS_TYPE + classType + ")V",
                     false);
         }
     }
@@ -133,14 +132,14 @@ public class ProxyResponseFactory {
 
     private static int getIndex(List<ExtraFieldParserBody> fields, int index, Field declaredField,
                                 boolean parentField) {
-        Ignore2 ignore = declaredField.getAnnotation(Ignore2.class);
+        Ignore ignore = declaredField.getAnnotation(Ignore.class);
         if (Objects.nonNull(ignore) && ignore.value()) {
             return index;
         }
         if (Modifier.isStatic(declaredField.getModifiers())) {
             return index;
         }
-        final Mapping2 mapping = declaredField.getAnnotation(Mapping2.class);
+        final Mapping mapping = declaredField.getAnnotation(Mapping.class);
         final boolean nonNull = Objects.nonNull(mapping);
         String sourceName = nonNull ? mapping.sourceName() : declaredField.getName();
         if (sourceName.length() < 1) {

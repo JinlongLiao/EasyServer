@@ -35,9 +35,9 @@
 /target/
 /easy.server.demo/.log/
 /plugins/maven-gen-plugin/target/
-/plugins/maven-generator-plugin/target/
+/plugins/maven-generator-maven-plugin/target/
 /easy.server.project/easy.server.project.iml
-/plugins/maven-generator-plugin/maven-generator-plugin.iml
+/plugins/maven-generator-maven-plugin/maven-generator-maven-plugin.iml
 /plugins/plugins.iml
 /plugins/gradle-generator-plugin/target/
 /plugins/common-generator-plugin/target/
@@ -56,6 +56,7 @@
 /easy.server.demo/easy.server.boot.demo/easy.server.boot.demo.iml
 /easy.server.demo/easy.server.netty.demo/easy.server.netty.demo.iml
 /easy.server.demo/easy.server.tomcat.demo/easy.server.tomcat.demo.iml
-/easy.server.script/target/
 /plugins/target/
-/easy.server.script/target/
+/plugins/common-generator-maven-plugin/target/
+/plugins/maven-generator-plugin/
+/plugins/common-generator-plugin/

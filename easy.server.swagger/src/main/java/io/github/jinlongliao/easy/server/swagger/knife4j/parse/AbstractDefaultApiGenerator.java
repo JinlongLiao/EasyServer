@@ -1,6 +1,6 @@
 package io.github.jinlongliao.easy.server.swagger.knife4j.parse;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.annotation.Ignore2;
+import io.github.jinlongliao.easy.server.mapper.annotation.Ignore;
 import io.github.jinlongliao.easy.server.swagger.config.ApiConfig;
 import io.github.jinlongliao.easy.server.swagger.model.*;
 import io.github.jinlongliao.easy.server.servlet.BaseHttpServlet;
@@ -108,7 +108,7 @@ public abstract class AbstractDefaultApiGenerator implements ApiGenerator {
         apiDoc.setHost(this.getHost());
         apiDoc.setInfo(this.getAipInfo());
         apiDoc.setSchemes(this.getSchemes());
-        apiDoc.setTags(Collections.singletonList(new Tag("servlet", "javax.servlet.Servlet")));
+        apiDoc.setTags(Collections.singletonList(new Tag("servlet", "jakarta.servlet.Servlet")));
         apiDoc.setPaths(this.getServletPath(servletMap));
         return apiDoc;
     }
@@ -189,7 +189,7 @@ public abstract class AbstractDefaultApiGenerator implements ApiGenerator {
         Field[] declaredFields = genericClass.getDeclaredFields();
         List<Map<String, Object>> parameters = new ArrayList<>(16);
         for (Field field : declaredFields) {
-            Ignore2 ignore = field.getAnnotation(Ignore2.class);
+            Ignore ignore = field.getAnnotation(Ignore.class);
             if (ignore != null && ignore.value()) {
                 continue;
             }

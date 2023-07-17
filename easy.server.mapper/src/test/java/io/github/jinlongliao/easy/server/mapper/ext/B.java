@@ -1,9 +1,9 @@
 package io.github.jinlongliao.easy.server.mapper.ext;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct.annotation.Mapping;
+
+import io.github.jinlongliao.easy.server.mapper.annotation.Mapping;
 
 public class B {
-    @Mapping(className = "io.github.jinlongliao.easy.server.mapper.ext.B", methodName = "aC")
     private A a;
     private Boolean as;
 

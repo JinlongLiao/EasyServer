@@ -5,7 +5,7 @@ import io.github.jinlongliao.easy.server.servlet.BaseHttpServlet;
 import org.springframework.context.ApplicationContext;
 
 
-import javax.servlet.*;
+import jakarta.servlet.*;
 import java.util.EnumSet;
 import java.util.Map;
 

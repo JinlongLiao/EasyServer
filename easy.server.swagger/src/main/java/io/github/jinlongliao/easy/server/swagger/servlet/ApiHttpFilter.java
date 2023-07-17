@@ -5,12 +5,12 @@ import io.github.jinlongliao.easy.server.swagger.knife4j.auth.SecurityBasicAuthF
 import io.github.jinlongliao.easy.server.swagger.servlet.help.ApiMapping;
 import io.github.jinlongliao.easy.server.servlet.BaseHttpFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**

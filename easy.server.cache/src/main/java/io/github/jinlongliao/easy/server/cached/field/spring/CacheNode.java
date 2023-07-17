@@ -16,11 +16,16 @@ public class CacheNode {
     private final CacheType cacheType;
     private final Annotation annotation;
     private ICacheHandler cacheHandler;
+
+    private final String methodFullName;
+
     public CacheNode(Method method, Annotation annotation, Class<?> targetClass, CacheType cacheType) {
         this.method = method;
         this.targetClass = targetClass;
         this.annotation = annotation;
         this.cacheType = cacheType;
+        int h = method.hashCode();
+        this.methodFullName = method.getDeclaringClass().getName() + ":" + method.getName() + ":" + (h ^ (h >>> 16));
     }
 
     public ICacheHandler getCacheHandler() {
@@ -37,6 +42,10 @@ public class CacheNode {
 
     public Annotation getAnnotation() {
         return annotation;
+    }
+
+    public String getMethodFullName() {
+        return methodFullName;
     }
 
     public Class<?> getTargetClass() {

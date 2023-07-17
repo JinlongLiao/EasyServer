@@ -1,13 +1,13 @@
 package io.github.jinlongliao.easy.server.mapper.asm;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.annotation.Mapping2;
+import io.github.jinlongliao.easy.server.mapper.annotation.Mapping;
 
 public class A {
     // @Ignore2
     private int a;
     private int b;
     private boolean c;
-    @Mapping2(converterClass = TestConverter.class, converterMethod = "testString")
+    @Mapping(converterClass = TestConverter.class, converterMethod = "testString")
     private String d;
     private short e;
     private short f;

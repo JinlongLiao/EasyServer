@@ -3,6 +3,7 @@ package io.github.jinlongliao.easy.server.cached.annotation.simple;
 import io.github.jinlongliao.easy.server.cached.aop.simple.handler.DefaultSimpleCacheHandler;
 import io.github.jinlongliao.easy.server.cached.aop.simple.handler.ISimpleCacheHandler;
 
+
 import java.lang.annotation.*;
 
 /**
@@ -11,23 +12,35 @@ import java.lang.annotation.*;
  * @author liaojinlong
  * @since 2022-02-14 16:23
  */
+@Inherited
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD})
 public @interface SimpleGetCache {
     /**
      * ID 前缀
      *
      * @return/
      */
-    String value() default "simpleGetCache:";
+    String value() default "";
+
+    int argsIndex() default 0;
 
     /**
-     * 默认缓存60s
+     * 默认缓存1s
      *
      * @return /
      */
-    int second() default 60;
+    long milliSecond() default 1000;
+
+    /**
+     * 参数值 EL获取
+     * "param.value1 and param:value2"
+     *
+     * @return /
+     */
+
+    String keyValueEl() default "";
 
     /**
      * 业务处理类

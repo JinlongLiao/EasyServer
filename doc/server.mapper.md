@@ -188,7 +188,7 @@ Person person4 = BeanCopier2Utils.getData2WebObject(Person.class).toHttpServletR
 2. 字段忽略
 
 ```java
-io.github.jinlongliao.easy.server.mapper.core.mapstruct2.annotation.Ignore2
+io.github.jinlongliao.easy.server.mapper.annotation.Ignore
 ```
 提供 ___@Ignore2___ 使用标记的字段在转换时并不会进行赋值操作
 
@@ -216,7 +216,7 @@ easy.mapper 默认对支持所有基础类型及其包装类，String 。详情�
 ___io.github.jinlongliao.easy.server.mapper.core.mapstruct2.converter.InnerConverter___ 接口 ，重写``` <T> T getT(Class<T> tClass, Object extra, Object data);```
 针对不支持类型时，会调用此方法，自己仅需要 依据 参数tClass 的类型进行判断 进行返回相应值，参数中的data 为消息中的值
 
-- 使用  ``` io.github.jinlongliao.easy.server.mapper.core.mapstruct2.annotation.Mapping2 ```
+- 使用  ``` io.github.jinlongliao.easy.server.mapper.annotation.Mapping ```
 
 
 ```java
@@ -271,7 +271,7 @@ public @interface Mapping2 {
       MapperStructConfig.setDev(true, "./target/", "./target/");
 ```
 
-2. 通过 maven 插件实现 [maven-generator-plugin](https://github.com/JinlongLiao/EasyServer/tree/main/plugins/maven-generator-plugin)  
+2. 通过 maven 插件实现 [maven-generator-maven-plugin](https://github.com/JinlongLiao/EasyServer/tree/main/plugins/maven-generator-maven-plugin)  
 
 ```xml
     <build>
@@ -297,7 +297,7 @@ public @interface Mapping2 {
             </plugin>
             <plugin>
                 <groupId>io.github.jinlongliao</groupId>
-                <artifactId>maven-generator-plugin</artifactId>
+                <artifactId>maven-generator-maven-plugin</artifactId>
                 <version>${project.version}</version>
                 <executions>
                     <execution>
@@ -355,7 +355,7 @@ public interface IBeanMapper {
      * @param <T>
      * @return T
      */
-    <T> T servletBeanMapper(Class<T> tClass, javax.servlet.http.HttpServletRequest req);
+    <T> T servletBeanMapper(Class<T> tClass, jakarta.servlet.http.HttpServletRequest req);
 
 }
 ```

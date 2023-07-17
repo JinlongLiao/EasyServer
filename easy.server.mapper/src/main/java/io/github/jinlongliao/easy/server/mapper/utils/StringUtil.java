@@ -8,6 +8,8 @@
 package io.github.jinlongliao.easy.server.mapper.utils;
 
 
+import java.util.Objects;
+
 public class StringUtil {
     public static boolean isEmpty(String str) {
         return Objects.isNull(str) || (str.isEmpty());
@@ -28,28 +30,14 @@ public class StringUtil {
                     c = s.charAt(i);
 
                     switch (c) {
-                        case '\\':
-                            sb.append("\\\\");
-                            break;
-                        case '\b':
-                            sb.append("\\b");
-                            break;
-                        case '\f':
-                            sb.append("\\f");
-                            break;
-                        case '\n':
-                            sb.append("\\n");
-                            break;
-                        case '\r':
-                            sb.append("\\r");
-                            break;
-                        case '\t':
-                            sb.append("\\t");
-                            break;
-                        case '"':
-                            sb.append("\\\"");
-                            break;
-                        default:
+                        case '\\' -> sb.append("\\\\");
+                        case '\b' -> sb.append("\\b");
+                        case '\f' -> sb.append("\\f");
+                        case '\n' -> sb.append("\\n");
+                        case '\r' -> sb.append("\\r");
+                        case '\t' -> sb.append("\\t");
+                        case '"' -> sb.append("\\\"");
+                        default -> {
                             if (c < ' ') {
                                 sb.append("\\0");
                                 sb.append((char) ('0' + ((int) c >> 3)));
@@ -57,6 +45,7 @@ public class StringUtil {
                             } else {
                                 sb.append(c);
                             }
+                        }
                     }
                 }
 

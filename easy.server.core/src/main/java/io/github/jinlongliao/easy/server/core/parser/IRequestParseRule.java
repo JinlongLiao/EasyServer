@@ -1,7 +1,7 @@
 package io.github.jinlongliao.easy.server.core.parser;
 
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 读取

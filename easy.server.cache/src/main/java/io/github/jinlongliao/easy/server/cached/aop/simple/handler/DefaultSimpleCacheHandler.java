@@ -1,6 +1,6 @@
 package io.github.jinlongliao.easy.server.cached.aop.simple.handler;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.method.DirectMethod;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.method.DirectMethod;
 import io.github.jinlongliao.easy.server.cached.CacheType;
 import io.github.jinlongliao.easy.server.cached.annotation.simple.SimpleDelCache;
 import io.github.jinlongliao.easy.server.cached.annotation.simple.SimpleGetCache;
@@ -52,7 +52,7 @@ public class DefaultSimpleCacheHandler implements ISimpleCacheHandler {
         Object obj = cache.getCache(cacheKey);
         if (obj == null) {
             obj = directMethod.invoke(target, params);
-            cache.setCache(cacheKey, obj, getCache.second() * 1000);
+            cache.setCache(cacheKey, obj, getCache.milliSecond());
         }
         return obj;
     }

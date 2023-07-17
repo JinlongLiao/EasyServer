@@ -1,5 +1,6 @@
 package io.github.jinlongliao.easy.server.cached.config;
 
+import io.github.jinlongliao.easy.server.cached.aop.simple.SimplePointcutAndHandler;
 import io.github.jinlongliao.easy.server.cached.aop.spring.handler.DefaultCacheHandler;
 import io.github.jinlongliao.easy.server.cached.annotation.EnableMethodCache;
 import io.github.jinlongliao.easy.server.cached.aop.spring.CacheAdvisor;
@@ -33,7 +34,41 @@ public class CacheProxyConfiguration implements ImportBeanDefinitionRegistrar {
 
         AnnotationAttributes enableMethodCache = AnnotationAttributes
                 .fromMap(importingClassMetadata.getAnnotationAttributes(EnableMethodCache.class.getName()));
-        assert enableMethodCache != null;
+        if (enableMethodCache != null) {
+            this.toBuildCacheConfig(importingClassMetadata, registry, enableMethodCache);
+        }
+
+    }
+
+    protected void toBuildCacheConfig(AnnotationMetadata importingClassMetadata,
+                                      BeanDefinitionRegistry registry,
+                                      AnnotationAttributes enableMethodCache) {
+        this.toBuildSimpleCacheConfig(importingClassMetadata, registry, enableMethodCache);
+        this.toBuildTraditionCacheConfig(importingClassMetadata, registry, enableMethodCache);
+    }
+
+    /**
+     * 基于委托模式构建
+     */
+    private void toBuildSimpleCacheConfig(AnnotationMetadata importingClassMetadata,
+                                          BeanDefinitionRegistry registry,
+                                          AnnotationAttributes enableMethodCache) {
+
+        String[] basePackages = enableMethodCache.getStringArray("basePackages");
+        BeanDefinitionBuilder cacheInterceptor = BeanDefinitionBuilder.genericBeanDefinition(SimplePointcutAndHandler.class);
+        cacheInterceptor.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
+        cacheInterceptor.addConstructorArgValue(registry);
+        cacheInterceptor.addConstructorArgValue(basePackages);
+        registry.registerBeanDefinition("simplePointcutAndHandler", cacheInterceptor.getBeanDefinition());
+    }
+
+    /**
+     * 传统模式构建
+     */
+    private void toBuildTraditionCacheConfig(AnnotationMetadata importingClassMetadata,
+                                             BeanDefinitionRegistry registry,
+                                             AnnotationAttributes enableMethodCache) {
+
         String[] basePackages = enableMethodCache.getStringArray("basePackages");
         Integer order = enableMethodCache.<Integer>getNumber("order");
         BeanDefinitionBuilder cacheInterceptor = BeanDefinitionBuilder.genericBeanDefinition(CacheInterceptor.class);
@@ -49,6 +84,6 @@ public class CacheProxyConfiguration implements ImportBeanDefinitionRegistrar {
         cacheAdvisorBuilder.addPropertyValue("order", order);
         cacheAdvisorBuilder.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
         registry.registerBeanDefinition(CacheAdvisor.CACHE_ADVISOR_BEAN_NAME, cacheAdvisorBuilder.getBeanDefinition());
-
     }
+
 }

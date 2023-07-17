@@ -39,7 +39,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class GroovyBeanScriptLoader implements ImportBeanDefinitionRegistrar, BeanFactoryAware, ResourceLoaderAware {
     private static final Logger log = LoggerFactory.getLogger(GroovyBeanScriptLoader.class);
-    public   Map<ResourceScriptSource, TargetSourceFactoryBean> targetSourceCache = new ConcurrentHashMap<>(32);
+    public final Map<ResourceScriptSource, TargetSourceFactoryBean> targetSourceCache = new ConcurrentHashMap<>(32);
     private static final String SCRIPT_FACTORY_NAME_PREFIX = "scriptFactory.";
     private ScriptConfig scriptConfig;
     private ResourceLoader resourceLoader;

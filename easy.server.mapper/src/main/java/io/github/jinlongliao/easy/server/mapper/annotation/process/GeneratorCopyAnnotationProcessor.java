@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
@@ -26,12 +27,18 @@ import java.util.stream.Collectors;
  **/
 @SupportedAnnotationTypes("io.github.jinlongliao.easy.server.mapper.annotation.GeneratorCopy")
 public class GeneratorCopyAnnotationProcessor extends AbstractGeneratorAnnotationProcessor {
-    public static final String PATH = "META-INF/com/common/mapper/mapper/annotation/GeneratorCopy.dat";
+    public static final String PATH = "META-INF/io/github/jinlongliao/easy/server/mapper/annotation/GeneratorCopy.dat";
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @Override
     public Class<? extends Annotation> getAnnotation() {
         return GeneratorCopy.class;
+    }
+
+    @Override
+    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+        super.process(annotations, roundEnv);
+        return true;
     }
 
     @Override

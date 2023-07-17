@@ -1,14 +1,14 @@
 package io.github.jinlongliao.easy.server.mapper.spring;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.ClassMethodCoreGenerator;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.IData2Object2;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.plugin.core.array.ArrayClassMethodCoreGenerator;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.plugin.core.array.IArrayData2Object2;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.plugin.core.map.IMapData2Object2;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.plugin.core.map.MapClassMethodCoreGenerator;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.plugin.servlet.IServletData2Object;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.converter.plugin.servlet.ServletExtraClassMethodGenerator;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.generator.AsmProxyCodeGenerator;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.converter.ClassMethodCoreGenerator;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.converter.IData2Object2;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.converter.plugin.core.array.ArrayClassMethodCoreGenerator;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.converter.plugin.core.array.IArrayData2Object2;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.converter.plugin.core.map.IMapData2Object2;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.converter.plugin.core.map.MapClassMethodCoreGenerator;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.converter.plugin.servlet.IServletData2Object;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.converter.plugin.servlet.ServletExtraClassMethodGenerator;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.generator.AsmProxyCodeGenerator;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -88,7 +88,7 @@ public class BeanMapperFactory implements InvocationHandler {
 
     private Object getResultByServlet(Object[] args) {
         Class tClass = (Class) args[0];
-        javax.servlet.http.HttpServletRequest params = (javax.servlet.http.HttpServletRequest) args[1];
+        jakarta.servlet.http.HttpServletRequest params = (jakarta.servlet.http.HttpServletRequest) args[1];
         return ((IServletData2Object) this.common(tClass,
                 SERVLET_EXTRA_CLASS_METHOD_GENERATOR,
                 searchParent ? FULL_DATA_2_OBJECT_WEB_CACHE : DATA_2_OBJECT_WEB_CACHE,

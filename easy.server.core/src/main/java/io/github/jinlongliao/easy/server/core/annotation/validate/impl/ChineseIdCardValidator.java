@@ -2,8 +2,8 @@ package io.github.jinlongliao.easy.server.core.annotation.validate.impl;
 
 import io.github.jinlongliao.easy.server.core.annotation.validate.ChineseIdCarNo;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,19 +41,19 @@ public class ChineseIdCardValidator implements ConstraintValidator<ChineseIdCarN
     /**
      * 18位身份证号码正则
      */
-    private static Pattern ID_CARD_18_REGEX = Pattern.compile("^[1-9](\\d{5})(19|20)(\\d{2})((0[1-9])|10|11|12)(([0-2][1-9])|10|20|30|31)(\\d{3})(\\d|X|x)$");
+    private static final Pattern ID_CARD_18_REGEX = Pattern.compile("^[1-9](\\d{5})(19|20)(\\d{2})((0[1-9])|10|11|12)(([0-2][1-9])|10|20|30|31)(\\d{3})(\\d|X|x)$");
     /**
      * 15位身份证号码正则
      */
-    private static Pattern ID_CARD_15_REGEX = Pattern.compile("^[1-9](\\d{5})(\\d{2})((0[1-9])|10|11|12)(([0-2][1-9])|10|20|30|31)(\\d{3})$");
+    private static final Pattern ID_CARD_15_REGEX = Pattern.compile("^[1-9](\\d{5})(\\d{2})((0[1-9])|10|11|12)(([0-2][1-9])|10|20|30|31)(\\d{3})$");
     /**
      * 平年日期正则
      */
-    private static Pattern ORDINARY_YEAR_REGEX = Pattern.compile("(((0[13578])|10|12)(([0-2][1-9])|10|20|30|31)|(((0[469])|11)(([0-2][1-9])|10|20|30))|(02(([0-2][1-8])|09|19|10|20)))");
+    private static final Pattern ORDINARY_YEAR_REGEX = Pattern.compile("(((0[13578])|10|12)(([0-2][1-9])|10|20|30|31)|(((0[469])|11)(([0-2][1-9])|10|20|30))|(02(([0-2][1-8])|09|19|10|20)))");
     /**
      * 闰年日期正则
      */
-    private static Pattern LEAP_YEAR_REGEX = Pattern.compile("(((0[13578])|10|12)(([0-2][1-9])|10|20|30|31)|(((0[469])|11)(([0-2][1-9])|10|20|30))|(02(([0-2][1-9])|10|20)))");
+    private static final Pattern LEAP_YEAR_REGEX = Pattern.compile("(((0[13578])|10|12)(([0-2][1-9])|10|20|30|31)|(((0[469])|11)(([0-2][1-9])|10|20|30))|(02(([0-2][1-9])|10|20)))");
     /**
      * 1-17位相乘因子数组
      */
@@ -64,11 +64,6 @@ public class ChineseIdCardValidator implements ConstraintValidator<ChineseIdCarN
     private final static char[] RANDOM = "10X98765432".toCharArray();
     private static final int EIGHTEEN = 18;
     private static final int FIFTEEN = 18;
-
-    @Override
-    public void initialize(ChineseIdCarNo constraintAnnotation) {
-
-    }
 
     @Override
     public boolean isValid(String idCardNo, ConstraintValidatorContext context) {

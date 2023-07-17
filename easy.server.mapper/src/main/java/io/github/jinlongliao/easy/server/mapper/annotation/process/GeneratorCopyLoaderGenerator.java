@@ -2,7 +2,7 @@ package io.github.jinlongliao.easy.server.mapper.annotation.process;
 
 import io.github.jinlongliao.easy.server.mapper.annotation.GeneratorHelper;
 import io.github.jinlongliao.easy.server.mapper.annotation.LoaderGenerator;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.core.generator.AsmProxyCodeGenerator;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.generator.AsmProxyCodeGenerator;
 import io.github.jinlongliao.easy.server.mapper.spring.BeanMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

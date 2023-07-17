@@ -1,7 +1,7 @@
 package io.github.jinlongliao.easy.server.extend.response;
 
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.converter.InnerConverter;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.converter.InnerConverter;
 import io.github.jinlongliao.easy.server.core.model.LogicModel;
 import io.github.jinlongliao.easy.server.core.parser.IDefaultValueConverter;
 import io.github.jinlongliao.easy.server.core.parser.IMessageParserCallBack;
@@ -9,7 +9,7 @@ import io.github.jinlongliao.easy.server.core.parser.IRequestStreamFactory;
 import io.github.jinlongliao.easy.server.core.parser.inner.AbstractRequestParseRule;
 
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**

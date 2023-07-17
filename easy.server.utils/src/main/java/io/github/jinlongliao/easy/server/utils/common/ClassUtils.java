@@ -1,19 +1,14 @@
 package io.github.jinlongliao.easy.server.utils.common;
 
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+
+import java.lang.invoke.MethodHandles;
 
 /**
  * @author: liaojinlong
  * @date: 2022-06-17 11:22
  */
 public final class ClassUtils {
-    private static final ClassLoader LOADER = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
-        @Override
-        public ClassLoader run() {
-            return getClass().getClassLoader();
-        }
-    });
+    private static final ClassLoader LOADER = MethodHandles.lookup().lookupClass().getClassLoader();
 
     public static boolean existClass(String className) {
         try {

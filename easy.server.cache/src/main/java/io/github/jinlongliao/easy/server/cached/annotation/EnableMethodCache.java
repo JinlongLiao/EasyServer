@@ -26,4 +26,5 @@ public @interface EnableMethodCache {
     int order() default Ordered.LOWEST_PRECEDENCE;
 
     String[] basePackages();
+
 }

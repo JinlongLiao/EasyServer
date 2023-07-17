@@ -1,7 +1,6 @@
 package io.github.jinlongliao.easy.server.script.groovy.bean;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct.annotation.Ignore;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.annotation.Ignore2;
+import io.github.jinlongliao.easy.server.mapper.annotation.Ignore;
 import io.github.jinlongliao.easy.server.script.groovy.ResourceScriptSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,7 @@ import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.integration.scripting.ScriptingException;
 import org.springframework.scripting.groovy.GroovyScriptFactory;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.invoke.MethodHandles;
@@ -71,7 +70,7 @@ public class TargetSourceFactoryBean extends ApplicationObjectSupport implements
             if (declaredField.getAnnotation(Ignore.class) != null) {
                 continue;
             }
-            if (declaredField.getAnnotation(Ignore2.class) != null) {
+            if (declaredField.getAnnotation(Ignore.class) != null) {
                 continue;
             }
             boolean autowire = false;

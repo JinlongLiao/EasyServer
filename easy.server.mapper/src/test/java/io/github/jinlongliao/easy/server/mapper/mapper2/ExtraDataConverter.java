@@ -1,6 +1,6 @@
 package io.github.jinlongliao.easy.server.mapper.mapper2;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.converter.DefaultDataConverter;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.converter.DefaultDataConverter;
 
 /**
  * @date 2023-01-16 17:33

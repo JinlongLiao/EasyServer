@@ -3,7 +3,7 @@ package io.github.jinlongliao.easy.server.netty.demo.logic.request;
 
 import io.github.jinlongliao.easy.server.core.model.LogicModel;
 import io.github.jinlongliao.easy.server.core.model.MsgModel;
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct2.annotation.Ignore2;
+import io.github.jinlongliao.easy.server.mapper.annotation.Ignore;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -15,18 +15,18 @@ import java.util.*;
  */
 public class LogicRequest extends IRequest {
 
-    @Ignore2
+    @Ignore
     private static boolean init = true;
-    @Ignore2
+    @Ignore
     private static Set<String> common_field;
-    @Ignore2
+    @Ignore
     private LogicModel logicModel;
 
 
     /**
      * 反射函数使用的参描述
      */
-    @Ignore2
+    @Ignore
     private Object[] args;
 
     static {
