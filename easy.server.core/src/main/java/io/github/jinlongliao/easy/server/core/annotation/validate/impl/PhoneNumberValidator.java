@@ -3,8 +3,8 @@ package io.github.jinlongliao.easy.server.core.annotation.validate.impl;
 
 import io.github.jinlongliao.easy.server.core.annotation.validate.Phone;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
 /**
  * validate mobile phone number

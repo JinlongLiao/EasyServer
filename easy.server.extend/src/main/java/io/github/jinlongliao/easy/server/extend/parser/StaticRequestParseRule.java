@@ -8,7 +8,7 @@ import io.github.jinlongliao.easy.server.core.parser.IRequestStreamFactory;
 import io.github.jinlongliao.easy.server.core.parser.inner.AbstractRequestParseRule;
 
 import io.github.jinlongliao.easy.server.mapper.utils.StringUtil;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import java.util.Map;
 import java.util.Objects;

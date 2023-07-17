@@ -236,18 +236,25 @@ public class MethodParse implements AutoCloseable {
             LogicAlias logicAlias = method.getAnnotation(LogicAlias.class);
             if (Objects.nonNull(logicAlias)) {
                 String value = logicAlias.value();
-                if (value.equals("value")) {
-                    logicRequestParamWrap.setValue((String) method.invoke(annotation));
-                } else if (value.equals("length")) {
-                    logicRequestParamWrap.setLength((int) method.invoke(annotation));
-                } else if (value.equals("dynamicLength")) {
-                    logicRequestParamWrap.setDynamicLength((boolean) method.invoke(annotation));
-                } else if (value.equals("defaultValue")) {
-                    logicRequestParamWrap.setDefaultValue((String) method.invoke(annotation));
-                } else if (value.equals("isCommon")) {
-                    logicRequestParamWrap.setCommon((boolean) method.invoke(annotation));
-                } else if (value.equals("innerParse")) {
-                    logicRequestParamWrap.setInnerParse((boolean) method.invoke(annotation));
+                switch (value) {
+                    case "value":
+                        logicRequestParamWrap.setValue((String) method.invoke(annotation));
+                        break;
+                    case "length":
+                        logicRequestParamWrap.setLength((int) method.invoke(annotation));
+                        break;
+                    case "dynamicLength":
+                        logicRequestParamWrap.setDynamicLength((boolean) method.invoke(annotation));
+                        break;
+                    case "defaultValue":
+                        logicRequestParamWrap.setDefaultValue((String) method.invoke(annotation));
+                        break;
+                    case "isCommon":
+                        logicRequestParamWrap.setCommon((boolean) method.invoke(annotation));
+                        break;
+                    case "innerParse":
+                        logicRequestParamWrap.setInnerParse((boolean) method.invoke(annotation));
+                        break;
                 }
             }
         }

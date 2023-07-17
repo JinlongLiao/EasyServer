@@ -186,7 +186,7 @@ public class ParamElParserGenerator {
 
 
     private static String buildProxyClassName(Method method, String el) {
-        StringBuilder builder = new StringBuilder(ParamElParserGenerator.class.getPackageName())
+        StringBuilder builder = new StringBuilder(ParamElParserGenerator.class.getPackage().getName())
                 .append("/")
                 .append(method.getDeclaringClass().getSimpleName().toLowerCase())
                 .append("/")

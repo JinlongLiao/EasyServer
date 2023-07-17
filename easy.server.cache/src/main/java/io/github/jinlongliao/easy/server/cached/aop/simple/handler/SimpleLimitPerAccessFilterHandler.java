@@ -22,7 +22,8 @@ public class SimpleLimitPerAccessFilterHandler implements ISimpleCacheHandler {
 
     @Override
     public Object cacheHandler(SimpleCacheNode cacheNode, Object target, Object... params) throws Exception {
-        if (cacheNode.getAnnotation() instanceof SimpleGetCache getCache) {
+        if (cacheNode.getAnnotation() instanceof SimpleGetCache ) {
+            SimpleGetCache getCache = (SimpleGetCache) cacheNode.getAnnotation();
             long milliSecond = getCache.milliSecond();
             int i = getCache.argsIndex();
             StringBuilder keyBuffer = new StringBuilder(cacheNode.getMethodFullName());

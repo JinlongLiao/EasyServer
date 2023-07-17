@@ -11,9 +11,11 @@ import org.hibernate.validator.HibernateValidatorConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.validation.*;
-import jakarta.validation.executable.ExecutableValidator;
+import javax.validation.*;
+import javax.validation.executable.ExecutableValidator;
 
+import javax.validation.Validation;
+import javax.validation.ValidatorFactory;
 import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.Set;

@@ -23,7 +23,7 @@ public class ServletExtraClassMethodGenerator extends AbstractExtraClassMethodGe
                                                 String className,
                                                 ClassWriter cw,
                                                 Class<? extends ExtraFieldConverter> filedValueConverter) {
-        MethodVisitor methodVisitor = cw.visitMethod(ACC_PUBLIC, "toHttpServletRequestConverter", "(Ljakarta/servlet/http/HttpServletRequest;)Ljava/lang/Object;", null, null);
+        MethodVisitor methodVisitor = cw.visitMethod(ACC_PUBLIC, "toHttpServletRequestConverter", "(Ljavax/servlet/http/HttpServletRequest;)Ljava/lang/Object;", null, null);
 
         methodVisitor.visitCode();
 
@@ -54,7 +54,7 @@ public class ServletExtraClassMethodGenerator extends AbstractExtraClassMethodGe
         String sourceName = fieldParserBody.getSourceName();
         methodVisitor.visitVarInsn(ALOAD, 1);
         methodVisitor.visitLdcInsn(sourceName);
-        methodVisitor.visitMethodInsn(INVOKEINTERFACE, "jakarta/servlet/http/HttpServletRequest", "getParameter", "(Ljava/lang/String;)Ljava/lang/String;", true);
+        methodVisitor.visitMethodInsn(INVOKEINTERFACE, "javax/servlet/http/HttpServletRequest", "getParameter", "(Ljava/lang/String;)Ljava/lang/String;", true);
         methodVisitor.visitVarInsn(ASTORE, maxLocals.getAndIncrement());
     }
 

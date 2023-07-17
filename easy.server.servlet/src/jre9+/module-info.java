@@ -7,5 +7,5 @@ module easy.server.servlet {
     exports io.github.jinlongliao.easy.server;
     exports io.github.jinlongliao.easy.server.servlet;
     exports io.github.jinlongliao.easy.server.servlet.config;
-    requires static jakarta.servlet;
+    requires static javax.servlet.api;
 }

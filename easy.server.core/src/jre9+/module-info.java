@@ -20,9 +20,8 @@ module easy.server.core {
     requires spring.context;
     requires easy.server.mapper;
     requires org.hibernate.validator;
-    requires static jakarta.servlet;
+    requires static javax.servlet;
 
     uses io.github.jinlongliao.easy.server.core.core.spring.register.ExtraMethodAnnotationProcess;
-    requires transitive jakarta.validation;
-
+    requires static javax.validation;
 }

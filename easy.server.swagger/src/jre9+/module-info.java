@@ -16,5 +16,5 @@ module easy.server.swagger {
     requires spring.aop;
     requires spring.beans;
     requires spring.context;
-    requires static jakarta.servlet;
+    requires static javax.servlet.api;
 }

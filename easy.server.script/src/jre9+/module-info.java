@@ -8,7 +8,7 @@ module easy.server.script {
 
 
     requires easy.server.mapper;
-    requires static jakarta.annotation;
+    requires static javax.annotation;
 
     exports io.github.jinlongliao.easy.server.script.groovy;
     exports io.github.jinlongliao.easy.server.script.groovy.config;

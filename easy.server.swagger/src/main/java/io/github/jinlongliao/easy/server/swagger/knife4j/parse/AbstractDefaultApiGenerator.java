@@ -108,7 +108,7 @@ public abstract class AbstractDefaultApiGenerator implements ApiGenerator {
         apiDoc.setHost(this.getHost());
         apiDoc.setInfo(this.getAipInfo());
         apiDoc.setSchemes(this.getSchemes());
-        apiDoc.setTags(Collections.singletonList(new Tag("servlet", "jakarta.servlet.Servlet")));
+        apiDoc.setTags(Collections.singletonList(new Tag("servlet", "javax.servlet.Servlet")));
         apiDoc.setPaths(this.getServletPath(servletMap));
         return apiDoc;
     }

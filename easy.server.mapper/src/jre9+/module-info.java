@@ -24,7 +24,7 @@ module easy.server.mapper {
     requires spring.beans;
 
     requires static java.compiler;
-    requires static jakarta.servlet;
+    requires static javax.servlet.api;
     requires static org.slf4j;
 
     uses io.github.jinlongliao.easy.server.mapper.annotation.LoaderGenerator;

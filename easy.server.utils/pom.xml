@@ -5,7 +5,7 @@
     <parent>
         <artifactId>easy.server</artifactId>
         <groupId>io.github.jinlongliao</groupId>
-        <version>1.2.3</version>
+        <version>1.2.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,8 +15,8 @@
         <logback.version>1.2.11</logback.version>
         <log4j2.version>2.17.2</log4j2.version>
         <fastjson.version>1.2.83</fastjson.version>
-        <fastjson2.version>2.0.21</fastjson2.version>
-        <jackjson.version>2.14.0</jackjson.version>
+        <fastjson2.version>2.0.35</fastjson2.version>
+        <jackjson.version>2.15.2</jackjson.version>
     </properties>
     <dependencies>
         <!--log4j2-->

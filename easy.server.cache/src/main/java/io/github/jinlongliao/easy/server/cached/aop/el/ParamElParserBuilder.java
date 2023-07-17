@@ -51,7 +51,8 @@ public class ParamElParserBuilder {
         }
         Type[] genericParameterTypes = method.getGenericParameterTypes();
         Map<Type, Type[]> generic;
-        if (genericParameterTypes[argIndex] instanceof ParameterizedType parameterizedType) {
+        if (genericParameterTypes[argIndex] instanceof ParameterizedType ) {
+            ParameterizedType parameterizedType = (ParameterizedType) genericParameterTypes[argIndex];
             Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
             generic = Collections.singletonMap(parameterizedType.getRawType(), actualTypeArguments);
         } else {

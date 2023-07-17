@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.github.jinlongliao</groupId>
         <artifactId>easy.server</artifactId>
-        <version>1.2.3</version>
+        <version>1.2.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -14,8 +14,19 @@
     <properties>
         <logback.version>1.2.11</logback.version>
         <spring.version>5.3.24</spring.version>
+        <asm.version>9.5</asm.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>io.github.jinlongliao</groupId>
+            <artifactId>easy.server.mapper</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.jinlongliao</groupId>
+            <artifactId>easy.server.core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
@@ -41,26 +52,24 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.github.jinlongliao</groupId>
-            <artifactId>easy.server.mapper</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.github.jinlongliao</groupId>
-            <artifactId>easy.server.core</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.github.jinlongliao</groupId>
-            <artifactId>easy.server.core</artifactId>
-            <version>1.2.3</version>
-            <scope>compile</scope>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-util</artifactId>
+            <version>${asm.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                    <proc>none</proc>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.moditect</groupId>
                 <artifactId>moditect-maven-plugin</artifactId>

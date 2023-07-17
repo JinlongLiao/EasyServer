@@ -5,6 +5,7 @@ import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.converter.pl
 import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.converter.plugin.servlet.IServletData2Object;
 import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.converter.plugin.servlet.ServletExtraClassMethodGenerator;
 import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.generator.AsmProxyCodeGenerator;
+import io.github.jinlongliao.easy.server.mapper.utils.MapperStructConfig;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -13,7 +14,7 @@ import java.util.Map;
 
 public class AsmProxyCodeGenTest {
     static {
-        System.setProperty("io.github.jinlongliao.commons.mapstruct.core.Proxy.debug", "true");
+        MapperStructConfig.setDev(true, "./target/", "./target/");
     }
 
     private AsmProxyCodeGenerator asmProxyCodeGen = new AsmProxyCodeGenerator();

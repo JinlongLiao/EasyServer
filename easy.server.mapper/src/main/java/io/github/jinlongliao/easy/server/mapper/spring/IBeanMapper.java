@@ -35,6 +35,6 @@ public interface IBeanMapper {
      * @param <T>
      * @return T
      */
-    <T> T servletBeanMapper(Class<T> tClass, jakarta.servlet.http.HttpServletRequest req);
+    <T> T servletBeanMapper(Class<T> tClass, javax.servlet.http.HttpServletRequest req);
 
 }

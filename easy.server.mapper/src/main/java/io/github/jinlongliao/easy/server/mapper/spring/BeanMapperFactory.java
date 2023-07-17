@@ -88,7 +88,7 @@ public class BeanMapperFactory implements InvocationHandler {
 
     private Object getResultByServlet(Object[] args) {
         Class tClass = (Class) args[0];
-        jakarta.servlet.http.HttpServletRequest params = (jakarta.servlet.http.HttpServletRequest) args[1];
+        javax.servlet.http.HttpServletRequest params = (javax.servlet.http.HttpServletRequest) args[1];
         return ((IServletData2Object) this.common(tClass,
                 SERVLET_EXTRA_CLASS_METHOD_GENERATOR,
                 searchParent ? FULL_DATA_2_OBJECT_WEB_CACHE : DATA_2_OBJECT_WEB_CACHE,

@@ -4,7 +4,7 @@ import io.github.jinlongliao.easy.server.mapper.annotation.GeneratorCopy;
 import io.github.jinlongliao.easy.server.mapper.annotation.Mapping;
 import io.github.jinlongliao.easy.server.core.annotation.LogicRequestParam;
 
-import jakarta.validation.constraints.NotNull;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author liaojinlong

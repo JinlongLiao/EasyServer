@@ -24,7 +24,8 @@ public class PerAccessLimitFilterHandler implements ICacheHandler {
 
     @Override
     public Object cacheHandler(CacheNode cacheNode, Method method, MethodInvocation invocation) throws Throwable {
-        if (cacheNode.getAnnotation() instanceof GetCache getCache) {
+        if (cacheNode.getAnnotation() instanceof GetCache) {
+            GetCache getCache = (GetCache) cacheNode.getAnnotation();
             long milliSecond = getCache.milliSecond();
             int i = getCache.argsIndex();
             Object[] params = invocation.getArguments();

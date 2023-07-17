@@ -2,8 +2,8 @@ package io.github.jinlongliao.easy.server.core.annotation.validate.impl;
 
 import io.github.jinlongliao.easy.server.core.annotation.validate.ChineseIdCarNo;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

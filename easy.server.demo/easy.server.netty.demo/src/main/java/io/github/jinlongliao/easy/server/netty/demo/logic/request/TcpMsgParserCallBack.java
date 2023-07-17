@@ -7,7 +7,7 @@ import io.github.jinlongliao.easy.server.core.parser.MeType;
 import io.github.jinlongliao.easy.server.netty.demo.core.tcp.conn.TcpConnection;
 import io.github.jinlongliao.easy.server.utils.common.IPAddressUtil;
 
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 消息解析

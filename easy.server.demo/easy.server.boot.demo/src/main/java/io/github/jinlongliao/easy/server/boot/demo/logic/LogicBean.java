@@ -18,9 +18,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.util.Assert;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.constraints.NotNull;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author liaojinlong

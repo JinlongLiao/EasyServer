@@ -3,7 +3,7 @@ package io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.converter.p
 
 import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.converter.IData2Object2;
 
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 扩展JavaX Servlet
@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public interface IServletData2Object<T> extends IData2Object2<T> {
 
     /**
-     * {@link jakarta.servlet.http.HttpServletRequest}转换接口
+     * {@link javax.servlet.http.HttpServletRequest}转换接口
      *
      * @param request
      * @return T

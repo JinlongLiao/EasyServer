@@ -220,7 +220,7 @@ ___io.github.jinlongliao.easy.server.mapper.core.mapstruct2.converter.InnerConve
 
 
 ```java
-public @interface Mapping2 {
+public @interface Mapping {
     /**
      * @return 映射源名称
      */
@@ -249,7 +249,7 @@ public @interface Mapping2 {
 
     /**
      * @return Class Name
-     * @see {@link Mapping2#converterMethod()}
+     * @see {@link Mapping#converterMethod()}
      */
     Class converterClass() default InnerConverter.class;
 }
@@ -355,7 +355,7 @@ public interface IBeanMapper {
      * @param <T>
      * @return T
      */
-    <T> T servletBeanMapper(Class<T> tClass, jakarta.servlet.http.HttpServletRequest req);
+    <T> T servletBeanMapper(Class<T> tClass, javax.servlet.http.HttpServletRequest req);
 
 }
 ```

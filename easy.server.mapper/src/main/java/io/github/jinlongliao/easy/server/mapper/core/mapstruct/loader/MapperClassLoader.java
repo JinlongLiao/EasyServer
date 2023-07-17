@@ -79,7 +79,7 @@ public class MapperClassLoader extends ClassLoader {
         if (Objects.isNull(defaultValue)) {
             Optional<Constructor<?>> first = Arrays.stream(objectClass.getDeclaredConstructors())
                     .findFirst();
-            if (first.isEmpty()) {
+            if (!first.isPresent()) {
                 return null;
             }
             Constructor<?> constructor = first.get();
@@ -88,7 +88,7 @@ public class MapperClassLoader extends ClassLoader {
                 if (parameterTypes.length == 0) {
                     defaultValue = constructor.newInstance();
                 } else {
-                    Object[] array = Arrays.stream(parameterTypes).map(CLassUtils::getDefaultValue).toList().toArray(new Object[0]);
+                    Object[] array = Arrays.stream(parameterTypes).map(CLassUtils::getDefaultValue).toArray(Object[]::new);
                     defaultValue = constructor.newInstance(array);
                 }
             } catch (Exception e) {

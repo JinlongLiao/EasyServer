@@ -12,7 +12,7 @@ import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.integration.scripting.ScriptingException;
 import org.springframework.scripting.groovy.GroovyScriptFactory;
 
-import jakarta.annotation.Resource;
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.invoke.MethodHandles;

@@ -20,7 +20,7 @@ module easy.server.utils {
     requires static ch.qos.logback.classic;
     requires static org.apache.logging.log4j;
     requires static org.apache.logging.log4j.core;
-    requires static jakarta.servlet;
+    requires static javax.servlet.api;
 
     uses io.github.jinlongliao.easy.server.utils.logger.core.operate.LoggerOperator;
     uses io.github.jinlongliao.easy.server.utils.logger.core.callback.LoggerCallback;
