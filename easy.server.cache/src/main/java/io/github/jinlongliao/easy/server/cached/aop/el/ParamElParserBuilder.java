@@ -23,9 +23,18 @@ import static io.github.jinlongliao.easy.server.cached.aop.el.ParamElParserGener
  */
 public class ParamElParserBuilder {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    private static final Map<String, ParamElParser> cache = new ConcurrentHashMap<>(16);
+    private static final Map<Method, ParamElParser> cache = new ConcurrentHashMap<>(16);
 
-    public static ParamElParser build(String el, Method method, Class<?> paramClass, Map<Type, Type[]> generic) {
+    public static ParamElParser build(String el, int argIndex, Method method, Class<?> paramClass) {
+        Type[] genericParameterTypes = method.getGenericParameterTypes();
+        Map<Type, Type[]> generic;
+        if (genericParameterTypes[argIndex] instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) genericParameterTypes[argIndex];
+            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+            generic = Collections.singletonMap(parameterizedType.getRawType(), actualTypeArguments);
+        } else {
+            generic = Collections.emptyMap();
+        }
         String[] ands = el.trim().split("and");
         List<String[]> elList = new ArrayList<>(4);
         for (String and : ands) {
@@ -49,18 +58,6 @@ public class ParamElParserBuilder {
         if (StringUtil.isEmpty(keyValueEl)) {
             return stringBuilder.toString();
         }
-        Type[] genericParameterTypes = method.getGenericParameterTypes();
-        Map<Type, Type[]> generic;
-        if (genericParameterTypes[argIndex] instanceof ParameterizedType ) {
-            ParameterizedType parameterizedType = (ParameterizedType) genericParameterTypes[argIndex];
-            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-            generic = Collections.singletonMap(parameterizedType.getRawType(), actualTypeArguments);
-        } else {
-            generic = Collections.emptyMap();
-        }
-        Class<?> paramClass = param.getClass();
-        return Objects.requireNonNull(cache.computeIfAbsent(keyValueEl, k -> build(k, method, paramClass, generic))).parseValue(stringBuilder, param);
+        return Objects.requireNonNull(cache.computeIfAbsent(method, k -> build(keyValueEl, argIndex, method, param.getClass()))).parseValue(stringBuilder, param);
     }
-
-
 }
