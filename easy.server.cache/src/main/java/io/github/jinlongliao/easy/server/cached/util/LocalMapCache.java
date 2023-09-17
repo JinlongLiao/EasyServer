@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class LocalMapCache<T> {
     private static final AtomicInteger index = new AtomicInteger();
     private static final Logger log = LoggerFactory.getLogger(LocalMapCache.class);
-    private static final ThreadPoolTaskExecutor TF;
+    public static final ThreadPoolTaskExecutor TF;
     /**
      * 缓存最大个数
      */
@@ -27,9 +27,9 @@ public class LocalMapCache<T> {
      */
     private int currentSize = 0;
     /**
-     * 时间一分钟
+     * 时间10S
      */
-    public static final long ONE_MINUTE = 60 * 1000L;
+    public static final long TEN_SECOND = 10 * 1000L;
     /**
      * 缓存对象
      */
@@ -49,12 +49,17 @@ public class LocalMapCache<T> {
         TF.setCorePoolSize(1);
         TF.setMaxPoolSize(2);
         TF.setThreadNamePrefix("LocalMapCache thread");
+        TF.afterPropertiesSet();
     }
 
     public LocalMapCache(int cacheMaxNumber) {
         this.cacheMaxNumber = cacheMaxNumber;
         this.cacheObjMap = new ConcurrentHashMap<>(cacheMaxNumber);
         ALL_CACHE.add(this);
+    }
+
+    public int getCurrentSize() {
+        return this.currentSize;
     }
 
     /**
@@ -122,6 +127,7 @@ public class LocalMapCache<T> {
             if (log.isTraceEnabled()) {
                 log.trace("have delete key :{}", cacheKey);
             }
+            cacheUseLogList.remove(cacheKey);
             currentSize = currentSize - 1;
         }
     }
@@ -164,22 +170,37 @@ public class LocalMapCache<T> {
      * 删除过期的缓存
      */
     static void deleteTimeOut() {
+        deleteTimeOut((true));
+    }
+
+    /**
+     * 删除过期的缓存
+     */
+    static void deleteTimeOut(boolean tryAg) {
         if (log.isTraceEnabled()) {
             log.trace("delete time out run!");
         }
         List<String> deleteKeyList = new LinkedList<>();
-        for (LocalMapCache cache : ALL_CACHE) {
-            Map<String, CacheObj> cacheObjMap = cache.cacheObjMap;
-            for (Map.Entry<String, CacheObj> entry : cacheObjMap.entrySet()) {
-                long ttlTime = entry.getValue().getTtlTime();
-                if (ttlTime < System.currentTimeMillis() && ttlTime != -1L) {
-                    deleteKeyList.add(entry.getKey());
+        try {
+            for (LocalMapCache cache : ALL_CACHE) {
+                Map<String, CacheObj> cacheObjMap = cache.cacheObjMap;
+                for (Map.Entry<String, CacheObj> entry : cacheObjMap.entrySet()) {
+                    long ttlTime = entry.getValue().getTtlTime();
+                    if (ttlTime < System.currentTimeMillis() && ttlTime != -1L) {
+                        deleteKeyList.add(entry.getKey());
+                    }
+                }
+                for (String deleteKey : deleteKeyList) {
+                    cache.deleteCache(deleteKey);
                 }
             }
-            for (String deleteKey : deleteKeyList) {
-                cache.deleteCache(deleteKey);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            if (tryAg) {
+                deleteTimeOut((false));
             }
         }
+
     }
 
     /**
@@ -226,7 +247,7 @@ public class LocalMapCache<T> {
                 index.incrementAndGet();
                 ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1, TF);
                 CleanTimeOutThread cleanTimeOutThread = new CleanTimeOutThread();
-                executor.scheduleWithFixedDelay(cleanTimeOutThread, ONE_MINUTE, ONE_MINUTE, TimeUnit.SECONDS);
+                executor.scheduleWithFixedDelay(cleanTimeOutThread, TEN_SECOND, TEN_SECOND, TimeUnit.SECONDS);
                 setCleanThreadRun();
             }
         }
