@@ -37,7 +37,7 @@ public class WeAsyncHandler implements ICacheHandler {
     public WeAsyncHandler(ThreadPoolTaskExecutor threadPoolTaskExecutor, int maxSize) {
         this.threadPoolTaskExecutor = threadPoolTaskExecutor;
         this.maxSize = maxSize;
-        this.futureLocalMapCache = new LocalMapCache<>(maxSize) {
+        this.futureLocalMapCache = new LocalMapCache<Future<?>>(maxSize) {
             @Override
             public void deleteCache(String cacheKey) {
                 Future<?> future = getCache(cacheKey);
@@ -109,9 +109,15 @@ public class WeAsyncHandler implements ICacheHandler {
 
         Class<?> returnType = method.getReturnType();
         if (CompletableFuture.class.isAssignableFrom(returnType)) {
-            return this.threadPoolTaskExecutor.submitCompletable(task);
+            return CompletableFuture.supplyAsync(() -> {
+                try {
+                    return invocation.proceed();
+                } catch (Throwable e) {
+                    throw new ExeTimeoutException(e);
+                }
+            }, this.threadPoolTaskExecutor);
         } else if (org.springframework.util.concurrent.ListenableFuture.class.isAssignableFrom(returnType)) {
-            return ((org.springframework.core.task.AsyncListenableTaskExecutor) threadPoolTaskExecutor).submitListenable(task);
+            return threadPoolTaskExecutor.submitListenable(task);
         } else if (Future.class.isAssignableFrom(returnType)) {
             return this.threadPoolTaskExecutor.submit(task);
         }
@@ -119,7 +125,7 @@ public class WeAsyncHandler implements ICacheHandler {
         if (maxTimeout < 1) {
             maxTimeout = TimeUnit.MINUTES.toMillis(10);
         }
-        Future<Object> submit = this.threadPoolTaskExecutor.submitCompletable(task);
+        Future<Object> submit = this.threadPoolTaskExecutor.submit(task);
         try {
             Object o;
             if (returnType.equals(Void.class) || returnType.equals(Void.TYPE) || this.futureLocalMapCache.getCurrentSize() > maxSize) {
