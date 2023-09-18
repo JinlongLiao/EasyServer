@@ -6,15 +6,21 @@ package io.github.jinlongliao.easy.server.cached.aop.spring;
 import io.github.jinlongliao.easy.server.cached.CacheType;
 import io.github.jinlongliao.easy.server.cached.annotation.DelCache;
 import io.github.jinlongliao.easy.server.cached.annotation.GetCache;
+import io.github.jinlongliao.easy.server.cached.annotation.WeAsync;
+import io.github.jinlongliao.easy.server.cached.annotation.process.WeAsyncHandler;
 import io.github.jinlongliao.easy.server.cached.aop.spring.handler.ICacheHandler;
 import io.github.jinlongliao.easy.server.cached.field.spring.CacheConfig;
 import io.github.jinlongliao.easy.server.cached.field.spring.CacheNode;
+import io.github.jinlongliao.easy.server.cached.util.LocalMapCache;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -24,6 +30,7 @@ import java.util.Map;
  */
 public class CacheInterceptor implements MethodInterceptor, ApplicationContextAware {
     private final CacheConfig cacheConfig;
+    private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     public CacheInterceptor(CacheConfig cacheConfig) {
         this.cacheConfig = cacheConfig;
@@ -46,12 +53,15 @@ public class CacheInterceptor implements MethodInterceptor, ApplicationContextAw
         ICacheHandler handler = cacheNode.getCacheHandler();
         if (handler == null) {
             Class<? extends ICacheHandler> handlerClass;
-            if (cacheNode.getCacheType() == CacheType.DEL) {
-                handlerClass = ((DelCache) cacheNode.getAnnotation()).handler();
-            } else {
+            if (cacheNode.getCacheType() == CacheType.GET) {
                 handlerClass = ((GetCache) cacheNode.getAnnotation()).handler();
+            } else if (cacheNode.getCacheType() == CacheType.ASYNC) {
+                handlerClass = ((WeAsync) cacheNode.getAnnotation()).handler();
+            } else {
+                handlerClass = ((DelCache) cacheNode.getAnnotation()).handler();
             }
             handler = cacheConfig.getCacheHandler(handlerClass);
+
             cacheNode.setCacheHandler(handler);
         }
         return handler.cacheHandler(cacheNode, method, invocation);
@@ -61,7 +71,18 @@ public class CacheInterceptor implements MethodInterceptor, ApplicationContextAw
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         Map<String, ICacheHandler> beansOfType = applicationContext.getBeansOfType(ICacheHandler.class);
+        boolean addWeAsync = true;
         for (ICacheHandler cacheHandler : beansOfType.values()) {
+            if (addWeAsync) {
+                if (WeAsyncHandler.class.isAssignableFrom(cacheHandler.getClass())) {
+                    addWeAsync = false;
+                }
+            }
+            cacheConfig.addCacheHandler(cacheHandler);
+        }
+        if (addWeAsync) {
+            WeAsyncHandler cacheHandler = new WeAsyncHandler(LocalMapCache.TF , 1024);
+            log.warn("add WeAsync Handle :{}", cacheHandler);
             cacheConfig.addCacheHandler(cacheHandler);
         }
     }

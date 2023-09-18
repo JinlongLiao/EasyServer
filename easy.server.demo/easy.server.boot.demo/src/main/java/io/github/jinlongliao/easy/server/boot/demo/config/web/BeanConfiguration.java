@@ -2,6 +2,7 @@ package io.github.jinlongliao.easy.server.boot.demo.config.web;
 
 
 import io.github.jinlongliao.easy.server.boot.demo.config.swagger.DemoDefaultApiGenerator;
+import io.github.jinlongliao.easy.server.cached.annotation.process.WeAsyncHandler;
 import io.github.jinlongliao.easy.server.cached.aop.CasIfAbsent;
 import io.github.jinlongliao.easy.server.cached.aop.simple.handler.SimpleLimitPerAccessFilterHandler;
 import io.github.jinlongliao.easy.server.mapper.spring.BeanMapperFactoryBean;
@@ -61,6 +62,11 @@ public class BeanConfiguration {
     @Bean()
     public ScheduledThreadPoolExecutor scheduledThreadPoolExecutor(ThreadPoolTaskExecutor threadPoolTaskExecutor) {
         return new ScheduledThreadPoolExecutor(1, threadPoolTaskExecutor);
+    }
+
+    @Bean()
+    public WeAsyncHandler weAsyncHandler(ThreadPoolTaskExecutor threadPoolTaskExecutor) {
+        return new WeAsyncHandler(threadPoolTaskExecutor, 1024);
     }
 
     @Bean

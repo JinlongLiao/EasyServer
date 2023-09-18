@@ -19,8 +19,9 @@ module easy.server.cached {
     requires spring.core;
     requires spring.beans;
     requires spring.aop;
-    requires easy.server.mapper;
     requires easy.server.core;
+    requires easy.server.utils;
+    requires easy.server.mapper;
     requires java.compiler;
 
 
