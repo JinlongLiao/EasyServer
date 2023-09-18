@@ -10,4 +10,5 @@ public enum CacheType {
     NONE,
     GET,
     DEL,
+    ASYNC,
 }

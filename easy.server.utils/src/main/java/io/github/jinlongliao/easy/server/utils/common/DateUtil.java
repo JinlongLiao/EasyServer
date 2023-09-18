@@ -1,6 +1,7 @@
 package io.github.jinlongliao.easy.server.utils.common;
 
 
+import java.text.ParseException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -33,6 +34,8 @@ public class DateUtil {
     public static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern(STRING_DATE_TIME_FORMAT, Locale.CHINA);
     public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern(STRING_DATE_FORMAT, Locale.CHINA);
 
+    private static final DateTimeFormatter _DATE_FORMAT = DateTimeFormatter.ofPattern(STRING_DATE_FORMAT);
+    private static final DateTimeFormatter _DATETIME_FORMAT = DateTimeFormatter.ofPattern(STRING_DATE_TIME_FORMAT);
 
     private DateUtil() {
     }
@@ -244,4 +247,42 @@ public class DateUtil {
         return equals;
     }
 
+    /**
+     * parse datetime string, like "yyyy-MM-dd HH:mm:ss"
+     *
+     * @param dateString
+     * @return
+     * @throws ParseException
+     */
+    public static Date parseDateTime(String dateString) {
+        return parseDateTime(dateString, Duration.ZERO);
+    }
+
+    /**
+     * parse date string, like "yyyy-MM-dd HH:mm:s"
+     *
+     * @param dateString
+     * @return
+     * @throws ParseException
+     */
+    public static Date parseDate(String dateString, int day) {
+        if (StringUtil.isEmpty(dateString)) {
+            return null;
+        }
+        return Date.from(LocalDate.parse(dateString, _DATE_FORMAT).plusDays(day).atStartOfDay(ZONE_ID).toInstant());
+    }
+
+    /**
+     * parse datetime string, like "yyyy-MM-dd HH:mm:ss"
+     *
+     * @param dateString
+     * @return
+     * @throws ParseException
+     */
+    public static Date parseDateTime(String dateString, Duration duration) {
+        if (StringUtil.isEmpty(dateString)) {
+            return null;
+        }
+        return Date.from(LocalDateTime.parse(dateString, _DATETIME_FORMAT).plus(duration).atZone(ZONE_ID).toInstant());
+    }
 }

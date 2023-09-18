@@ -7,6 +7,7 @@ import io.github.jinlongliao.easy.server.cached.CacheType;
 import io.github.jinlongliao.easy.server.cached.annotation.DelCache;
 import io.github.jinlongliao.easy.server.cached.annotation.EnableCache;
 import io.github.jinlongliao.easy.server.cached.annotation.GetCache;
+import io.github.jinlongliao.easy.server.cached.annotation.WeAsync;
 import io.github.jinlongliao.easy.server.cached.field.spring.CacheConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,12 +71,16 @@ public class CachePointcut extends StaticMethodMatcherPointcut implements ClassF
     public boolean matches(Method method, Class<?> targetClass) {
         Annotation annotation = null;
         if (annotation == null) {
-            annotation = AnnotationUtils.getAnnotation(method, DelCache.class);
-            casData(annotation, CacheType.DEL, method, targetClass);
+            annotation = AnnotationUtils.getAnnotation(method, WeAsync.class);
+            casData(annotation, CacheType.ASYNC, method, targetClass);
         }
         if (annotation == null) {
             annotation = AnnotationUtils.getAnnotation(method, GetCache.class);
             casData(annotation, CacheType.GET, method, targetClass);
+        }
+        if (annotation == null) {
+            annotation = AnnotationUtils.getAnnotation(method, DelCache.class);
+            casData(annotation, CacheType.DEL, method, targetClass);
         }
         return annotation != null;
     }

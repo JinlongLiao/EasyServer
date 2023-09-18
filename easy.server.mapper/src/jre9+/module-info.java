@@ -20,12 +20,11 @@ module easy.server.mapper {
     exports io.github.jinlongliao.easy.server.mapper.annotation;
     exports io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm;
 
-
+    requires org.slf4j;
     requires spring.beans;
 
     requires static java.compiler;
-    requires static javax.servlet.api;
-    requires static org.slf4j;
+    requires static javax.servlet;
 
     uses io.github.jinlongliao.easy.server.mapper.annotation.LoaderGenerator;
     uses io.github.jinlongliao.easy.server.mapper.core.mapstruct.converter.InnerConverter;

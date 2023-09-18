@@ -18,6 +18,10 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <spring.boot.version>2.7.2</spring.boot.version>
+        <fastjson.version>1.2.83</fastjson.version>
+        <annotation.version>1.3.2</annotation.version>
+        <fastjson2.version>2.0.33</fastjson2.version>
+        <jackjson.version>2.15.2</jackjson.version>
         <start.class>io.github.jinlongliao.easy.server.netty.demo.NettyMainApplication</start.class>
     </properties>
     <dependencyManagement>
@@ -32,6 +36,27 @@
         </dependencies>
     </dependencyManagement>
     <dependencies>
+        <dependency>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
+            <version>${fastjson2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2-extension</artifactId>
+            <version>${fastjson2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>${annotation.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackjson.version}</version>
+        </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
