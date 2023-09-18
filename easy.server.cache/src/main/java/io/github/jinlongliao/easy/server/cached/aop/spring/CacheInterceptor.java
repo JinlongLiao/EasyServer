@@ -81,7 +81,7 @@ public class CacheInterceptor implements MethodInterceptor, ApplicationContextAw
             cacheConfig.addCacheHandler(cacheHandler);
         }
         if (addWeAsync) {
-            WeAsyncHandler cacheHandler = new WeAsyncHandler(LocalMapCache.TF.getThreadPoolExecutor(), 1024);
+            WeAsyncHandler cacheHandler = new WeAsyncHandler(LocalMapCache.TF , 1024);
             log.warn("add WeAsync Handle :{}", cacheHandler);
             cacheConfig.addCacheHandler(cacheHandler);
         }

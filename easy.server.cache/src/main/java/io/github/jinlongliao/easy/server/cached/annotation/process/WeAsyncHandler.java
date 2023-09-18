@@ -1,6 +1,7 @@
 package io.github.jinlongliao.easy.server.cached.annotation.process;
 
 
+import io.github.jinlongliao.easy.server.cached.CacheType;
 import io.github.jinlongliao.easy.server.cached.annotation.WeAsync;
 import io.github.jinlongliao.easy.server.cached.aop.spring.handler.ICacheHandler;
 import io.github.jinlongliao.easy.server.cached.exception.ExeTimeoutException;
@@ -12,16 +13,14 @@ import io.github.jinlongliao.easy.server.utils.common.UUIDHelper;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.util.StringUtils;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.Objects;
-import java.util.concurrent.Future;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 
 /**
  * 异步执行
@@ -31,12 +30,12 @@ import java.util.concurrent.TimeoutException;
  */
 public class WeAsyncHandler implements ICacheHandler {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    private final ThreadPoolExecutor threadPoolExecutor;
+    private final ThreadPoolTaskExecutor threadPoolTaskExecutor;
     private final int maxSize;
     private final LocalMapCache<Future<?>> futureLocalMapCache;
 
-    public WeAsyncHandler(ThreadPoolExecutor threadPoolExecutor, int maxSize) {
-        this.threadPoolExecutor = threadPoolExecutor;
+    public WeAsyncHandler(ThreadPoolTaskExecutor threadPoolTaskExecutor, int maxSize) {
+        this.threadPoolTaskExecutor = threadPoolTaskExecutor;
         this.maxSize = maxSize;
         this.futureLocalMapCache = new LocalMapCache<>(maxSize) {
             @Override
@@ -55,10 +54,11 @@ public class WeAsyncHandler implements ICacheHandler {
 
     @Override
     public Object cacheHandler(CacheNode cacheNode, Method method, MethodInvocation invocation) throws Throwable {
-        if (!(cacheNode instanceof WeAsync weAsync)) {
+        if (!(cacheNode.getCacheType() == CacheType.ASYNC)) {
             log.warn("not weAsync:{}", cacheNode);
             return invocation.proceed();
         }
+        WeAsync weAsync = (WeAsync) cacheNode.getAnnotation();
         try {
             return innerHandler(weAsync, method, invocation);
         } catch (ExeTimeoutException e) {
@@ -98,22 +98,31 @@ public class WeAsyncHandler implements ICacheHandler {
     }
 
     private Object innerHandler(WeAsync weAsync, Method method, MethodInvocation invocation) throws Throwable {
-        Class<?> returnType = method.getReturnType();
-        long maxTimeout = weAsync.maxTimeout();
-
-        if (maxTimeout < 1) {
-            maxTimeout = TimeUnit.MINUTES.toMillis(10);
-        }
-        Future<Object> submit = this.threadPoolExecutor.submit(() -> {
+        // task
+        Callable<Object> task = () -> {
             try {
                 return invocation.proceed();
             } catch (Throwable e) {
                 throw new ExeTimeoutException(e);
             }
-        });
+        };
+
+        Class<?> returnType = method.getReturnType();
+        if (CompletableFuture.class.isAssignableFrom(returnType)) {
+            return this.threadPoolTaskExecutor.submitCompletable(task);
+        } else if (org.springframework.util.concurrent.ListenableFuture.class.isAssignableFrom(returnType)) {
+            return ((org.springframework.core.task.AsyncListenableTaskExecutor) threadPoolTaskExecutor).submitListenable(task);
+        } else if (Future.class.isAssignableFrom(returnType)) {
+            return this.threadPoolTaskExecutor.submit(task);
+        }
+        long maxTimeout = weAsync.maxTimeout();
+        if (maxTimeout < 1) {
+            maxTimeout = TimeUnit.MINUTES.toMillis(10);
+        }
+        Future<Object> submit = this.threadPoolTaskExecutor.submitCompletable(task);
         try {
             Object o;
-            if (returnType.equals(Void.class) || returnType.equals(Void.TYPE)||this.futureLocalMapCache.getCurrentSize()>maxSize) {
+            if (returnType.equals(Void.class) || returnType.equals(Void.TYPE) || this.futureLocalMapCache.getCurrentSize() > maxSize) {
                 o = null;
                 this.futureLocalMapCache.setCache(UUIDHelper.mongoId(), submit, maxTimeout);
             } else {
