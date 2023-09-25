@@ -30,7 +30,7 @@
         <hibernate.validator.version>7.0.2.Final</hibernate.validator.version>
         <tomcat.version>10.1.9</tomcat.version>
         <groovy.version>4.0.12</groovy.version>
-        <spring.version>6.0.9</spring.version>
+        <spring.version>6.0.12</spring.version>
         <spring.groovy.version>6.1.0</spring.groovy.version>
     </properties>
     <build>

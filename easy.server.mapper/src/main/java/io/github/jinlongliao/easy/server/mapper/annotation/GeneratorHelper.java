@@ -73,9 +73,7 @@ public class GeneratorHelper {
     }
 
     public static void generatorResource(Object... args) {
-        Iterator<LoaderGenerator> generatorIterator = ServiceLoader.load(LoaderGenerator.class, CLASS_LOADER).iterator();
-        while (generatorIterator.hasNext()) {
-            LoaderGenerator loaderGenerator = generatorIterator.next();
+        for (LoaderGenerator loaderGenerator : ServiceLoader.load(LoaderGenerator.class, CLASS_LOADER)) {
             try {
                 loaderGenerator.loader(args);
             } catch (IOException e) {
