@@ -18,7 +18,7 @@
         <log4j2.version>2.20.0</log4j2.version>
         <fastjson.version>1.2.83</fastjson.version>
         <fastjson2.version>2.0.40</fastjson2.version>
-        <jackjson.version>2.15.2</jackjson.version>
+        <jackson.version>2.15.2</jackson.version>
         <servlet.version>6.0.0</servlet.version>
     </properties>
     <dependencies>
@@ -89,7 +89,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${jackjson.version}</version>
+            <version>${jackson.version}</version>
         </dependency>
         <!--JsonEnd-->
     </dependencies>

@@ -279,7 +279,7 @@ public @interface Mapping2 {
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
+                <version>3.11.0</version>
                 <configuration>
                     <annotationProcessorPaths>
                         <annotationProcessorPath>
