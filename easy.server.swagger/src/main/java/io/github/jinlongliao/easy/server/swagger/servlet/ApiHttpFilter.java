@@ -5,12 +5,10 @@ import io.github.jinlongliao.easy.server.swagger.knife4j.auth.SecurityBasicAuthF
 import io.github.jinlongliao.easy.server.swagger.servlet.help.ApiMapping;
 import io.github.jinlongliao.easy.server.servlet.BaseHttpFilter;
 
-import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 /**
@@ -28,23 +26,20 @@ public class ApiHttpFilter extends BaseHttpFilter {
         this.securityBasicAuthFilter = securityBasicAuthFilter;
     }
 
+
     @Override
     public String[] supportPath() {
         return new String[]{apiConfig.getBasePath() + "*"};
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest servletRequest = (HttpServletRequest) request;
-        HttpServletResponse servletResponse = (HttpServletResponse) response;
+    public boolean doLogicFilter(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        boolean needDispatcher = true;
         if (securityBasicAuthFilter.doFilter(request, response)) {
-            boolean needDispatcher = true;
-            if (apiMapping.supportRequest(servletRequest, servletResponse)) {
-                needDispatcher = this.apiMapping.dispatcher(servletRequest, servletResponse);
-            }
-            if (needDispatcher) {
-                chain.doFilter(request, response);
+            if (apiMapping.supportRequest(request, response)) {
+                needDispatcher = this.apiMapping.dispatcher(request, response);
             }
         }
+        return needDispatcher;
     }
 }
