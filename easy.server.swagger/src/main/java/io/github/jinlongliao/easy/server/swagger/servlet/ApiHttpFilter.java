@@ -5,7 +5,10 @@ import io.github.jinlongliao.easy.server.swagger.knife4j.auth.SecurityBasicAuthF
 import io.github.jinlongliao.easy.server.swagger.servlet.help.ApiMapping;
 import io.github.jinlongliao.easy.server.servlet.BaseHttpFilter;
 
+import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -33,11 +36,21 @@ public class ApiHttpFilter extends BaseHttpFilter {
     }
 
     @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        boolean logicFilter = this.doLogicFilter((HttpServletRequest) request, (HttpServletResponse) response);
+        if (logicFilter) {
+            chain.doFilter(request, response);
+        }
+    }
+
+    @Override
     public boolean doLogicFilter(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        boolean needDispatcher = true;
+        boolean needDispatcher = false;
         if (securityBasicAuthFilter.doFilter(request, response)) {
             if (apiMapping.supportRequest(request, response)) {
                 needDispatcher = this.apiMapping.dispatcher(request, response);
+            } else {
+                needDispatcher = true;
             }
         }
         return needDispatcher;

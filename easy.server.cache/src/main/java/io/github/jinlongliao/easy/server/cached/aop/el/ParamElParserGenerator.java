@@ -1,13 +1,12 @@
 package io.github.jinlongliao.easy.server.cached.aop.el;
 
 import io.github.jinlongliao.easy.server.mapper.exception.MethodInvokeException;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ClassWriter;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.MethodVisitor;
 import io.github.jinlongliao.easy.server.mapper.utils.CLassUtils;
 import io.github.jinlongliao.easy.server.mapper.utils.MapperStructConfig;
-import io.github.jinlongliao.easy.server.mapper.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.asm.ClassWriter;
-import org.springframework.asm.MethodVisitor;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
@@ -30,8 +29,12 @@ public class ParamElParserGenerator {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private static final Class<?>[] INTERFACES = new Class[]{ParamElParser.class};
 
-    static ParamElParser build0(String el, List<String[]> elList, Method method, Map<Type, Type[]> generic,
-                                Class<?> paramClass) throws MethodInvokeException {
+    static ParamElParser build0(String el,
+                                List<String[]> elList,
+                                Method method,
+                                List<String> originParam,
+                                Map<String, Class<?>> paramClassCache,
+                                Map<Type, Type[]> generic) throws MethodInvokeException {
         String proxyObjectName = buildProxyClassName(method, el);
         try {
             String dynamicClassName = proxyObjectName.replace('/', '.');
@@ -42,7 +45,7 @@ public class ParamElParserGenerator {
                 log.debug(e.getMessage(), e);
             }
         }
-        ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+        ClassWriter classWriter = new ClassWriter(0);
         classWriter.visit(JAVA_DEF_VERSION, ACC_PUBLIC, proxyObjectName,
                 null,
                 CLassUtils.OBJECT_SUPER_NAME,
@@ -57,12 +60,17 @@ public class ParamElParserGenerator {
 
         Map<Class<?>, List<ElField>> fieldCache = new HashMap<>(8, 1L);
         List<List<ElField>> elFields = new ArrayList<>(el.length());
+        List<String> used = new ArrayList<>(4);
         for (String[] elFieldsStr : elList) {
             List<ElField> elField = new ArrayList<>();
             elFields.add(elField);
-            Class<?> root = paramClass;
+            String key = elFieldsStr[0];
+            if (!used.contains(key)) {
+                used.add(key);
+            }
+            Class<?> root = paramClassCache.get(key);
             for (String elFieldStr : elFieldsStr) {
-                List<ElField> fields = parserField(fieldCache, root, generic);
+                List<ElField> fields = parserField(fieldCache, root, elFieldStr, generic);
                 ElField parserElField = fields.stream()
                         .filter(field -> field.getFieldName().equals(elFieldStr)).findFirst()
                         .orElseThrow(() -> new MethodInvokeException("not found field: " + elFieldStr));
@@ -70,15 +78,29 @@ public class ParamElParserGenerator {
                 root = parserElField.getFieldClass();
             }
         }
-        MethodVisitor methodVisitor = classWriter.visitMethod(ACC_PUBLIC, "parseValue", "(Ljava/lang/StringBuilder;Ljava/lang/Object;)Ljava/lang/String;", null, null);
+        List<String> temp = new ArrayList<>(used.size());
+        for (String name : originParam) {
+            if (used.contains(name)) {
+                temp.add(name);
+            }
+        }
+        used = temp;
+        MethodVisitor methodVisitor = classWriter.visitMethod(ACC_PUBLIC, "parseValue",
+                "(Ljava/lang/StringBuilder;[Ljava/lang/Object;)Ljava/lang/String;",
+                null, null);
         methodVisitor.visitCode();
-        methodVisitor.visitVarInsn(ALOAD, 2);
-        methodVisitor.visitTypeInsn(CHECKCAST, CLassUtils.getJvmClass(paramClass));
-        methodVisitor.visitVarInsn(ASTORE, 3);
-        AtomicInteger localIndex = new AtomicInteger(3);
-
+        for (int i = 0; i < used.size(); i++) {
+            String name = used.get(i);
+            methodVisitor.visitVarInsn(ALOAD, 2);
+            CLassUtils.putInt(methodVisitor, i);
+            methodVisitor.visitInsn(AALOAD);
+            methodVisitor.visitTypeInsn(CHECKCAST, CLassUtils.getJvmClass(paramClassCache.get(name)));
+            methodVisitor.visitVarInsn(ASTORE, 3 + i);
+        }
+//
+        AtomicInteger localIndex = new AtomicInteger(2 + used.size());
         for (List<ElField> elField : elFields) {
-            buildGetCode(methodVisitor, localIndex, elField);
+            buildGetCode(methodVisitor, localIndex, used, elField);
         }
         int index = 0;
         for (List<ElField> elField : elFields) {
@@ -87,9 +109,7 @@ public class ParamElParserGenerator {
         methodVisitor.visitVarInsn(ALOAD, 1);
         methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false);
         methodVisitor.visitInsn(ARETURN);
-        methodVisitor.visitMaxs(index + 2, localIndex.get());
-        methodVisitor.visitEnd();
-
+        methodVisitor.visitMaxs(index + 2, 1 + localIndex.get());
         classWriter.visitEnd();
 
         byte[] classes = classWriter.toByteArray();
@@ -99,16 +119,15 @@ public class ParamElParserGenerator {
 
     }
 
-    private static void buildGetCode(MethodVisitor methodVisitor, AtomicInteger localIndex, List<ElField> elField) {
+    private static void buildGetCode(MethodVisitor methodVisitor, AtomicInteger localIndex, List<String> used, List<ElField> elField) {
         if (elField.isEmpty()) {
             return;
         }
         Class<?> type = null;
         methodVisitor.visitVarInsn(ALOAD, 1);
-        methodVisitor.visitVarInsn(ALOAD, 3);
+        methodVisitor.visitVarInsn(ALOAD, 3 + used.indexOf(elField.get(0).getFieldName()));
         for (ElField field : elField) {
             type = field.getFieldClass();
-
             if (field.isGeneric()) {
                 methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
                         CLassUtils.getJvmClass(field.getField().getDeclaringClass()),
@@ -116,7 +135,7 @@ public class ParamElParserGenerator {
                         "()" + CLassUtils.getClassType(Object.class),
                         false);
                 methodVisitor.visitTypeInsn(CHECKCAST, CLassUtils.getJvmClass(type));
-            } else {
+            } else if (!field.isRoot()) {
                 methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
                         CLassUtils.getJvmClass(field.getField().getDeclaringClass()),
                         getGetMethod(field),
@@ -159,7 +178,7 @@ public class ParamElParserGenerator {
         return getName;
     }
 
-    private static List<ElField> parserField(Map<Class<?>, List<ElField>> fieldCache, Class<?> tC, Map<Type, Type[]> generic) {
+    private static List<ElField> parserField(Map<Class<?>, List<ElField>> fieldCache, Class<?> tC, String name, Map<Type, Type[]> generic) {
         if (tC.equals(Object.class)) {
             return Collections.emptyList();
         }
@@ -168,6 +187,7 @@ public class ParamElParserGenerator {
             List<ElField> fields = new ArrayList<>(declaredFields.length);
             Type[] types = generic.get(tC);
             int index = 0;
+            fields.add(new ElField(null, key, name, false));
             for (Field declaredField : declaredFields) {
                 Class<?> type = declaredField.getType();
                 String fieldName = declaredField.getName();
@@ -178,7 +198,7 @@ public class ParamElParserGenerator {
                 }
                 fields.add(new ElField(declaredField, type, fieldName, genericFlag));
             }
-            fields.addAll(parserField(fieldCache, tC.getSuperclass(), generic));
+            fields.addAll(parserField(fieldCache, tC.getSuperclass(), name, generic));
             return fields;
         });
 

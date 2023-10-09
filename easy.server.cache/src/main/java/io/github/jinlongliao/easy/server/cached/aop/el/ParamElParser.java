@@ -7,5 +7,5 @@ package io.github.jinlongliao.easy.server.cached.aop.el;
  * @date: 2023/7/5 17:01
  */
 public interface ParamElParser {
-    String parseValue(StringBuilder stringBuilder,Object param);
+    String parseValue(StringBuilder stringBuilder,Object[] param);
 }

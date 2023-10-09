@@ -51,7 +51,7 @@ public class UrlMatcher {
     public boolean matcher(String uri) {
         boolean match = false;
         if (fullMatch) {
-            return this.value.startsWith(uri);
+            return this.value.equals(uri) || this.value2.equals(uri);
         } else {
             if (uri.startsWith(this.value) || uri.startsWith(this.value2)) {
                 if (hasSuffix) {

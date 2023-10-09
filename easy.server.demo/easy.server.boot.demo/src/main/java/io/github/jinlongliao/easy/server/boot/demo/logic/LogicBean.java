@@ -53,7 +53,6 @@ public class LogicBean extends ApplicationObjectSupport {
     }
 
     @Logic(MsgId.TEST2)
-    @SimpleGetCache(keyValueEl = "userId and age", handler = SimpleLimitPerAccessFilterHandler.class)
     public Object test2(@LogicRequestBody UserModel userModel) {
         Object o = testAsyncService.testWeAsync(false);
         log.info("threadId:{} name:{} result:{}", Thread.currentThread().getId(), Thread.currentThread().getName(), o);
@@ -67,13 +66,21 @@ public class LogicBean extends ApplicationObjectSupport {
         return this.groovyService.getTest(userModel);
     }
 
+    @Logic(MsgId.TEST3)
+    @SimpleGetCache(keyValueEl = "userModel.userId and userModel.age", handler = SimpleLimitPerAccessFilterHandler.class, milliSecond = 3000L)
+    public Object test3(@LogicRequestBody UserModel userModel) {
+        Object o = testAsyncService.testWeAsync(false);
+        log.info("threadId:{} name:{} result:{}", Thread.currentThread().getId(), Thread.currentThread().getName(), o);
+        return this.groovyService.getTest(userModel);
+    }
+
     @LogicMapping(value = "100", desc = "测试组合注解")
     public void testAnn(@UserId int userId, @LogicRequestIp String clientIp) {
         log.info("userId: {}\t clientIp: {}", userId, clientIp);
     }
 
     @LogicMapping(value = "101", desc = "Hex Response")
-    @GetCache(keyValueEl = "userId")
+    @SimpleGetCache(keyValueEl = "userId")
     public TestResponse testHex(@UserId(newV = "newUserId") int userId,
                                 @HttpRequest
                                 HttpServletRequest request,

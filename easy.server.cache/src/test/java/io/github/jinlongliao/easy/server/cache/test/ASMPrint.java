@@ -1,6 +1,7 @@
 package io.github.jinlongliao.easy.server.cache.test;
 
 import io.github.jinlongliao.easy.server.cached.aop.el.ParamElParserBuilder;
+import io.github.jinlongliao.easy.server.core.annotation.LogicRequestParam;
 import io.github.jinlongliao.easy.server.mapper.utils.MapperStructConfig;
 import org.junit.Test;
 import org.objectweb.asm.ClassReader;
@@ -32,7 +33,7 @@ public class ASMPrint {
         new ClassReader(className).accept(traceClassVisitor, parsingOptions);
     }
 
-    public void testMethod0(A a) {
+    public void testMethod0(A a, @LogicRequestParam("b") B bbq) {
 
     }
 
@@ -42,7 +43,10 @@ public class ASMPrint {
         A param = new A();
         param.setB(new B());
         param.setD("");
-        ParamElParserBuilder.putElValue(new StringBuilder(), param, 0, ASMPrint.class.getDeclaredMethod("testMethod0", A.class), "a and b.b1 and b.b2 and c and d");
+        ParamElParserBuilder.putElValue(new StringBuilder(),
+                new Object[]{param, new B()},
+                ASMPrint.class.getDeclaredMethod("testMethod0", A.class, B.class),
+                "b and b.b1 and a.a and a.b.b1 and a.b.b2 and a.c and a.d");
     }
 
 
