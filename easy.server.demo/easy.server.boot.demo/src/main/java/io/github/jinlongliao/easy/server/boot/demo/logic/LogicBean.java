@@ -1,6 +1,7 @@
 package io.github.jinlongliao.easy.server.boot.demo.logic;
 
 import io.github.jinlongliao.easy.server.boot.demo.logic.annotation.MsgId;
+import io.github.jinlongliao.easy.server.boot.demo.logic.param.DiamondParam;
 import io.github.jinlongliao.easy.server.boot.demo.logic.response.TestResponse;
 import io.github.jinlongliao.easy.server.boot.demo.logic.annotation.Logic;
 import io.github.jinlongliao.easy.server.boot.demo.logic.annotation.UserId;
@@ -46,10 +47,15 @@ public class LogicBean extends ApplicationObjectSupport {
 
 
     @SimpleGetCache(milliSecond = 10000L)
-    @Logic({MsgId.TEST1, MsgId.TEST0})
+    @Logic({MsgId.TEST1})
     public Object test1(@NotNull @LogicRequestParam("userId") String userId, @LogicRequestParam("age") int age, @LogicRequestBody UserModel userModel) {
         testAsyncService.testAsync();
         return this.groovyService.getTest(userModel);
+    }
+
+    @Logic({MsgId.TEST0})
+    public void diamond(@NotNull @LogicRequestBody("diamondParam") DiamondParam<UserModel> diamondParam) {
+        log.info("diamondParam {}", diamondParam);
     }
 
     @Logic(MsgId.TEST2)
