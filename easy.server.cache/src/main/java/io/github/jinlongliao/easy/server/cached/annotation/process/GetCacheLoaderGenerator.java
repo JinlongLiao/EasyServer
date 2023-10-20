@@ -47,7 +47,6 @@ public class GetCacheLoaderGenerator extends GeneratorMethodLoaderGenerator {
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
         }
-
     }
 
 }

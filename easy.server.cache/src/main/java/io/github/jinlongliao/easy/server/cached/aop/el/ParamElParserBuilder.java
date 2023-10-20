@@ -30,11 +30,11 @@ public class ParamElParserBuilder {
     public static ParamElParser build(String el, Method method) {
         Map<String, Class<?>> paramClassCache = new HashMap<>(8, 1L);
         String[] parameterNames = MethodParse.PARAMETER_NAME_DISCOVERER.getParameterNames(method);
+        Type[] genericParameterTypes = method.getGenericParameterTypes();
         if (Objects.isNull(parameterNames)) {
-            parameterNames = new String[0];
+            Arrays.fill(parameterNames = new String[genericParameterTypes.length], "");
         }
         int index = 0;
-        Type[] genericParameterTypes = method.getGenericParameterTypes();
         Map<Type, Type[]> generic = new HashMap<>(4, 1L);
         for (Parameter parameter : method.getParameters()) {
             if (genericParameterTypes[index] instanceof ParameterizedType parameterizedType) {
