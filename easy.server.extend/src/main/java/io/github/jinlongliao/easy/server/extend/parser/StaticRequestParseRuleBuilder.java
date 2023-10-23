@@ -147,13 +147,15 @@ public final class StaticRequestParseRuleBuilder {
                     CLassUtils.putInt(methodVisitor, varIndex);
                     methodVisitor.visitMethodInsn(INVOKEINTERFACE, "java/util/List", "get", "(I)Ljava/lang/Object;", true);
 
+
+
                     methodVisitor.visitVarInsn(ALOAD, 1);
                     methodVisitor.visitLdcInsn(meType.getParamName());
                     methodVisitor.visitMethodInsn(INVOKEINTERFACE, HTTP_SERVLET_REQUEST,
                             "getParameter", "(Ljava/lang/String;)Ljava/lang/String;", true);
 
                     methodVisitor.visitMethodInsn(INVOKESTATIC, "io/github/jinlongliao/easy/server/mapper/core/mapstruct/converter/InnerConverter",
-                            "getT",
+                            "__getT",
                             "(Ljava/lang/Class;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
                             false);
 

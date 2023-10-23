@@ -48,18 +48,19 @@ public class LogicBean extends ApplicationObjectSupport {
 
     @SimpleGetCache(milliSecond = 10000L)
     @Logic({MsgId.TEST1})
-    public Object test1(@NotNull @LogicRequestParam("userId") String userId, @LogicRequestParam("age") int age, @LogicRequestBody UserModel userModel) {
+    public Object test1(@NotNull @LogicRequestParam("userId") String userId, @LogicRequestParam("age") int age, @LogicRequestBody("userModel") UserModel userModel) {
         testAsyncService.testAsync();
         return this.groovyService.getTest(userModel);
     }
 
     @Logic({MsgId.TEST0})
+    @SimpleGetCache(keyValueEl = "diamondParam.num and diamondParam.data.userId", handler = SimpleLimitPerAccessFilterHandler.class, milliSecond = 300L)
     public void diamond(@NotNull @LogicRequestBody("diamondParam") DiamondParam<UserModel> diamondParam) {
         log.info("diamondParam {}", diamondParam);
     }
 
     @Logic(MsgId.TEST2)
-    public Object test2(@LogicRequestBody UserModel userModel) {
+    public Object test2(@LogicRequestBody("userModel")  UserModel userModel) {
         Object o = testAsyncService.testWeAsync(false);
         log.info("threadId:{} name:{} result:{}", Thread.currentThread().getId(), Thread.currentThread().getName(), o);
         try {
@@ -74,7 +75,7 @@ public class LogicBean extends ApplicationObjectSupport {
 
     @Logic(MsgId.TEST3)
     @SimpleGetCache(keyValueEl = "userModel.userId and userModel.age", handler = SimpleLimitPerAccessFilterHandler.class, milliSecond = 3000L)
-    public Object test3(@LogicRequestBody UserModel userModel) {
+    public Object test3(@LogicRequestBody("userModel")  UserModel userModel) {
         Object o = testAsyncService.testWeAsync(false);
         log.info("threadId:{} name:{} result:{}", Thread.currentThread().getId(), Thread.currentThread().getName(), o);
         return this.groovyService.getTest(userModel);
@@ -86,8 +87,8 @@ public class LogicBean extends ApplicationObjectSupport {
     }
 
     @LogicMapping(value = "101", desc = "Hex Response")
-    @SimpleGetCache(keyValueEl = "userId")
-    public TestResponse testHex(@UserId(newV = "newUserId") int userId,
+    @SimpleGetCache(keyValueEl = "newUserId")
+    public TestResponse testHex(@LogicAlias("newUserId")@UserId(newV = "newUserId") int userId,
                                 @HttpRequest
                                 HttpServletRequest request,
                                 @HttpResponse

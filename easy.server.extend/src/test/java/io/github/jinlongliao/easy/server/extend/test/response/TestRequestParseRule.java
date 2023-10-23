@@ -140,9 +140,9 @@ public class TestRequestParseRule extends AbstractRequestParseRule {
         }
         data[5] = array;
 
-        data[6] = InnerConverter.getT(Date.class, this.rules.get(6), request.getParameter("xxx"));
+        data[6] = InnerConverter.__getT(Date.class, this.rules.get(6), request.getParameter("xxx"));
         Object a = 989;
-        data[7] = InnerConverter.getT(Date.class, "__extra__", a);
+        data[7] = InnerConverter.__getT(Date.class, "__extra__", a);
         return data;
     }
 

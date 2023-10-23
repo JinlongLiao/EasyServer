@@ -32,7 +32,7 @@ class LogicBean(
     @LogicMapping(value = ["101"], desc = "Hex Response")
     @SimpleGetCache(keyValueEl = "userId")
     fun testHex(
-        @UserId(newV = "newUserId") userId: Int,
+        @LogicAlias("newUserId") @UserId(newV = "newUserId") userId: Int,
         @HttpRequest request: HttpServletRequest?,
         @HttpResponse response: HttpServletResponse?,
         @LogicRequestIp clientIp: String?

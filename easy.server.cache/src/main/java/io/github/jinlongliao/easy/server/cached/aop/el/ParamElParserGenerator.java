@@ -5,6 +5,7 @@ import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Class
 import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.MethodVisitor;
 import io.github.jinlongliao.easy.server.mapper.utils.CLassUtils;
 import io.github.jinlongliao.easy.server.mapper.utils.MapperStructConfig;
+import io.github.jinlongliao.easy.server.mapper.utils.UnpackDesc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,10 +41,12 @@ public class ParamElParserGenerator {
             String dynamicClassName = proxyObjectName.replace('/', '.');
             Class<?> loadClass = MAPPER_CLASS_LOADER.loadClass(dynamicClassName);
             return (ParamElParser) loadClass.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
             if (log.isDebugEnabled()) {
                 log.debug(e.getMessage(), e);
             }
+        } catch (Throwable e) {
+            log.error(e.getMessage(), e);
         }
         ClassWriter classWriter = new ClassWriter(0);
         classWriter.visit(JAVA_DEF_VERSION, ACC_PUBLIC, proxyObjectName,
@@ -55,27 +58,30 @@ public class ParamElParserGenerator {
         construct.visitVarInsn(ALOAD, 0);
         construct.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
         construct.visitInsn(RETURN);
-        construct.visitMaxs(3, 1);
+        construct.visitMaxs(1, 1);
         construct.visitEnd();
 
         Map<Class<?>, List<ElField>> fieldCache = new HashMap<>(8, 1L);
         List<List<ElField>> elFields = new ArrayList<>(el.length());
         List<String> used = new ArrayList<>(4);
+        int maxStack = 0;
         for (String[] elFieldsStr : elList) {
+            maxStack = Math.max(elFieldsStr.length, maxStack);
             List<ElField> elField = new ArrayList<>();
             elFields.add(elField);
             String key = elFieldsStr[0];
             if (!used.contains(key)) {
                 used.add(key);
             }
-            Class<?> root = paramClassCache.get(key);
+            Class<?> root = paramClassCache.getOrDefault(key, key.getClass());
+            ElField parent = null;
             for (String elFieldStr : elFieldsStr) {
-                List<ElField> fields = parserField(fieldCache, root, elFieldStr, generic);
+                List<ElField> fields = parserField(parent, fieldCache, root, elFieldStr, generic);
                 ElField parserElField = fields.stream()
                         .filter(field -> field.getFieldName().equals(elFieldStr)).findFirst()
                         .orElseThrow(() -> new MethodInvokeException("not found field: " + elFieldStr));
-                elField.add(parserElField);
-                root = parserElField.getFieldClass();
+                elField.add(parent = parserElField);
+                root = parent.getFieldClass();
             }
         }
         List<String> temp = new ArrayList<>(used.size());
@@ -89,27 +95,45 @@ public class ParamElParserGenerator {
                 "(Ljava/lang/StringBuilder;[Ljava/lang/Object;)Ljava/lang/String;",
                 null, null);
         methodVisitor.visitCode();
+        int store = ALOAD;
         for (int i = 0; i < used.size(); i++) {
             String name = used.get(i);
             methodVisitor.visitVarInsn(ALOAD, 2);
             CLassUtils.putInt(methodVisitor, i);
             methodVisitor.visitInsn(AALOAD);
-            methodVisitor.visitTypeInsn(CHECKCAST, CLassUtils.getJvmClass(paramClassCache.get(name)));
-            methodVisitor.visitVarInsn(ASTORE, 3 + i);
+            Class<?> type = paramClassCache.get(name);
+            if (type.isPrimitive()) {
+                UnpackDesc unpackDesc = CLassUtils.getUnpackDesc(type);
+                methodVisitor.visitTypeInsn(CHECKCAST, unpackDesc.getOwner());
+                methodVisitor.visitMethodInsn(INVOKEVIRTUAL, unpackDesc.getOwner(), unpackDesc.getBaseMethodName(), unpackDesc.getBaseDescriptor(), false);
+                if (type == Long.TYPE) {
+                    store = LLOAD;
+                    methodVisitor.visitVarInsn(LSTORE, 3 + i);
+                } else if (type == Float.TYPE) {
+                    store = FLOAD;
+                    methodVisitor.visitVarInsn(FSTORE, 3 + i);
+                } else if (type == Double.TYPE) {
+                    store = DLOAD;
+                    methodVisitor.visitVarInsn(DSTORE, 3 + i);
+                } else {
+                    store = ILOAD;
+                    methodVisitor.visitVarInsn(ISTORE, 3 + i);
+                }
+            } else {
+                methodVisitor.visitTypeInsn(CHECKCAST, CLassUtils.getJvmClass(type));
+                methodVisitor.visitVarInsn(ASTORE, 3 + i);
+            }
         }
 //
         AtomicInteger localIndex = new AtomicInteger(2 + used.size());
         for (List<ElField> elField : elFields) {
-            buildGetCode(methodVisitor, localIndex, used, elField);
+            buildGetCode(store, methodVisitor, localIndex, used, elField);
         }
-        int index = 0;
-        for (List<ElField> elField : elFields) {
-            index = Math.max(index, elField.size());
-        }
+
         methodVisitor.visitVarInsn(ALOAD, 1);
         methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false);
         methodVisitor.visitInsn(ARETURN);
-        methodVisitor.visitMaxs(index + 2, 1 + localIndex.get());
+        methodVisitor.visitMaxs(used.size() + 1, 1 + localIndex.get());
         classWriter.visitEnd();
 
         byte[] classes = classWriter.toByteArray();
@@ -119,30 +143,38 @@ public class ParamElParserGenerator {
 
     }
 
-    private static void buildGetCode(MethodVisitor methodVisitor, AtomicInteger localIndex, List<String> used, List<ElField> elField) {
+    private static void buildGetCode(Integer store,
+                                     MethodVisitor methodVisitor,
+                                     AtomicInteger localIndex,
+                                     List<String> used, List<ElField> elField) {
         if (elField.isEmpty()) {
             return;
         }
         Class<?> type = null;
         methodVisitor.visitVarInsn(ALOAD, 1);
-        methodVisitor.visitVarInsn(ALOAD, 3 + used.indexOf(elField.get(0).getFieldName()));
-        for (ElField field : elField) {
-            type = field.getFieldClass();
-            if (field.isGeneric()) {
-                methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
-                        CLassUtils.getJvmClass(field.getField().getDeclaringClass()),
-                        getGetMethod(field),
-                        "()" + CLassUtils.getClassType(Object.class),
-                        false);
-                methodVisitor.visitTypeInsn(CHECKCAST, CLassUtils.getJvmClass(type));
-            } else if (!field.isRoot()) {
-                methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
-                        CLassUtils.getJvmClass(field.getField().getDeclaringClass()),
-                        getGetMethod(field),
-                        "()" + CLassUtils.getClassType(type),
-                        false);
-            }
+        ElField rootElField = elField.get(0);
+        methodVisitor.visitVarInsn(store, 3 + used.indexOf(rootElField.getFieldName()));
+        if (elField.size() == 1) {
+            type = rootElField.getFieldClass();
+        } else {
+            for (ElField field : elField) {
+                type = field.getFieldClass();
+                if (field.isGeneric()) {
+                    methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
+                            CLassUtils.getJvmClass(field.getField().getDeclaringClass()),
+                            getGetMethod(field),
+                            "()" + CLassUtils.getClassType(Object.class),
+                            false);
+                    methodVisitor.visitTypeInsn(CHECKCAST, CLassUtils.getJvmClass(type));
+                } else if (!field.isRoot()) {
+                    methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
+                            CLassUtils.getJvmClass(field.getField().getDeclaringClass()),
+                            getGetMethod(field),
+                            "()" + CLassUtils.getClassType(type),
+                            false);
+                }
 
+            }
         }
         boolean baseType = CLassUtils.isBaseType(type);
         String desc;
@@ -178,7 +210,7 @@ public class ParamElParserGenerator {
         return getName;
     }
 
-    private static List<ElField> parserField(Map<Class<?>, List<ElField>> fieldCache, Class<?> tC, String name, Map<Type, Type[]> generic) {
+    private static List<ElField> parserField(ElField parent, Map<Class<?>, List<ElField>> fieldCache, Class<?> tC, String name, Map<Type, Type[]> generic) {
         if (tC.equals(Object.class)) {
             return Collections.emptyList();
         }
@@ -187,8 +219,11 @@ public class ParamElParserGenerator {
             List<ElField> fields = new ArrayList<>(declaredFields.length);
             Type[] types = generic.get(tC);
             int index = 0;
-            fields.add(new ElField(null, key, name, false));
+            List<ElField> temp = new ArrayList<>();
+            Field field = null;
+            Class<?> newKey = key;
             for (Field declaredField : declaredFields) {
+
                 Class<?> type = declaredField.getType();
                 String fieldName = declaredField.getName();
                 boolean genericFlag = false;
@@ -196,9 +231,17 @@ public class ParamElParserGenerator {
                     type = (Class<?>) types[index++];
                     genericFlag = true;
                 }
-                fields.add(new ElField(declaredField, type, fieldName, genericFlag));
+                if (Objects.nonNull(parent) && Objects.equals(name, fieldName)) {
+                    field = declaredField;
+                    newKey = type;
+                }
+                temp.add(new ElField(declaredField, type, fieldName, genericFlag));
             }
-            fields.addAll(parserField(fieldCache, tC.getSuperclass(), name, generic));
+            fields.add(new ElField(field, newKey, name, false));
+            fields.addAll(temp);
+            if (!(tC.isPrimitive() || tC.isArray() || tC.isEnum() || tC.isAnnotation())) {
+                fields.addAll(parserField(parent, fieldCache, tC.getSuperclass(), name, generic));
+            }
             return fields;
         });
 

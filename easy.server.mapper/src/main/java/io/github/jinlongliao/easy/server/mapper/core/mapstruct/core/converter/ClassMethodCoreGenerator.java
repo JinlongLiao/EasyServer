@@ -118,11 +118,11 @@ public abstract class ClassMethodCoreGenerator<C extends IData2Object2> extends 
         final Mapping mapping = field.getAnnotation(Mapping.class);
         final boolean nonNull = Objects.nonNull(mapping);
         String sourceName = nonNull ? mapping.sourceName() : field.getName();
-        if (sourceName.length() < 1) {
+        if (sourceName.isEmpty()) {
             sourceName = field.getName();
         }
         String putMethod = nonNull ? mapping.putMethod() : "";
-        if (putMethod.length() < 1) {
+        if (putMethod.isEmpty()) {
             String name = field.getName();
             char[] chars = name.toCharArray();
             chars[0] = Character.toUpperCase(chars[0]);
@@ -136,8 +136,8 @@ public abstract class ClassMethodCoreGenerator<C extends IData2Object2> extends 
         }
         String methodName = nonNull ? mapping.converterMethod() : "";
         Class<?> type = field.getType();
-        if (methodName.length() < 1) {
-            if (InnerConverter.containDateConverter(type)) {
+        if (methodName.isEmpty()) {
+            if (!Objects.equals(type,Object.class)&&InnerConverter.containDateConverter(type)) {
                 methodName = InnerConverter.getGlobalConverter(type).getName();
             } else {
                 methodName = GET_T;

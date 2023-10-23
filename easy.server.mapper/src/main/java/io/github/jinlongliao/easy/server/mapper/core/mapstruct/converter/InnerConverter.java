@@ -38,9 +38,8 @@ public class InnerConverter {
             VALUE_CONVERTER_CACHE.put(type, method);
         }
         List<IDataConverter> dataConverters = new ArrayList<>();
-        Iterator<IDataConverter> iterator = ServiceLoader.load(IDataConverter.class).iterator();
-        while (iterator.hasNext()) {
-            dataConverters.add(iterator.next());
+        for (IDataConverter iDataConverter : ServiceLoader.load(IDataConverter.class)) {
+            dataConverters.add(iDataConverter);
         }
         Collections.sort(dataConverters);
         CONVERTER = dataConverters.stream().findFirst().orElse(IDataConverter.getDefault());
@@ -242,7 +241,7 @@ public class InnerConverter {
      * @param <T>
      * @return /
      */
-    public static <T> T getT(Class<T> tClass, Object extra, Object data) {
+    public static <T> T __getT(Class<T> tClass, Object extra, Object data) {
         return CONVERTER.getT(tClass, extra, data);
     }
 }

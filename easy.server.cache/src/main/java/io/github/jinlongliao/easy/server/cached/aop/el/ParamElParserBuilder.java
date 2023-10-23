@@ -1,6 +1,8 @@
 package io.github.jinlongliao.easy.server.cached.aop.el;
 
 
+import io.github.jinlongliao.easy.server.core.annotation.LogicAlias;
+import io.github.jinlongliao.easy.server.core.annotation.LogicRequestBody;
 import io.github.jinlongliao.easy.server.core.annotation.LogicRequestParam;
 import io.github.jinlongliao.easy.server.core.core.MethodParse;
 import io.github.jinlongliao.easy.server.mapper.utils.StringUtil;
@@ -44,10 +46,22 @@ public class ParamElParserBuilder {
             Class<?> type = parameter.getType();
 
             String typeName = parameterNames[index];
-            LogicRequestParam requestParam = AnnotationUtils.findAnnotation(parameter, LogicRequestParam.class);
-            if (Objects.nonNull(requestParam)) {
-                typeName = requestParam.value();
+            LogicAlias logicAlias = AnnotationUtils.findAnnotation(parameter, LogicAlias.class);
+            if (Objects.nonNull(logicAlias)) {
+                typeName = logicAlias.value();
                 parameterNames[index] = typeName;
+            } else {
+                LogicRequestParam requestParam = AnnotationUtils.findAnnotation(parameter, LogicRequestParam.class);
+                if (Objects.nonNull(requestParam)) {
+                    typeName = requestParam.value();
+                    parameterNames[index] = typeName;
+                } else {
+                    LogicRequestBody requestBody = AnnotationUtils.findAnnotation(parameter, LogicRequestBody.class);
+                    if (Objects.nonNull(requestBody)) {
+                        typeName = requestBody.value();
+                        parameterNames[index] = typeName;
+                    }
+                }
             }
             paramClassCache.put(typeName, type);
             index++;
