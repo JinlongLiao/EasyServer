@@ -19,7 +19,7 @@ public class GroovyBeanTest {
     @Test
     public void testLoad() throws InterruptedException {
         applicationContext.register(GroovyConfig.class);
-        applicationContext.scan(GroovyBeanTest.class.getPackageName());
+        applicationContext.scan(GroovyBeanTest.class.getPackage().getName());
         applicationContext.refresh();
         Object bean = applicationContext.getBean(TestGroovyClass.class);
         System.out.println("bean = " + bean);

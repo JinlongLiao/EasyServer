@@ -240,7 +240,7 @@
             </plugin>
             <plugin>
                 <groupId>io.github.jinlongliao</groupId>
-                <artifactId>maven-generator-maven-plugin</artifactId>
+                <artifactId>maven-generator-plugin</artifactId>
                 <version>${project.version}</version>
                 <configuration>
                     <arguments>

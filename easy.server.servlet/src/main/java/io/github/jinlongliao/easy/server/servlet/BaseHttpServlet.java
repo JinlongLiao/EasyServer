@@ -98,7 +98,7 @@ public abstract class BaseHttpServlet<T> extends HttpServlet implements Initiali
         final String method = req.getMethod();
         if (supportMethod().contains(method)) {
             String finalUri = uri;
-            if (getSupportPath().stream().filter(n -> !n.matcher(finalUri)).findAny().isEmpty()) {
+            if (getSupportPath().stream().anyMatch(n -> !n.matcher(finalUri))) {
                 this.todoLogic(req, resp);
             } else {
                 this.notSupportMethodResponse(resp, 404);
@@ -135,7 +135,7 @@ public abstract class BaseHttpServlet<T> extends HttpServlet implements Initiali
 
     public Set<UrlMatcher> getSupportPath() {
         if (Objects.isNull(supportPath)) {
-            supportPath = Arrays.stream(supportPath()).map(UrlMatcher::new).collect(Collectors.toUnmodifiableSet());
+            supportPath = Arrays.stream(supportPath()).map(UrlMatcher::new).collect(Collectors.toSet());
         }
         return supportPath;
     }

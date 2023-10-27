@@ -1,10 +1,10 @@
 package io.github.jinlongliao.easy.server.servlet;
 
 
-import javax.servlet.Filter;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import io.github.jinlongliao.easy.server.servlet.match.UrlMatcher;
 
 import java.io.IOException;
@@ -64,10 +64,11 @@ public abstract class BaseHttpFilter implements Filter, FilterConfig {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        if (!(request instanceof HttpServletRequest req)) {
+        if (!(request instanceof HttpServletRequest)) {
             chain.doFilter(request, response);
             return;
         }
+        HttpServletRequest req = ((HttpServletRequest) request);
         String contextPath = req.getContextPath();
         HttpServletResponse res = (HttpServletResponse) response;
         String uri = req.getRequestURI();
@@ -76,7 +77,7 @@ public abstract class BaseHttpFilter implements Filter, FilterConfig {
         }
         boolean cont = false;
         String finalUri = uri;
-        if (getSupportPath().stream().filter(n -> !n.matcher(finalUri)).findAny().isEmpty()) {
+        if (getSupportPath().stream().allMatch(n -> n.matcher(finalUri))) {
             cont = this.doLogicFilter(req, res);
         }
         if (cont) {
@@ -143,7 +144,7 @@ public abstract class BaseHttpFilter implements Filter, FilterConfig {
 
     public Set<UrlMatcher> getSupportPath() {
         if (Objects.isNull(supportPath)) {
-            supportPath = Arrays.stream(supportPath()).map(UrlMatcher::new).collect(Collectors.toUnmodifiableSet());
+            supportPath = Arrays.stream(supportPath()).map(UrlMatcher::new).collect(Collectors.toSet());
         }
         return supportPath;
     }

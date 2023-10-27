@@ -11,6 +11,7 @@
     </parent>
     <artifactId>easy.server.boot.demo</artifactId>
     <properties>
+        <lombok.version>1.18.30</lombok.version>
         <maven.compiler.debug>false</maven.compiler.debug>
         <maven.compiler.debuglevel>none</maven.compiler.debuglevel>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

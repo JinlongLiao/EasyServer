@@ -9,7 +9,7 @@ public class SpringCacheTest {
     public void test1() throws InterruptedException {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         context.register(CacheProxyConfiguration.class, TestConfig.class);
-        context.scan(SpringCacheTest.class.getPackageName());
+        context.scan(SpringCacheTest.class.getPackage().getName());
         context.refresh();
         TestA bean = context.getBean(TestA.class);
         int index = 12;

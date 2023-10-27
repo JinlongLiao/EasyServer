@@ -39,7 +39,8 @@ public class ParamElParserBuilder {
         int index = 0;
         Map<Type, Type[]> generic = new HashMap<>(4, 1L);
         for (Parameter parameter : method.getParameters()) {
-            if (genericParameterTypes[index] instanceof ParameterizedType parameterizedType) {
+            if (genericParameterTypes[index] instanceof ParameterizedType) {
+                ParameterizedType parameterizedType = (ParameterizedType) genericParameterTypes[index];
                 Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
                 generic.put(parameterizedType.getRawType(), actualTypeArguments);
             }

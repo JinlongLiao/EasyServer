@@ -190,11 +190,6 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
                     <doclint>none</doclint>
-                    <release>${jdk.version}</release>
-                    <additionalJOptions>
-                        <additionalJOption>-encoding UTF-8</additionalJOption>
-                        <additionalJOption>-charset UTF-8</additionalJOption>
-                    </additionalJOptions>
                 </configuration>
                 <executions>
                     <execution>
