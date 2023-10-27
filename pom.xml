@@ -7,7 +7,7 @@
     <groupId>io.github.jinlongliao</groupId>
     <artifactId>easy.server</artifactId>
     <packaging>pom</packaging>
-    <version>2.2.5-SNAPSHOT</version>
+    <version>2.3.1.snapshot</version>
     <modules>
         <module>easy.server.core</module>
         <module>easy.server.cache</module>
