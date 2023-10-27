@@ -12,9 +12,9 @@
     <artifactId>easy.server.cache</artifactId>
 
     <properties>
-        <logback.version>1.4.7</logback.version>
-        <spring.version>6.0.12</spring.version>
-        <asm.version>9.5</asm.version>
+        <logback.version>1.4.11</logback.version>
+        <spring.version>6.0.13</spring.version>
+        <asm.version>9.6</asm.version>
     </properties>
     <dependencies>
         <dependency>
