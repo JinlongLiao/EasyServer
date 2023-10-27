@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>easy.server.extend</artifactId>
     <properties>
-        <asm.version>9.5</asm.version>
+        <asm.version>9.6</asm.version>
         <servlet.version>4.0.1</servlet.version>
     </properties>
     <dependencies>

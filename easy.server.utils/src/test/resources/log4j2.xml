@@ -14,8 +14,7 @@
             <!--<PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %L %M - %msg%xEx%n"/>-->
             <WrapperPatternLayout charset="UTF-8">
                 <pattern>%highlight{%d{yyyy-MM-dd HH:mm:ss} %5p [%t] (%F:%L) %m%n}{FATAL=Bright Red,
-                    ERROR=Bright
-                    Magenta, WARN=Bright Yellow, INFO=Bright Green, DEBUG=Bright Cyan, TRACE=Bright White}
+                    ERROR=Bright Magenta, WARN=Bright Yellow, INFO=Bright Green, DEBUG=Bright Cyan, TRACE=Bright White}
                 </pattern>
             </WrapperPatternLayout>
         </Console>
