@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <properties>
-        <spring.version>5.3.24</spring.version>
+        <spring.version>5.3.30</spring.version>
         <servlet.version>4.0.1</servlet.version>
     </properties>
     <artifactId>easy.server.servlet</artifactId>

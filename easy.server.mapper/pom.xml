@@ -13,9 +13,9 @@
     <properties>
         <charsetEncoding>UTF-8</charsetEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <asm.version>9.5</asm.version>
+        <asm.version>9.6</asm.version>
         <javassist.version>3.29.2-GA</javassist.version>
-        <spring.version>5.3.24</spring.version>
+        <spring.version>5.3.30</spring.version>
         <servlet.version>4.0.1</servlet.version>
     </properties>
     <dependencies>

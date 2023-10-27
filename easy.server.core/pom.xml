@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <properties>
-        <spring.version>5.3.24</spring.version>
+        <spring.version>5.3.30</spring.version>
         <servlet.version>4.0.1</servlet.version>
         <hibernate.validator.version>6.2.5.Final</hibernate.validator.version>
     </properties>
