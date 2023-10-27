@@ -30,7 +30,7 @@ public class BeanMapperFactory implements InvocationHandler {
     private final static Map<Class, IServletData2Object> DATA_2_OBJECT_WEB_CACHE = new ConcurrentHashMap<>(1 << 8);
     private final static Map<Class, IServletData2Object> FULL_DATA_2_OBJECT_WEB_CACHE = new ConcurrentHashMap<>(1 << 8);
     /**
-     * 生成器
+     * <p>生成器</p>
      */
     public static final ServletExtraClassMethodGenerator SERVLET_EXTRA_CLASS_METHOD_GENERATOR = new ServletExtraClassMethodGenerator();
     public static final ArrayClassMethodCoreGenerator ARRAY_CLASS_METHOD_CORE_GENERATOR = new ArrayClassMethodCoreGenerator();

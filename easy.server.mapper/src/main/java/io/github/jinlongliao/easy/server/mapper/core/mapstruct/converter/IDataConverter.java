@@ -10,7 +10,7 @@ package io.github.jinlongliao.easy.server.mapper.core.mapstruct.converter;
 public interface IDataConverter extends Comparable<IDataConverter> {
 
     /**
-     * 数据转换为byte
+     * <p>数据转换为byte</p>
      *
      * @param data
      * @return byte
@@ -19,7 +19,7 @@ public interface IDataConverter extends Comparable<IDataConverter> {
 
 
     /**
-     * 数据转换为 Boolean
+     * <p>数据转换为 Boolean</p>
      *
      * @param data
      * @return Boolean
@@ -28,7 +28,7 @@ public interface IDataConverter extends Comparable<IDataConverter> {
 
 
     /**
-     * 数据转换为Short
+     * <p>数据转换为Short</p>
      *
      * @param data
      * @return Short
@@ -37,7 +37,7 @@ public interface IDataConverter extends Comparable<IDataConverter> {
 
 
     /**
-     * 数据转换为float
+     * <p>数据转换为float</p>
      *
      * @param data
      * @return float

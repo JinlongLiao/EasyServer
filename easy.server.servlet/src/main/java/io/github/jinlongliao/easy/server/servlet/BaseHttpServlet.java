@@ -197,11 +197,11 @@ public abstract class BaseHttpServlet<T> extends HttpServlet implements Initiali
     }
 
     /**
-     * 输出返回值
+     * <p>输出返回值</p>
      *
-     * @param response
-     * @param response
-     * @param contentType
+     * @param response    /
+     * @param msg         /
+     * @param contentType /
      */
     public void flushResponse(HttpServletResponse response, Object msg, String contentType) throws IOException {
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
