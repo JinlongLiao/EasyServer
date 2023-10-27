@@ -1,4 +1,4 @@
-module easy.server.core {
+open module easy.server.core {
 
     requires easy.server.utils;
     exports io.github.jinlongliao.easy.server.core;

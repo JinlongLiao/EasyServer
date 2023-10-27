@@ -1,6 +1,8 @@
 package io.github.jinlongliao.easy.server.demo.core;
 
 import io.github.jinlongliao.easy.server.servlet.BaseHttpFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.FilterChain;
@@ -21,9 +23,9 @@ public class CharsetFilter extends BaseHttpFilter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public boolean doLogicFilter(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.setCharacterEncoding("UTF-8");
-        chain.doFilter(request, response);
+        return true;
     }
 
     @Override

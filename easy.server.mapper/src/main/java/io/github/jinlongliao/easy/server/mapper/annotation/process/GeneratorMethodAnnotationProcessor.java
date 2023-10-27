@@ -47,12 +47,12 @@ public class GeneratorMethodAnnotationProcessor extends AbstractGeneratorAnnotat
             }
         });
 
-        if (typeElements.size() > 0) {
+        if (!typeElements.isEmpty()) {
             Set<Element> set = new HashSet<>();
             for (TypeElement typeElement : typeElements) {
                 set.addAll(roundEnv.getElementsAnnotatedWith(typeElement));
             }
-            if (set.size() > 0) {
+            if (!set.isEmpty()) {
                 try {
                     this.writeCache(set, roundEnv);
                 } catch (IOException e) {

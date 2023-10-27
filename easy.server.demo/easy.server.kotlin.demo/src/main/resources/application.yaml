@@ -1,0 +1,10 @@
+# 应用名称
+spring:
+  application:
+    name: web.demo
+server:
+  port: 9090
+  ssl:
+    protocol: TLS
+    key-store-password: 594211
+    key-store: classpath:tomcat.keystore

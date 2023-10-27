@@ -66,7 +66,7 @@ public class GeneratorMethodLoaderGenerator implements LoaderGenerator {
 
         String[] paramStrs = paramConf.split("@");
         for (String paramStr : paramStrs) {
-            String classType = paramStr.split("__")[0];
+            String classType = paramStr.split("__")[0].split("<")[0];
             try {
                 paramClasses.add(CLassUtils.parseClassType(classType));
             } catch (ClassNotFoundException e) {

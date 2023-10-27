@@ -13,6 +13,7 @@ public enum MsgId {
     TEST0("94", "Same95 测试Groovy+缓存"),
     TEST1("95", "测试Groovy+缓存"),
     TEST2("99", "测试Groovy"),
+    TEST3("100", "测试Cache"),
     ;
     private final String logicId;
     private final String desc;

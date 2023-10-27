@@ -5,10 +5,12 @@ import javax.servlet.Filter;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import io.github.jinlongliao.easy.server.servlet.match.UrlMatcher;
 
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
+
 
 /**
  * 基础的Filter
@@ -17,6 +19,7 @@ import java.util.Map;
  * @since 2021-12-26 12:48
  */
 public abstract class BaseHttpFilter implements Filter, FilterConfig {
+    protected Set<UrlMatcher> supportPath;
 
     /**
      * The filter configuration.
@@ -58,6 +61,38 @@ public abstract class BaseHttpFilter implements Filter, FilterConfig {
         this.filterConfig = filterConfig;
         init();
     }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        if (!(request instanceof HttpServletRequest req)) {
+            chain.doFilter(request, response);
+            return;
+        }
+        String contextPath = req.getContextPath();
+        HttpServletResponse res = (HttpServletResponse) response;
+        String uri = req.getRequestURI();
+        if (!"/".equals(contextPath)) {
+            uri = uri.replace(contextPath, "");
+        }
+        boolean cont = false;
+        String finalUri = uri;
+        if (getSupportPath().stream().filter(n -> !n.matcher(finalUri)).findAny().isEmpty()) {
+            cont = this.doLogicFilter(req, res);
+        }
+        if (cont) {
+            chain.doFilter(req, res);
+        }
+    }
+
+
+    /**
+     * @param req      /
+     * @param response /
+     * @return 是否进行下一个
+     * @throws IOException      /
+     * @throws ServletException /
+     */
+    public abstract boolean doLogicFilter(HttpServletRequest req, HttpServletResponse response) throws IOException, ServletException;
 
     @Override
     public void destroy() {
@@ -106,5 +141,11 @@ public abstract class BaseHttpFilter implements Filter, FilterConfig {
         return false;
     }
 
+    public Set<UrlMatcher> getSupportPath() {
+        if (Objects.isNull(supportPath)) {
+            supportPath = Arrays.stream(supportPath()).map(UrlMatcher::new).collect(Collectors.toUnmodifiableSet());
+        }
+        return supportPath;
+    }
 
 }

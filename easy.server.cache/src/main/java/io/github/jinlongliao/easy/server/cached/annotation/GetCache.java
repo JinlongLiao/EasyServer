@@ -7,8 +7,9 @@ import java.lang.annotation.*;
 
 /**
  * 获取缓存，不存在返回空
+ *
  * @author liaojinlong
-  * @since 2022-02-14 16:23
+ * @since 2022-02-14 16:23
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
@@ -20,8 +21,6 @@ public @interface GetCache {
      * @return/
      */
     String value() default "";
-
-    int argsIndex() default 0;
 
     /**
      * 默认缓存1s

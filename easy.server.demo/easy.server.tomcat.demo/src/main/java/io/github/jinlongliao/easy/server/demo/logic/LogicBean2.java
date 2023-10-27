@@ -37,7 +37,7 @@ public class LogicBean2 extends ApplicationObjectSupport {
 
 
     @LogicMapping(value = "111", desc = "测试Groovy+缓存")
-    public Object test1(@NotNull @LogicRequestParam("userId") String userId, @LogicRequestParam("age") int age, @LogicRequestBody UserModel userModel) {
+    public Object test1(@NotNull @LogicRequestParam("userId") String userId, @LogicRequestParam("age") int age, @LogicRequestBody("userModel") UserModel userModel) {
         return this.groovyService.getTest(userModel);
     }
 

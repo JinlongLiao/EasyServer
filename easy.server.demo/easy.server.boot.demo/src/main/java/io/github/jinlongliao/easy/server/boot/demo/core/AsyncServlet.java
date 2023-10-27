@@ -22,7 +22,7 @@ public class AsyncServlet extends BaseHttpServlet<Object> {
     private static final Logger log = LoggerFactory.getLogger(AsyncServlet.class);
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void todoLogic(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         boolean asyncSupported = req.isAsyncSupported();
         log.info("current Thread {}", Thread.currentThread().getId());
         if (asyncSupported) {

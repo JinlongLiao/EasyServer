@@ -56,7 +56,7 @@ public class HandlerServlet extends BaseHttpServlet<UserModel> {
     }
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void todoLogic(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String logicId;
         try {
@@ -75,7 +75,7 @@ public class HandlerServlet extends BaseHttpServlet<UserModel> {
         resp.setContentType("application/json;charset=UTF-8");
 
         try {
-            Object[] args = getArgs(req,resp, logicModel);
+            Object[] args = getArgs(req, resp, logicModel);
             LogicDispatcher logicDispatcher = getLogicDispatcher(logicId);
             String result = logicDispatcher.dispatcher(logicId, args);
             resp.getWriter().write(result);
@@ -128,7 +128,7 @@ public class HandlerServlet extends BaseHttpServlet<UserModel> {
 
         ParseAdapter parseAdapter = PARSE_ADAPTER_CACHE.computeIfAbsent(logicModel, key ->
                 new ParseAdapter(new StaticRequestParseRule(logicModel), new DemoMessageParserCallBack(beanMapper)));
-        return parseAdapter.parseMsg(req,req,resp);
+        return parseAdapter.parseMsg(req, req, resp);
     }
 
     @Override

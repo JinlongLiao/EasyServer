@@ -5,13 +5,15 @@
     <parent>
         <artifactId>easy.server</artifactId>
         <groupId>io.github.jinlongliao</groupId>
-        <version>1.2.4</version>
+        <version>1.3.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>easy.server.utils</artifactId>
 
     <properties>
+        <charsetEncoding>UTF-8</charsetEncoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <logback.version>1.2.11</logback.version>
         <log4j2.version>2.17.2</log4j2.version>
         <fastjson.version>1.2.83</fastjson.version>
@@ -77,6 +79,7 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>${fastjson.version}</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
@@ -87,20 +90,13 @@
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2-extension</artifactId>
             <version>${fastjson2.version}</version>
-            <optional>true</optional>
         </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackjson.version}</version>
         </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-
         <!--JsonEnd-->
     </dependencies>
     <build>

@@ -25,12 +25,11 @@ public class SimpleLimitPerAccessFilterHandler implements ISimpleCacheHandler {
         if (cacheNode.getAnnotation() instanceof SimpleGetCache ) {
             SimpleGetCache getCache = (SimpleGetCache) cacheNode.getAnnotation();
             long milliSecond = getCache.milliSecond();
-            int i = getCache.argsIndex();
             StringBuilder keyBuffer = new StringBuilder(cacheNode.getMethodFullName());
             String key;
-            if (params.length >= i) {
-                Object argument = params[i];
-                key = ParamElParserBuilder.putElValue(keyBuffer, argument, i, cacheNode.getDirectMethod().getMethod(), getCache.keyValueEl());
+            if (params.length > 0) {
+                keyBuffer.append(":");
+                key = ParamElParserBuilder.putElValue(keyBuffer, params, cacheNode.getDirectMethod().getMethod(), getCache.keyValueEl());
             } else {
                 key = keyBuffer.toString();
             }

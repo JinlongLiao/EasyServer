@@ -2,7 +2,7 @@ package io.github.jinlongliao.easy.server.cached.annotation.process;
 
 
 import io.github.jinlongliao.easy.server.cached.annotation.simple.SimpleGetCache;
- import io.github.jinlongliao.easy.server.mapper.annotation.GeneratorHelper;
+import io.github.jinlongliao.easy.server.mapper.annotation.GeneratorHelper;
 import io.github.jinlongliao.easy.server.mapper.annotation.process.AbstractGeneratorAnnotationProcessor;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -59,14 +59,14 @@ public class SimpleGetCacheAnnotationProcessor extends AbstractGeneratorAnnotati
 
     protected String parseMethod(Element element) {
         SimpleGetCache annotation = element.getAnnotation(SimpleGetCache.class);
-        return parseMethod(element, annotation.argsIndex(), annotation.keyValueEl());
+        return parseMethod(element, annotation.keyValueEl());
     }
 
-    protected String parseMethod(Element element, int argIndex, String el) {
+    protected String parseMethod(Element element, String el) {
         ExecutableElement executableElement = (ExecutableElement) element;
         StringBuilder builder = new StringBuilder(el);
         builder.append("_:_");
-        builder.append(argIndex);
+        builder.append(0);
         builder.append("_:_");
         builder.append(element.getEnclosingElement().toString().trim());
         builder.append("_:_");

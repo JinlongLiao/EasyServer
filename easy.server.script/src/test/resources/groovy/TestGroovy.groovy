@@ -1,7 +1,7 @@
-package io.github.jinlongliao.easy.server.script
+package groovy
 
 import io.github.jinlongliao.easy.server.script.groovy.config.ScriptConfig
-import io.github.jinlongliao.easy.server.script.ITestGroovy
+import io.github.jinlongliao.easy.server.script.test.ITestGroovy
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.support.ApplicationObjectSupport
 

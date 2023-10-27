@@ -36,7 +36,7 @@ public abstract class ServletBeanConfig {
         for (Map.Entry<String, BaseHttpFilter> filterEntry : beans.entrySet()) {
             final BaseHttpFilter httpFilter = filterEntry.getValue();
             final String filterName = filterEntry.getKey();
-            final FilterRegistration.Dynamic dynamic = servletContext.addFilter(filterName, httpFilter);
+            final FilterRegistration.Dynamic dynamic = servletContext.addFilter("_inner_" + filterName, httpFilter);
             dynamic.setAsyncSupported(httpFilter.isAsync());
             dynamic.setInitParameters(httpFilter.initParam());
             dynamic.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), false, httpFilter.supportPath());
@@ -48,7 +48,8 @@ public abstract class ServletBeanConfig {
         final Map<String, BaseHttpServlet> beans = applicationContext.getBeansOfType(BaseHttpServlet.class);
         for (Map.Entry<String, BaseHttpServlet> servletEntry : beans.entrySet()) {
             final BaseHttpServlet servlet = servletEntry.getValue();
-            final ServletRegistration.Dynamic dynamic = servletContext.addServlet(servletEntry.getKey(), servlet);
+            String servletName = servletEntry.getKey();
+            final ServletRegistration.Dynamic dynamic = servletContext.addServlet("_inner_" + servletName, servlet);
             dynamic.setLoadOnStartup(1);
             dynamic.addMapping(servlet.supportPath());
             dynamic.setAsyncSupported(servlet.isAsync());

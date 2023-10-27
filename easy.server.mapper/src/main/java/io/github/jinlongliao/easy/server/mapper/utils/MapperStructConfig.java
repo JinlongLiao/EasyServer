@@ -72,12 +72,6 @@ public class MapperStructConfig {
         Decompiler decompiler = new Decompiler(sourceFile.getParentFile(), options);
         decompiler.addSource(classFile);
         decompiler.decompileContext();
-
-        //        return javaSource[0]
-        //                .replace("public class", "@javax.annotation.Generated(value=\"easy.server.mapper Generated\"," +
-        //                        "date = \"" + LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME) + "\"," +
-        //                        " comments = \"common-mapper 动态生成\")\npublic class")
-        //                .getBytes(StandardCharsets.UTF_8);
     }
 
     public static void createFile(File file, boolean dir) throws IOException {
@@ -129,7 +123,7 @@ public class MapperStructConfig {
         public void saveClassFile(String path, String qualifiedName, String entryName, String content, int[] mapping) {
             content = content.replace("public class", "@javax.annotation.Generated(value=\"easy.server.mapper Generated\"," +
                     "date = \"" + LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME) + "\"," +
-                    " comments = \"common-mapper 动态生成\")\npublic class");
+                    " comments = \"common-mapper Dynamically generated\")\npublic class");
             super.saveClassFile(path, qualifiedName, entryName, content, mapping);
         }
     }

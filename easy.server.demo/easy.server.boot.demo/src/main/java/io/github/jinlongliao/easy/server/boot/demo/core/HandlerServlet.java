@@ -56,7 +56,7 @@ public class HandlerServlet extends BaseHttpServlet<UserModel> {
     }
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void todoLogic(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String logicId;
         try {

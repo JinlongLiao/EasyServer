@@ -1,4 +1,4 @@
-module easy.server.mapper {
+open module easy.server.mapper {
     exports io.github.jinlongliao.easy.server.mapper.constant;
     exports io.github.jinlongliao.easy.server.mapper.core.field;
     exports io.github.jinlongliao.easy.server.mapper.core.mapstruct;

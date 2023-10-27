@@ -39,12 +39,12 @@ public class LogicBean extends ApplicationObjectSupport {
 
     @SimpleGetCache(milliSecond = 10000L)
     @Logic({MsgId.TEST1, MsgId.TEST0})
-    public Object test1(@NotNull @LogicRequestParam("userId") String userId, @LogicRequestParam("age") int age, @LogicRequestBody UserModel userModel) {
+    public Object test1(@NotNull @LogicRequestParam("userId") String userId, @LogicRequestParam("age") int age, @LogicRequestBody("userModel") UserModel userModel) {
         return this.groovyService.getTest(userModel);
     }
 
     @Logic(MsgId.TEST2)
-    public Object test2(@LogicRequestBody UserModel userModel) {
+    public Object test2(@LogicRequestBody("userModel") UserModel userModel) {
         return this.groovyService.getTest(userModel);
     }
 
@@ -54,7 +54,7 @@ public class LogicBean extends ApplicationObjectSupport {
     }
 
     @LogicMapping(value = "101", desc = "Hex Response")
-    public TestResponse testHex(@UserId(newV = "newUserId") int userId,
+    public TestResponse testHex(@LogicAlias("newUserId") @UserId(newV = "newUserId") int userId,
                                 @HttpRequest
                                 HttpServletRequest request,
                                 @HttpResponse

@@ -27,13 +27,12 @@ public class PerAccessLimitFilterHandler implements ICacheHandler {
         if (cacheNode.getAnnotation() instanceof GetCache) {
             GetCache getCache = (GetCache) cacheNode.getAnnotation();
             long milliSecond = getCache.milliSecond();
-            int i = getCache.argsIndex();
             Object[] params = invocation.getArguments();
             StringBuilder keyBuffer = new StringBuilder(cacheNode.getMethodFullName());
             String key;
-            if (params.length >= i) {
-                Object argument = params[i];
-                key = ParamElParserBuilder.putElValue(keyBuffer, argument, i, method, getCache.keyValueEl());
+            if (params.length > 0) {
+                keyBuffer.append(":");
+                key = ParamElParserBuilder.putElValue(keyBuffer, params, method, getCache.keyValueEl());
             } else {
                 key = keyBuffer.toString();
             }
