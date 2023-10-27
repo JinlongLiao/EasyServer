@@ -17,11 +17,10 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <spring.boot.version>3.0.7</spring.boot.version>
+        <spring.boot.version>3.1.4</spring.boot.version>
         <fastjson.version>1.2.83</fastjson.version>
         <annotation.version>2.1.1</annotation.version>
-        <fastjson2.version>2.0.33</fastjson2.version>
-        <jackjson.version>2.15.2</jackjson.version>
+        <fastjson2.version>2.0.40</fastjson2.version>
         <start.class>io.github.jinlongliao.easy.server.netty.demo.NettyMainApplication</start.class>
     </properties>
     <dependencyManagement>
@@ -42,11 +41,6 @@
             <version>${fastjson2.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.alibaba.fastjson2</groupId>
-            <artifactId>fastjson2-extension</artifactId>
-            <version>${fastjson2.version}</version>
-        </dependency>
-        <dependency>
             <groupId>jakarta.annotation</groupId>
             <artifactId>jakarta.annotation-api</artifactId>
             <version>${annotation.version}</version>
@@ -55,7 +49,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${jackjson.version}</version>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
@@ -117,7 +111,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
+                <version>3.11.0</version>
                 <configuration>
                     <source>${maven.compiler.target}</source>
                     <target>${maven.compiler.target}</target>

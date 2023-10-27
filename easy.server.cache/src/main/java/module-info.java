@@ -1,5 +1,5 @@
 
-module easy.server.cached {
+open module easy.server.cached {
     exports io.github.jinlongliao.easy.server.cached;
     exports io.github.jinlongliao.easy.server.cached.aop;
     exports io.github.jinlongliao.easy.server.cached.aop.el;

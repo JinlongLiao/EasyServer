@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public interface IBeanMapper {
     /**
-     * 基于Map 的转换
+     * <p>基于Map 的转换</p>
      *
      * @param tClass
      * @param data
@@ -18,7 +18,7 @@ public interface IBeanMapper {
     <T> T mapBeanMapper(Class<T> tClass, Map<String, Object> data);
 
     /**
-     * 基于数组 的转换
+     * <p>基于数组 的转换</p>
      *
      * @param tClass
      * @param data
@@ -28,7 +28,7 @@ public interface IBeanMapper {
     <T> T arrayBeanMapper(Class<T> tClass, Object[] data);
 
     /**
-     * 基于javax.servlet 的转换
+     * <p>基于javax.servlet 的转换</p>
      *
      * @param tClass
      * @param req

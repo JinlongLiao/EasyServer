@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SSE链接测试</title>
+</head>
+<body>
+消息类型是message消息：
+<div id="ssediv">默认消息</div>
+<br>
+消息类型是diyEventType消息：
+<div id="diyssediv">DIY SSE消息</div>
+</body>
+<script>
+    const sse = new EventSource("https://127.0.0.1:9090/sse");
+    /**
+     * 默认是没有指定eventTtpe的消息，但eventType就为message。
+     * 等价于addEventListener("message" ...
+     */
+    sse.onmessage = function (ev) {
+        console.log("这里只能处理eventType为message的消息")
+        const elementById = document.getElementById("ssediv");
+        // debugger
+        elementById.innerHTML = ev.data;
+    }
+
+    /**
+     * 添加指定类型消息处理，eventType是后台自定义的
+     */
+    sse.addEventListener("diyEventType", event => {
+        console.log("自定义事件" + event.data)
+        const elementById2 = document.getElementById("diyssediv");
+        // debugger
+        elementById2.innerHTML = event.data;
+    })
+
+    /**
+     * SSE连接异常
+     */
+    sse.onerror = function () {
+        alert("服务器已停止！")
+    }
+
+    /**
+     * SSE连接成功
+     */
+    sse.onopen = function () {
+        alert("服务器已连接！")
+    }
+
+    // 不要忘记关闭断开连接哦
+    setTimeout(() => {
+        sse.close()
+    }, 50000)
+</script>
+</html>

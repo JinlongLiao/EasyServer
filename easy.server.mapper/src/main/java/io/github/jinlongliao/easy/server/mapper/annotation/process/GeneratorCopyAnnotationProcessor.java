@@ -48,7 +48,7 @@ public class GeneratorCopyAnnotationProcessor extends AbstractGeneratorAnnotatio
             GeneratorCopy annotation = element.getAnnotation(GeneratorCopy.class);
             return element + ";" + annotation.genMap() + ";" + annotation.genArray() + ";" + annotation.genServlet();
         }).collect(Collectors.toList());
-        if (strings.size() == 0) {
+        if (strings.isEmpty()) {
             return;
         }
         OutputStream outputStream = null;

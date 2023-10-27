@@ -1,7 +1,7 @@
 package io.github.jinlongliao.easy.server.mapper.utils;
 
 /**
- * 基础类型装开箱转换描述
+ * <p>基础类型装开箱转换描述</p>
  *
  * @author: liaojinlong
  * @date: 2022-08-18 09:29

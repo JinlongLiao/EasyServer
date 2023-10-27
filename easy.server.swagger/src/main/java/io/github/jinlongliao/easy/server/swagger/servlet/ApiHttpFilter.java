@@ -11,6 +11,7 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 /**
@@ -28,6 +29,7 @@ public class ApiHttpFilter extends BaseHttpFilter {
         this.securityBasicAuthFilter = securityBasicAuthFilter;
     }
 
+
     @Override
     public String[] supportPath() {
         return new String[]{apiConfig.getBasePath() + "*"};
@@ -35,16 +37,22 @@ public class ApiHttpFilter extends BaseHttpFilter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest servletRequest = (HttpServletRequest) request;
-        HttpServletResponse servletResponse = (HttpServletResponse) response;
+        boolean logicFilter = this.doLogicFilter((HttpServletRequest) request, (HttpServletResponse) response);
+        if (logicFilter) {
+            chain.doFilter(request, response);
+        }
+    }
+
+    @Override
+    public boolean doLogicFilter(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        boolean needDispatcher = false;
         if (securityBasicAuthFilter.doFilter(request, response)) {
-            boolean needDispatcher = true;
-            if (apiMapping.supportRequest(servletRequest, servletResponse)) {
-                needDispatcher = this.apiMapping.dispatcher(servletRequest, servletResponse);
-            }
-            if (needDispatcher) {
-                chain.doFilter(request, response);
+            if (apiMapping.supportRequest(request, response)) {
+                needDispatcher = this.apiMapping.dispatcher(request, response);
+            } else {
+                needDispatcher = true;
             }
         }
+        return needDispatcher;
     }
 }

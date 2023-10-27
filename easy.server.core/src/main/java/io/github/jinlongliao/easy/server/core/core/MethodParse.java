@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.core.DefaultParameterNameDiscoverer;
+import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
  * @since 2021/1/23 00:16
  */
 public class MethodParse implements AutoCloseable {
+    public static final ParameterNameDiscoverer PARAMETER_NAME_DISCOVERER = new DefaultParameterNameDiscoverer();
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final Map<String, LogicModel> logicDefineCache = new HashMap<>(32);
     private final List<MethodPostProcess> methodPostProcesses;
@@ -54,18 +56,18 @@ public class MethodParse implements AutoCloseable {
     /**
      * Spring 代理实现 获取方法参数名称
      */
-    private final DefaultParameterNameDiscoverer parameterNameDiscoverer;
+    private final ParameterNameDiscoverer parameterNameDiscoverer;
 
     public MethodParse() {
-        this(new DefaultParameterNameDiscoverer(), Collections.emptyList());
+        this(MethodParse.PARAMETER_NAME_DISCOVERER, Collections.emptyList());
     }
 
     public MethodParse(List<MethodPostProcess> methodPostProcesses) {
-        this(new DefaultParameterNameDiscoverer(), methodPostProcesses);
+        this(MethodParse.PARAMETER_NAME_DISCOVERER, methodPostProcesses);
     }
 
 
-    public MethodParse(DefaultParameterNameDiscoverer parameterNameDiscoverer, List<MethodPostProcess> methodPostProcesses) {
+    public MethodParse(ParameterNameDiscoverer parameterNameDiscoverer, List<MethodPostProcess> methodPostProcesses) {
         this.parameterNameDiscoverer = parameterNameDiscoverer;
         methodPostProcesses.sort(Comparator.comparingInt(MethodPostProcess::order));
         this.methodPostProcesses = methodPostProcesses;
@@ -259,7 +261,7 @@ public class MethodParse implements AutoCloseable {
     }
 
 
-    public DefaultParameterNameDiscoverer getParameterNameDiscoverer() {
+    public ParameterNameDiscoverer getParameterNameDiscoverer() {
         return parameterNameDiscoverer;
     }
 

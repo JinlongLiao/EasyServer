@@ -1,6 +1,7 @@
 package io.github.jinlongliao.easy.server.boot.demo.logic;
 
 import io.github.jinlongliao.easy.server.boot.demo.logic.annotation.MsgId;
+import io.github.jinlongliao.easy.server.boot.demo.logic.param.DiamondParam;
 import io.github.jinlongliao.easy.server.boot.demo.logic.response.TestResponse;
 import io.github.jinlongliao.easy.server.boot.demo.logic.annotation.Logic;
 import io.github.jinlongliao.easy.server.boot.demo.logic.annotation.UserId;
@@ -46,15 +47,20 @@ public class LogicBean extends ApplicationObjectSupport {
 
 
     @SimpleGetCache(milliSecond = 10000L)
-    @Logic({MsgId.TEST1, MsgId.TEST0})
-    public Object test1(@NotNull @LogicRequestParam("userId") String userId, @LogicRequestParam("age") int age, @LogicRequestBody UserModel userModel) {
+    @Logic({MsgId.TEST1})
+    public Object test1(@NotNull @LogicRequestParam("userId") String userId, @LogicRequestParam("age") int age, @LogicRequestBody("userModel") UserModel userModel) {
         testAsyncService.testAsync();
         return this.groovyService.getTest(userModel);
     }
 
+    @Logic({MsgId.TEST0})
+    @SimpleGetCache(keyValueEl = "diamondParam.num and diamondParam.data.userId", handler = SimpleLimitPerAccessFilterHandler.class, milliSecond = 300L)
+    public void diamond(@NotNull @LogicRequestBody("diamondParam") DiamondParam<UserModel> diamondParam) {
+        log.info("diamondParam {}", diamondParam);
+    }
+
     @Logic(MsgId.TEST2)
-    @SimpleGetCache(keyValueEl = "userId and age", handler = SimpleLimitPerAccessFilterHandler.class)
-    public Object test2(@LogicRequestBody UserModel userModel) {
+    public Object test2(@LogicRequestBody("userModel")  UserModel userModel) {
         Object o = testAsyncService.testWeAsync(false);
         log.info("threadId:{} name:{} result:{}", Thread.currentThread().getId(), Thread.currentThread().getName(), o);
         try {
@@ -67,14 +73,22 @@ public class LogicBean extends ApplicationObjectSupport {
         return this.groovyService.getTest(userModel);
     }
 
+    @Logic(MsgId.TEST3)
+    @SimpleGetCache(keyValueEl = "userModel.userId and userModel.age", handler = SimpleLimitPerAccessFilterHandler.class, milliSecond = 3000L)
+    public Object test3(@LogicRequestBody("userModel")  UserModel userModel) {
+        Object o = testAsyncService.testWeAsync(false);
+        log.info("threadId:{} name:{} result:{}", Thread.currentThread().getId(), Thread.currentThread().getName(), o);
+        return this.groovyService.getTest(userModel);
+    }
+
     @LogicMapping(value = "100", desc = "测试组合注解")
     public void testAnn(@UserId int userId, @LogicRequestIp String clientIp) {
         log.info("userId: {}\t clientIp: {}", userId, clientIp);
     }
 
     @LogicMapping(value = "101", desc = "Hex Response")
-    @GetCache(keyValueEl = "userId")
-    public TestResponse testHex(@UserId(newV = "newUserId") int userId,
+    @SimpleGetCache(keyValueEl = "newUserId")
+    public TestResponse testHex(@LogicAlias("newUserId")@UserId(newV = "newUserId") int userId,
                                 @HttpRequest
                                 HttpServletRequest request,
                                 @HttpResponse

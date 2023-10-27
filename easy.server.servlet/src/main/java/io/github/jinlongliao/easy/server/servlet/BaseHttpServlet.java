@@ -3,6 +3,7 @@ package io.github.jinlongliao.easy.server.servlet;
 import io.github.jinlongliao.easy.server.mapper.spring.BeanMapperFactoryBean;
 import io.github.jinlongliao.easy.server.mapper.spring.IBeanMapper;
 import io.github.jinlongliao.easy.server.ServletInstantCache;
+import io.github.jinlongliao.easy.server.servlet.match.UrlMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -14,15 +15,14 @@ import jakarta.servlet.ServletRegistration;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 基础Servlet
@@ -47,6 +47,7 @@ public abstract class BaseHttpServlet<T> extends HttpServlet implements Initiali
     protected final Class<T> genericClass;
     protected final IBeanMapper beanMapper;
     protected Set<String> supportMethod;
+    protected Set<UrlMatcher> supportPath;
 
     public BaseHttpServlet() {
         this(new BeanMapperFactoryBean(false).getObject());
@@ -89,18 +90,29 @@ public abstract class BaseHttpServlet<T> extends HttpServlet implements Initiali
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        String contextPath = req.getContextPath();
+        String uri = req.getRequestURI();
+        if (!"/".equals(contextPath)) {
+            uri = uri.replace(contextPath, "");
+        }
         final String method = req.getMethod();
         if (supportMethod().contains(method)) {
-            this.todoLogic(req, resp);
+            String finalUri = uri;
+            if (getSupportPath().stream().filter(n -> !n.matcher(finalUri)).findAny().isEmpty()) {
+                this.todoLogic(req, resp);
+            } else {
+                this.notSupportMethodResponse(resp, 404);
+            }
         } else {
             if (log.isWarnEnabled()) {
                 log.warn("Not Support = {}", method);
             }
-            this.notSupportMethodResponse(resp);
+            this.notSupportMethodResponse(resp, 502);
         }
     }
 
-    protected void notSupportMethodResponse(HttpServletResponse resp) throws IOException {
+    protected void notSupportMethodResponse(HttpServletResponse resp, int code) throws IOException {
+        resp.setStatus(code);
         resp.getWriter().write(NOT_SUPPORT);
     }
 
@@ -120,6 +132,13 @@ public abstract class BaseHttpServlet<T> extends HttpServlet implements Initiali
      * @return /
      */
     public abstract String[] supportPath();
+
+    public Set<UrlMatcher> getSupportPath() {
+        if (Objects.isNull(supportPath)) {
+            supportPath = Arrays.stream(supportPath()).map(UrlMatcher::new).collect(Collectors.toUnmodifiableSet());
+        }
+        return supportPath;
+    }
 
     /**
      * 支持的请求方法
@@ -178,11 +197,11 @@ public abstract class BaseHttpServlet<T> extends HttpServlet implements Initiali
     }
 
     /**
-     * 输出返回值
+     * <p>输出返回值</p>
      *
-     * @param response
-     * @param response
-     * @param contentType
+     * @param response    /
+     * @param msg         /
+     * @param contentType /
      */
     public void flushResponse(HttpServletResponse response, Object msg, String contentType) throws IOException {
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());

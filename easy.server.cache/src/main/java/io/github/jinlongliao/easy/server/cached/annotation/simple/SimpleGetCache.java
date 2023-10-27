@@ -24,8 +24,6 @@ public @interface SimpleGetCache {
      */
     String value() default "";
 
-    int argsIndex() default 0;
-
     /**
      * 默认缓存1s
      *

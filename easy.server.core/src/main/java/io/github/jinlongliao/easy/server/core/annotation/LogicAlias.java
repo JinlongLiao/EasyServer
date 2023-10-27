@@ -9,7 +9,7 @@ import java.lang.annotation.*;
  **/
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
 @Documented
 public @interface LogicAlias {
     /**

@@ -34,7 +34,7 @@ public class GetCacheAnnotationProcessor extends SimpleGetCacheAnnotationProcess
     @Override
     protected String parseMethod(Element element) {
         GetCache annotation = element.getAnnotation(GetCache.class);
-        return parseMethod(element, annotation.argsIndex(), annotation.keyValueEl());
+        return parseMethod(element, annotation.keyValueEl());
     }
 
     @Override

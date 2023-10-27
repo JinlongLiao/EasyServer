@@ -11,5 +11,4 @@
     </parent>
     <packaging>jar</packaging>
     <artifactId>common-generator-maven-plugin</artifactId>
-
 </project>

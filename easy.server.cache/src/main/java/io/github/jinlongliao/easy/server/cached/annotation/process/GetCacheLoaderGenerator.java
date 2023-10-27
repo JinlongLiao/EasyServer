@@ -37,20 +37,16 @@ public class GetCacheLoaderGenerator extends GeneratorMethodLoaderGenerator {
         if (elStr.isEmpty()) {
             return;
         }
-        int paramIndex = Integer.parseInt(split[1]);
         String className = split[2];
         String methodName = split[3];
-
         try {
             Class<?> forName = AsmProxyCodeGenerator.MAPPER_CLASS_LOADER.loadClass(className);
             List<Class<?>> paramClass = this.parseParamClass(split[4]);
             Method method = forName.getDeclaredMethod(methodName, paramClass.toArray(new Class[0]));
-            Class<?> aClass = paramClass.get(paramIndex);
-            ParamElParserBuilder.putElValue(new StringBuilder(), AsmProxyCodeGenerator.MAPPER_CLASS_LOADER.newInstanceWithEmpty(aClass), paramIndex, method, elStr);
+            ParamElParserBuilder.buildValue(method, elStr);
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
         }
-
     }
 
 }

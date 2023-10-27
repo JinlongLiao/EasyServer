@@ -97,7 +97,7 @@ public abstract class AbstractClassMethodGenerator<C extends IData2Object2> {
             methodVisitor.visitTypeInsn(CHECKCAST, "java/lang/Object");
             methodVisitor.visitVarInsn(ALOAD, paramStack);
             methodVisitor.visitMethodInsn(INVOKESTATIC, CLassUtils.getJvmClass(InnerConverter.class),
-                    "getT",
+                    "__getT",
                     "(Ljava/lang/Class;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
                     false);
             methodVisitor.visitTypeInsn(CHECKCAST, CLassUtils.getJvmClass(fieldParserBody.getFiledType()));
