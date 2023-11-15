@@ -67,13 +67,7 @@ public abstract class FieldVisitor {
      *                     null.
      */
     protected FieldVisitor(final int api, final FieldVisitor fieldVisitor) {
-        if (api != Opcodes.ASM9
-                && api != Opcodes.ASM8
-                && api != Opcodes.ASM7
-                && api != Opcodes.ASM6
-                && api != Opcodes.ASM5
-                && api != Opcodes.ASM4
-                && api != Opcodes.ASM10_EXPERIMENTAL) {
+        if (api != Opcodes.ASM9 && api != Opcodes.ASM8 && api != Opcodes.ASM7 && api != Opcodes.ASM6 && api != Opcodes.ASM5 && api != Opcodes.ASM4 && api != Opcodes.ASM10_EXPERIMENTAL) {
             throw new IllegalArgumentException("Unsupported api " + api);
         }
         if (api == Opcodes.ASM10_EXPERIMENTAL) {
@@ -120,8 +114,7 @@ public abstract class FieldVisitor {
      * @return a visitor to visit the annotation values, or {@literal null} if this visitor is not
      * interested in visiting this annotation.
      */
-    public AnnotationVisitor visitTypeAnnotation(
-            final int typeRef, final TypePath typePath, final String descriptor, final boolean visible) {
+    public AnnotationVisitor visitTypeAnnotation(final int typeRef, final TypePath typePath, final String descriptor, final boolean visible) {
         if (api < Opcodes.ASM5) {
             throw new UnsupportedOperationException("This feature requires ASM5");
         }

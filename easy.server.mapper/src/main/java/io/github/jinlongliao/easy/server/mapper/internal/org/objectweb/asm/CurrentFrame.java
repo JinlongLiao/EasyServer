@@ -28,6 +28,11 @@
 
 package io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm;
 
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Frame;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Label;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Symbol;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.SymbolTable;
+
 /**
  * Information about the input stack map frame at the "current" instruction of a method. This is
  * implemented as a Frame subclass for a "basic block" containing only one instruction.
@@ -47,7 +52,7 @@ final class CurrentFrame extends Frame {
    */
   @Override
   void execute(
-      final int opcode, final int arg, final Symbol symbolArg, final SymbolTable symbolTable) {
+          final int opcode, final int arg, final Symbol symbolArg, final SymbolTable symbolTable) {
     super.execute(opcode, arg, symbolArg, symbolTable);
     Frame successor = new Frame(null);
     merge(symbolTable, successor, 0);

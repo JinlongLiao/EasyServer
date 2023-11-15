@@ -27,6 +27,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm;
 
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.*;
 
 final class RecordComponentWriter extends RecordComponentVisitor {
     /**
@@ -43,7 +44,7 @@ final class RecordComponentWriter extends RecordComponentVisitor {
     private final int nameIndex;
 
     /**
-     * The descriptor_index field of the the Record attribute.
+     * The descriptor_index field of the Record attribute.
      */
     private final int descriptorIndex;
 

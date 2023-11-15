@@ -27,6 +27,9 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm;
 
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Opcodes;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Type;
+
 /**
  * A visitor to visit a Java module. The methods of this class must be called in the following
  * order: ( {@code visitMainClass} | ( {@code visitPackage} | {@code visitRequire} | {@code
