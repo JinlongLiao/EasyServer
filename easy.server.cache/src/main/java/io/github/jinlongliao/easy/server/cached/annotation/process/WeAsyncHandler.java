@@ -6,8 +6,8 @@ import io.github.jinlongliao.easy.server.cached.annotation.WeAsync;
 import io.github.jinlongliao.easy.server.cached.aop.spring.handler.ICacheHandler;
 import io.github.jinlongliao.easy.server.cached.exception.ExeTimeoutException;
 import io.github.jinlongliao.easy.server.cached.field.spring.CacheNode;
-import io.github.jinlongliao.easy.server.cached.util.LocalMapCache;
 import io.github.jinlongliao.easy.server.mapper.utils.CLassUtils;
+import io.github.jinlongliao.easy.server.utils.cache.LocalMapCache;
 import io.github.jinlongliao.easy.server.utils.common.DateUtil;
 import io.github.jinlongliao.easy.server.utils.common.UUIDHelper;
 import org.aopalliance.intercept.MethodInvocation;
@@ -29,15 +29,19 @@ import java.util.concurrent.*;
  * @date: 2023/8/7 17:31
  */
 public class WeAsyncHandler implements ICacheHandler {
+    /**
+     * 空字符串
+     */
+    public static final String EMPTY = "_ _";
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final ThreadPoolTaskExecutor threadPoolTaskExecutor;
     private final int maxSize;
-    private final LocalMapCache<Future<?>> futureLocalMapCache;
+    private final LocalMapCache futureLocalMapCache;
 
     public WeAsyncHandler(ThreadPoolTaskExecutor threadPoolTaskExecutor, int maxSize) {
         this.threadPoolTaskExecutor = threadPoolTaskExecutor;
         this.maxSize = maxSize;
-        this.futureLocalMapCache = new LocalMapCache<>(maxSize) {
+        this.futureLocalMapCache = new LocalMapCache(maxSize) {
             @Override
             public void deleteCache(String cacheKey) {
                 Future<?> future = getCache(cacheKey);
@@ -74,26 +78,34 @@ public class WeAsyncHandler implements ICacheHandler {
     private Object defValue(String defValStr, Class<?> returnType) {
         if (!StringUtils.hasText(defValStr)) {
             return null;
-        }
-        if (Objects.equals(Void.TYPE, returnType) || Objects.equals(Void.class, returnType)) {
+        } else if (Objects.equals(Void.TYPE, returnType) || Objects.equals(Void.class, returnType)) {
             return null;
-        }
-        if (CLassUtils.isStringClass(returnType)) {
+        } else if (CLassUtils.isStringClass(returnType)) {
+            if (Objects.equals(EMPTY, defValStr)) {
+                defValStr = "";
+            }
             return defValStr;
-        }
-        if (CLassUtils.isInteger(returnType)) {
+        } else if (CLassUtils.isInteger(returnType)) {
+            if (Objects.equals(EMPTY, defValStr)) {
+                defValStr = "0";
+            }
             return Integer.parseInt(defValStr.trim());
-        }
-        if (CLassUtils.isBool(returnType)) {
+        } else if (CLassUtils.isBool(returnType)) {
+            if (Objects.equals(EMPTY, defValStr)) {
+                defValStr = "false";
+            }
             return Boolean.parseBoolean(defValStr.trim());
-        }
-        if (CLassUtils.isLong(returnType)) {
+        } else if (CLassUtils.isLong(returnType)) {
+            if (Objects.equals(EMPTY, defValStr)) {
+                defValStr = "0";
+            }
             return Long.parseLong(defValStr.trim());
-        }
-        if (Objects.equals(Date.class, returnType)) {
+        } else if (Objects.equals(Date.class, returnType)) {
+            if (Objects.equals(EMPTY, defValStr)) {
+                return new Date();
+            }
             return DateUtil.parseDateTime(defValStr);
         }
-
         return null;
     }
 
@@ -122,7 +134,10 @@ public class WeAsyncHandler implements ICacheHandler {
         Future<Object> submit = this.threadPoolTaskExecutor.submitCompletable(task);
         try {
             Object o;
-            if (returnType.equals(Void.class) || returnType.equals(Void.TYPE) || this.futureLocalMapCache.getCurrentSize() > maxSize) {
+            if (!(weAsync.isBlock() && (
+                    !returnType.equals(Void.class)) ||
+                    returnType.equals(Void.TYPE) ||
+                    maxSize >= this.futureLocalMapCache.getCurrentSize())) {
                 o = null;
                 this.futureLocalMapCache.setCache(UUIDHelper.mongoId(), submit, maxTimeout);
             } else {

@@ -1,17 +1,21 @@
 package io.github.jinlongliao.easy.server.utils.json.extra;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.ParserConfig;
+import io.github.jinlongliao.easy.server.utils.json.DataType;
 import io.github.jinlongliao.easy.server.utils.json.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
  * Fast JSON 序列化反序列 包装类
- *不建议使用，fastjson1 后期继续维护可能性极低
+ * 不建议使用，fastjson1 后期继续维护可能性极低
+ *
  * @author liaojinlong
  * @since 2021/10/21 20:33
  */
@@ -78,7 +82,12 @@ public class FastJsonJsonHelper implements Json {
      */
     @Override
     public <T> T fromJson(String json, Class<T> tClass) {
-        return JSONObject.parseObject(json, tClass);
+        return JSON.parseObject(json, tClass);
+    }
+
+    @Override
+    public <T> T fromJson(String json, DataType<T> dataType) {
+        return JSON.parseObject(json, dataType.getType());
     }
 
 
@@ -91,6 +100,17 @@ public class FastJsonJsonHelper implements Json {
     @Override
     public <T> T fromJsonByte(byte[] json, Class<T> tClass) {
         return JSONObject.parseObject(json, tClass);
+    }
+
+    /**
+     * @param jsonBytes
+     * @param tClass
+     * @param <T>
+     * @return /
+     */
+    @Override
+    public <T> T fromJsonByte(byte[] jsonBytes, DataType<T> tClass) {
+        return JSON.parseObject(jsonBytes, tClass.getRawType());
     }
 
     /**
@@ -115,4 +135,25 @@ public class FastJsonJsonHelper implements Json {
         return JSONArray.parseArray(new String(jsonBytes), tClass);
     }
 
+    /**
+     * @param json
+     * @param dataType
+     * @param <T>
+     * @return /
+     */
+    @Override
+    public <T> List<T> fromJsonArray(String json, DataType<T> dataType) {
+        return (List<T>) JSONArray.parseArray(json, dataType.getRawType());
+    }
+
+    /**
+     * @param jsonBytes
+     * @param dataType
+     * @param <T>
+     * @return /
+     */
+    @Override
+    public <T> List<T> fromJsonByteArray(byte[] jsonBytes, DataType<T> dataType) {
+        return (List<T>) JSONArray.parseArray(new String(jsonBytes, StandardCharsets.UTF_8), dataType.getRawType());
+    }
 }

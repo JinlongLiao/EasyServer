@@ -1,10 +1,10 @@
 package io.github.jinlongliao.easy.server.cached.aop.spring.handler;
 
-import io.github.jinlongliao.easy.server.cached.util.LocalMapCache;
 import io.github.jinlongliao.easy.server.cached.CacheType;
 import io.github.jinlongliao.easy.server.cached.annotation.DelCache;
 import io.github.jinlongliao.easy.server.cached.annotation.GetCache;
 import io.github.jinlongliao.easy.server.cached.field.spring.CacheNode;
+import io.github.jinlongliao.easy.server.utils.cache.LocalMapCache;
 import org.aopalliance.intercept.MethodInvocation;
 
 import java.lang.annotation.Annotation;
@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
  * @since 2022-02-15 10:37
  */
 public class DefaultCacheHandler implements ICacheHandler {
-    private LocalMapCache<Object> cache = new LocalMapCache<>(2 << 12);
+    private final LocalMapCache cache = new LocalMapCache(2 << 12);
 
     @Override
     public Object cacheHandler(CacheNode cacheNode, Method method, MethodInvocation invocation) throws Throwable {

@@ -2,6 +2,7 @@ package io.github.jinlongliao.easy.server.utils.common;
 
 
 import java.security.SecureRandom;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -45,7 +46,7 @@ public class UUIDHelper {
         randomBytes[6] &= 0x0f;  /* clear version        */
         randomBytes[6] |= 0x40;  /* set to version 4     */
         randomBytes[8] &= 0x3f;  /* clear variant        */
-        randomBytes[8] |= 0x80;  /* set to IETF variant  */
+        randomBytes[8] |= (byte) 0x80;  /* set to IETF variant  */
         long mostSigBits = 0;
         long leastSigBits = 0;
         for (int i = 0; i < 8; i++) {
@@ -94,6 +95,22 @@ public class UUIDHelper {
         byte[] bytes = new byte[byteSize];
         Holder.numberGenerator.nextBytes(bytes);
         return HexUtil.byte2Hex(bytes);
+    }
+
+    public static long parserMongoIdTs(String mongoId) {
+        if (Objects.isNull(mongoId) || mongoId.length() < 11) {
+            return 0L;
+        }
+        byte[] bytes = HexUtil.hex2Byte(mongoId);
+        if (bytes.length != 12) {
+            return 0L;
+        }
+        int b0 = (bytes[0] & 0xff) << 24;
+        int b1 = (bytes[1] & 0xff) << 16;
+        int b2 = (bytes[2] & 0xff) << 8;
+        int b3 = (bytes[3] & 0xff);
+        int i = b0 | b1 | b2 | b3;
+        return i * 1000L;
     }
 
 }

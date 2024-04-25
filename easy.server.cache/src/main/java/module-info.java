@@ -12,7 +12,6 @@ open module easy.server.cached {
     exports io.github.jinlongliao.easy.server.cached.config;
     exports io.github.jinlongliao.easy.server.cached.field.simple;
     exports io.github.jinlongliao.easy.server.cached.field.spring;
-    exports io.github.jinlongliao.easy.server.cached.util;
     exports io.github.jinlongliao.easy.server.cached.annotation.simple;
     requires org.slf4j;
     requires spring.context;

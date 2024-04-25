@@ -13,8 +13,8 @@
 
     <properties>
         <logback.version>1.4.11</logback.version>
-        <spring.version>6.0.13</spring.version>
-        <asm.version>9.6</asm.version>
+        <spring.version>6.1.6</spring.version>
+        <asm.version>9.7</asm.version>
     </properties>
     <dependencies>
         <dependency>
