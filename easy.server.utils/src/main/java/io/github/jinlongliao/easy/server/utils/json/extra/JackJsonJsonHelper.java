@@ -1,18 +1,21 @@
 package io.github.jinlongliao.easy.server.utils.json.extra;
 
 
-import io.github.jinlongliao.easy.server.utils.json.Json;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import io.github.jinlongliao.easy.server.utils.json.DataType;
+import io.github.jinlongliao.easy.server.utils.json.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -117,6 +120,16 @@ public class JackJsonJsonHelper implements Json {
         return null;
     }
 
+    @Override
+    public <T> T fromJson(String json, DataType<T> dataType) {
+        try {
+            return (T) this.objectMapper.readValue(json, dataType.getRawType());
+        } catch (JsonProcessingException e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
 
     /**
      * @param json
@@ -128,6 +141,27 @@ public class JackJsonJsonHelper implements Json {
     public <T> T fromJsonByte(byte[] json, Class<T> tClass) {
         try {
             return this.objectMapper.readValue(json, tClass);
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    /**
+     * @param jsonBytes
+     * @param tClass
+     * @param <T>
+     * @return /
+     */
+    @Override
+    public <T> T fromJsonByte(byte[] jsonBytes, DataType<T> tClass) {
+        try {
+            return this.objectMapper.readValue(jsonBytes, new TypeReference<T>() {
+                @Override
+                public Type getType() {
+                    return super.getType();
+                }
+            });
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
@@ -166,4 +200,35 @@ public class JackJsonJsonHelper implements Json {
         return null;
     }
 
+    /**
+     * @param json
+     * @param dataType
+     * @param <T>
+     * @return /
+     */
+    @Override
+    public <T> List<T> fromJsonArray(String json, DataType<T> dataType) {
+        try {
+            return objectMapper.readerForListOf(dataType.getRawType()).readValue(json.getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    /**
+     * @param jsonBytes
+     * @param dataType
+     * @param <T>
+     * @return /
+     */
+    @Override
+    public <T> List<T> fromJsonByteArray(byte[] jsonBytes, DataType<T> dataType) {
+        try {
+            return objectMapper.readerForListOf(dataType.getRawType()).readValue(jsonBytes);
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
 }

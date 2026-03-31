@@ -1,8 +1,7 @@
-package io.github.jinlongliao.easy.server.cached.util;
+package io.github.jinlongliao.easy.server.utils.cache;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -14,10 +13,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author liaojinlong
  * @since 2022-02-17 14:43
  */
-public class LocalMapCache<T> {
+public class LocalMapCache {
     private static final AtomicInteger index = new AtomicInteger();
     private static final Logger log = LoggerFactory.getLogger(LocalMapCache.class);
-    public static final ThreadPoolTaskExecutor TF;
+    private static final ThreadPoolExecutor TF;
+    private static final ScheduledThreadPoolExecutor SCHEDULED_THREAD_POOL_EXECUTOR;
+
     /**
      * 缓存最大个数
      */
@@ -27,13 +28,14 @@ public class LocalMapCache<T> {
      */
     private int currentSize = 0;
     /**
-     * 时间10S
+     * 时间一分钟
      */
-    public static final long TEN_SECOND = 10 * 1000L;
+    public static final long ONE_MINUTE = 60 * 1000L;
     /**
      * 缓存对象
      */
-    private final Map<String, CacheObj<T>> cacheObjMap;
+    private final Map<String, CacheObj<?>> cacheObjMap;
+    private static final Map<String, ScheduledFuture<?>> SCHEDULED_FUTURE_CONCURRENT_CACHE = new ConcurrentHashMap<>(8);
     private static final Set<LocalMapCache> ALL_CACHE = new HashSet<>(32);
     /**
      * 这个记录了缓存使用的最后一次的记录，最近使用的在最前面
@@ -45,11 +47,31 @@ public class LocalMapCache<T> {
     private static volatile Boolean CLEAN_THREAD_IS_RUN = false;
 
     static {
-        TF = new ThreadPoolTaskExecutor();
-        TF.setCorePoolSize(1);
-        TF.setMaxPoolSize(2);
-        TF.setThreadNamePrefix("LocalMapCache thread");
-        TF.afterPropertiesSet();
+        TF = new ThreadPoolExecutor(1, 8, 10, TimeUnit.SECONDS, new LinkedBlockingQueue<>(1024), runnable -> {
+            Thread thread = new Thread(runnable, "EASY_SERVER_CACHE_" + (System.currentTimeMillis() / 1000));
+            thread.setDaemon(true);
+            return thread;
+        }, (r, e) -> {
+            log.warn("tread pool queue is full :{},tread num:{}", e.getQueue().size(), e.getActiveCount());
+            if (!e.isShutdown()) {
+                e.getQueue().poll();
+                e.execute(r);
+            }
+        });
+
+
+        SCHEDULED_THREAD_POOL_EXECUTOR = new ScheduledThreadPoolExecutor(4, runnable -> {
+            Thread thread = new Thread(runnable, "EASY_SERVER_SCHEDULED_" + (System.currentTimeMillis() / 1000));
+            thread.setDaemon(true);
+            return thread;
+        }, (r, e) -> {
+            log.warn("scheduled tread pool queue is full :{},tread num:{}", e.getQueue().size(), e.getActiveCount());
+            if (!e.isShutdown()) {
+                e.getQueue().poll();
+                e.execute(r);
+            }
+        });
+
     }
 
     public LocalMapCache(int cacheMaxNumber) {
@@ -63,9 +85,13 @@ public class LocalMapCache<T> {
     }
 
     /**
-     * 设置缓存
+     * 设置缓存 毫秒
+     *
+     * @param cacheKey   /
+     * @param cacheValue /
+     * @param cacheTime  毫秒
      */
-    public void setCache(String cacheKey, T cacheValue, long cacheTime) {
+    public void setCache(String cacheKey, Object cacheValue, long cacheTime) {
         long ttlTime;
         if (cacheTime <= 0L) {
             if (cacheTime == -1L) {
@@ -79,7 +105,7 @@ public class LocalMapCache<T> {
         checkSize();
         saveCacheUseLog(cacheKey);
         currentSize = currentSize + 1;
-        CacheObj cacheObj = new CacheObj(cacheValue, ttlTime);
+        CacheObj<?> cacheObj = new CacheObj<>(cacheValue, ttlTime);
         cacheObjMap.put(cacheKey, cacheObj);
         if (log.isTraceEnabled()) {
             log.trace("have set key :{}", cacheKey);
@@ -89,18 +115,19 @@ public class LocalMapCache<T> {
     /**
      * 设置缓存
      */
-    public void setCache(String cacheKey, T cacheValue) {
+    public void setCache(String cacheKey, Object cacheValue) {
         setCache(cacheKey, cacheValue, -1L);
     }
 
     /**
      * 获取缓存
      */
-    public T getCache(String cacheKey) {
+    public <T> T getCache(String cacheKey) {
         startCleanThread();
         if (checkCache(cacheKey)) {
             saveCacheUseLog(cacheKey);
-            return cacheObjMap.get(cacheKey).getCacheValue();
+            CacheObj<?> cacheObj = cacheObjMap.get(cacheKey);
+            return (T) cacheObj.getCacheValue();
         }
         return null;
     }
@@ -127,7 +154,6 @@ public class LocalMapCache<T> {
             if (log.isTraceEnabled()) {
                 log.trace("have delete key :{}", cacheKey);
             }
-            cacheUseLogList.remove(cacheKey);
             currentSize = currentSize - 1;
         }
     }
@@ -136,7 +162,7 @@ public class LocalMapCache<T> {
      * 判断缓存在不在,过没过期
      */
     private boolean checkCache(String cacheKey) {
-        CacheObj cacheObj = cacheObjMap.get(cacheKey);
+        CacheObj<?> cacheObj = cacheObjMap.get(cacheKey);
         if (cacheObj == null) {
             return false;
         }
@@ -170,37 +196,22 @@ public class LocalMapCache<T> {
      * 删除过期的缓存
      */
     static void deleteTimeOut() {
-        deleteTimeOut((true));
-    }
-
-    /**
-     * 删除过期的缓存
-     */
-    static void deleteTimeOut(boolean tryAg) {
         if (log.isTraceEnabled()) {
             log.trace("delete time out run!");
         }
         List<String> deleteKeyList = new LinkedList<>();
-        try {
-            for (LocalMapCache cache : ALL_CACHE) {
-                Map<String, CacheObj> cacheObjMap = cache.cacheObjMap;
-                for (Map.Entry<String, CacheObj> entry : cacheObjMap.entrySet()) {
-                    long ttlTime = entry.getValue().getTtlTime();
-                    if (ttlTime < System.currentTimeMillis() && ttlTime != -1L) {
-                        deleteKeyList.add(entry.getKey());
-                    }
-                }
-                for (String deleteKey : deleteKeyList) {
-                    cache.deleteCache(deleteKey);
+        for (LocalMapCache cache : ALL_CACHE) {
+            Map<String, CacheObj<?>> cacheObjMap = cache.cacheObjMap;
+            for (Map.Entry<String, CacheObj<?>> entry : cacheObjMap.entrySet()) {
+                long ttlTime = entry.getValue().getTtlTime();
+                if (ttlTime < System.currentTimeMillis() && ttlTime != -1L) {
+                    deleteKeyList.add(entry.getKey());
                 }
             }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            if (tryAg) {
-                deleteTimeOut((false));
+            for (String deleteKey : deleteKeyList) {
+                cache.deleteCache(deleteKey);
             }
         }
-
     }
 
     /**
@@ -245,56 +256,30 @@ public class LocalMapCache<T> {
                     return;
                 }
                 index.incrementAndGet();
-                ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1, TF);
                 CleanTimeOutThread cleanTimeOutThread = new CleanTimeOutThread();
-                executor.scheduleWithFixedDelay(cleanTimeOutThread, TEN_SECOND, TEN_SECOND, TimeUnit.SECONDS);
+                SCHEDULED_THREAD_POOL_EXECUTOR.scheduleWithFixedDelay(cleanTimeOutThread, ONE_MINUTE, ONE_MINUTE, TimeUnit.SECONDS);
                 setCleanThreadRun();
             }
         }
     }
+    //region 异步任务执行或定时任务
 
+    public static void addScheduledTask(String taskName, Runnable task, long delay, TimeUnit unit) {
+        ScheduledFuture<?> future = SCHEDULED_THREAD_POOL_EXECUTOR.scheduleAtFixedRate(task, 0, delay, unit);
+        ScheduledFuture<?> scheduledFuture = SCHEDULED_FUTURE_CONCURRENT_CACHE.put(taskName, future);
+        if (Objects.nonNull(scheduledFuture)) {
+            scheduledFuture.cancel(true);
+        }
+    }
+
+    public static Future<?> addAsync(Runnable runnable) {
+        return TF.submit(runnable);
+    }
+
+    public static <T> Future<T> addAsync(Callable<T> runnable) {
+        return TF.submit(runnable);
+    }
+    //endregion
 }
 
-class CacheObj<T> {
-    /**
-     * 缓存对象
-     */
-    private T CacheValue;
-    /**
-     * 缓存过期时间
-     */
-    private long ttlTime;
 
-    CacheObj(T cacheValue, long ttlTime) {
-        CacheValue = cacheValue;
-        this.ttlTime = ttlTime;
-    }
-
-    T getCacheValue() {
-        return CacheValue;
-    }
-
-    long getTtlTime() {
-        return ttlTime;
-    }
-
-    @Override
-    public String toString() {
-        return "CacheObj {" +
-                "CacheValue = " + CacheValue +
-                ", ttlTime = " + ttlTime +
-                '}';
-    }
-}
-
-/**
- * 每一分钟清理一次过期缓存
- */
-class CleanTimeOutThread implements Runnable {
-
-    @Override
-    public void run() {
-        LocalMapCache.setCleanThreadRun();
-        LocalMapCache.deleteTimeOut();
-    }
-}

@@ -7,11 +7,9 @@ import io.github.jinlongliao.easy.server.cached.CacheType;
 import io.github.jinlongliao.easy.server.cached.annotation.DelCache;
 import io.github.jinlongliao.easy.server.cached.annotation.GetCache;
 import io.github.jinlongliao.easy.server.cached.annotation.WeAsync;
-import io.github.jinlongliao.easy.server.cached.annotation.process.WeAsyncHandler;
 import io.github.jinlongliao.easy.server.cached.aop.spring.handler.ICacheHandler;
 import io.github.jinlongliao.easy.server.cached.field.spring.CacheConfig;
 import io.github.jinlongliao.easy.server.cached.field.spring.CacheNode;
-import io.github.jinlongliao.easy.server.cached.util.LocalMapCache;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
@@ -31,6 +29,8 @@ import java.util.Map;
 public class CacheInterceptor implements MethodInterceptor, ApplicationContextAware {
     private final CacheConfig cacheConfig;
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private boolean inited = false;
+    private ApplicationContext applicationContext;
 
     public CacheInterceptor(CacheConfig cacheConfig) {
         this.cacheConfig = cacheConfig;
@@ -44,6 +44,7 @@ public class CacheInterceptor implements MethodInterceptor, ApplicationContextAw
         if (cacheNode == null) {
             proceed = invocation.proceed();
         } else {
+            this._init();
             proceed = cacheHandler(cacheNode, method, invocation);
         }
         return proceed;
@@ -68,22 +69,19 @@ public class CacheInterceptor implements MethodInterceptor, ApplicationContextAw
     }
 
 
+    private void _init() {
+        if (inited) {
+            return;
+        }
+        inited = true;
+        Map<String, ICacheHandler> beansOfType = applicationContext.getBeansOfType(ICacheHandler.class);
+        for (ICacheHandler cacheHandler : beansOfType.values()) {
+            cacheConfig.addCacheHandler(cacheHandler);
+        }
+    }
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        Map<String, ICacheHandler> beansOfType = applicationContext.getBeansOfType(ICacheHandler.class);
-        boolean addWeAsync = true;
-        for (ICacheHandler cacheHandler : beansOfType.values()) {
-            if (addWeAsync) {
-                if (WeAsyncHandler.class.isAssignableFrom(cacheHandler.getClass())) {
-                    addWeAsync = false;
-                }
-            }
-            cacheConfig.addCacheHandler(cacheHandler);
-        }
-        if (addWeAsync) {
-            WeAsyncHandler cacheHandler = new WeAsyncHandler(LocalMapCache.TF , 1024);
-            log.warn("add WeAsync Handle :{}", cacheHandler);
-            cacheConfig.addCacheHandler(cacheHandler);
-        }
+        this.applicationContext = applicationContext;
     }
 }

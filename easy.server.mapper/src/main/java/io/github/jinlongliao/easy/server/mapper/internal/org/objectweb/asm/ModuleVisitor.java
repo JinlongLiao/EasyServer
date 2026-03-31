@@ -27,6 +27,8 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm;
 
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Constants;
+
 /**
  * A visitor to visit a Java module. The methods of this class must be called in the following
  * order: ( {@code visitMainClass} | ( {@code visitPackage} | {@code visitRequire} | {@code
@@ -93,7 +95,7 @@ public abstract class ModuleVisitor {
   }
 
   /**
-   * Visit the main class of the current module.
+   * Visits the main class of the current module.
    *
    * @param mainClass the internal name of the main class of the current module (see {@link
    *     Type#getInternalName()}).
@@ -105,7 +107,7 @@ public abstract class ModuleVisitor {
   }
 
   /**
-   * Visit a package of the current module.
+   * Visits a package of the current module.
    *
    * @param packaze the internal name of a package (see {@link Type#getInternalName()}).
    */
@@ -130,7 +132,7 @@ public abstract class ModuleVisitor {
   }
 
   /**
-   * Visit an exported package of the current module.
+   * Visits an exported package of the current module.
    *
    * @param packaze the internal name of the exported package (see {@link Type#getInternalName()}).
    * @param access the access flag of the exported package, valid values are among {@code
@@ -145,7 +147,7 @@ public abstract class ModuleVisitor {
   }
 
   /**
-   * Visit an open package of the current module.
+   * Visits an open package of the current module.
    *
    * @param packaze the internal name of the opened package (see {@link Type#getInternalName()}).
    * @param access the access flag of the opened package, valid values are among {@code
@@ -160,7 +162,7 @@ public abstract class ModuleVisitor {
   }
 
   /**
-   * Visit a service used by the current module. The name must be the internal name of an interface
+   * Visits a service used by the current module. The name must be the internal name of an interface
    * or a class.
    *
    * @param service the internal name of the service (see {@link Type#getInternalName()}).
@@ -172,7 +174,7 @@ public abstract class ModuleVisitor {
   }
 
   /**
-   * Visit an implementation of a service.
+   * Visits an implementation of a service.
    *
    * @param service the internal name of the service (see {@link Type#getInternalName()}).
    * @param providers the internal names (see {@link Type#getInternalName()}) of the implementations
