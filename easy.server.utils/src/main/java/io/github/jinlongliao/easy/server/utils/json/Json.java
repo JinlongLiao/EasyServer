@@ -65,6 +65,26 @@ public interface Json {
     <T> List<T> fromJsonByteArray(byte[] jsonBytes, Class<T> tClass);
 
     /**
+     * List
+     *
+     * @param json
+     * @param dataType
+     * @param <T>
+     * @return /
+     */
+    <T> List<T> fromJsonArray(String json, DataType<T> dataType);
+
+    /**
+     * Byte List
+     *
+     * @param jsonBytes
+     * @param dataType
+     * @param <T>
+     * @return /
+     */
+    <T> List<T> fromJsonByteArray(byte[] jsonBytes, DataType<T> dataType);
+
+    /**
      * Object Str
      *
      * @param json
@@ -73,6 +93,8 @@ public interface Json {
      * @return /
      */
     <T> T fromJson(String json, Class<T> tClass);
+
+    <T> T fromJson(String json, DataType<T> dataType);
 
 
     /**
@@ -84,5 +106,7 @@ public interface Json {
      * @return /
      */
     <T> T fromJsonByte(byte[] json, Class<T> tClass);
+
+    <T> T fromJsonByte(byte[] json, DataType<T> dataType);
 
 }

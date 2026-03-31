@@ -1,11 +1,11 @@
 package io.github.jinlongliao.easy.server.cached.aop.simple.handler;
 
-import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.method.DirectMethod;
 import io.github.jinlongliao.easy.server.cached.CacheType;
 import io.github.jinlongliao.easy.server.cached.annotation.simple.SimpleDelCache;
 import io.github.jinlongliao.easy.server.cached.annotation.simple.SimpleGetCache;
 import io.github.jinlongliao.easy.server.cached.field.simple.SimpleCacheNode;
-import io.github.jinlongliao.easy.server.cached.util.LocalMapCache;
+import io.github.jinlongliao.easy.server.mapper.core.mapstruct.core.method.DirectMethod;
+import io.github.jinlongliao.easy.server.utils.cache.LocalMapCache;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
  * @since 2022-02-15 10:37
  */
 public class DefaultSimpleCacheHandler implements ISimpleCacheHandler {
-    private final LocalMapCache<Object> cache = new LocalMapCache<>(2 << 12);
+    private final LocalMapCache cache = new LocalMapCache(2 << 12);
 
 
     private String buildKey(CacheType cacheType, Annotation annotation, Method method, Object[] arguments) {

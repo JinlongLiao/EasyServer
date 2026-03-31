@@ -3,6 +3,7 @@ module easy.server.utils {
     exports io.github.jinlongliao.easy.server.utils.json;
     exports io.github.jinlongliao.easy.server.utils.json.extra;
     exports io.github.jinlongliao.easy.server.utils.common;
+    exports io.github.jinlongliao.easy.server.utils.cache;
     exports io.github.jinlongliao.easy.server.utils.logger.core.operate;
     exports io.github.jinlongliao.easy.server.utils.logger.core.operate.inner;
     exports io.github.jinlongliao.easy.server.utils.logger.core.constant;

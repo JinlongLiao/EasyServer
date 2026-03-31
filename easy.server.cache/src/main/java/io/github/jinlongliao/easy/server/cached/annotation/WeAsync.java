@@ -34,4 +34,10 @@ public @interface WeAsync {
      * 失败默认值
      */
     String defaultVal() default "";
+
+
+    /**
+     * 响应值返回前是否阻塞
+     */
+    boolean isBlock() default false;
 }

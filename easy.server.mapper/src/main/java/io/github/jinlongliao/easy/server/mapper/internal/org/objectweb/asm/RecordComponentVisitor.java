@@ -27,6 +27,11 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm;
 
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.AnnotationVisitor;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Attribute;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Constants;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Opcodes;
+
 /**
  * A visitor to visit a record component. The methods of this class must be called in the following
  * order: ( {@code visitAnnotation} | {@code visitTypeAnnotation} | {@code visitAttribute} )* {@code

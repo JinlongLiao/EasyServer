@@ -1,10 +1,11 @@
 package io.github.jinlongliao.easy.server.utils.json;
 
+
+import io.github.jinlongliao.easy.server.utils.json.extra.FastJson2JsonHelper;
 import io.github.jinlongliao.easy.server.utils.json.extra.FastJsonJsonHelper;
 import io.github.jinlongliao.easy.server.utils.json.extra.JackJsonJsonHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import io.github.jinlongliao.easy.server.utils.json.extra.FastJson2JsonHelper;
 
 import java.util.List;
 
@@ -32,7 +33,11 @@ public class JsonHelper implements Json {
         this(JsonType.EXTRA_JSON, null, null, null, json);
     }
 
-    public JsonHelper(JsonType jsonType, FastJsonJsonHelper fastJson, FastJson2JsonHelper fastJson2, JackJsonJsonHelper jackJson, Json extraJson) {
+    public JsonHelper(JsonType jsonType,
+                      FastJsonJsonHelper fastJson,
+                      FastJson2JsonHelper fastJson2,
+                      JackJsonJsonHelper jackJson,
+                      Json extraJson) {
         this.jsonType = jsonType;
         this.fastJson = fastJson;
         this.fastJson2 = fastJson2;
@@ -87,6 +92,77 @@ public class JsonHelper implements Json {
         return this.objectToJson(obj, jsonType);
     }
 
+
+    @Override
+    public <T> List<T> fromJsonByteArray(byte[] jsonBytes, DataType<T> dataType) {
+        return getJson(jsonType).fromJsonByteArray(jsonBytes, dataType);
+    }
+
+    /**
+     * @param json
+     * @param tClass
+     * @param <T>
+     * @return /
+     */
+    @Override
+    public <T> T fromJson(String json, Class<T> tClass) {
+        return getJson(jsonType).fromJson(json, tClass);
+    }
+
+    @Override
+    public <T> T fromJson(String json, DataType<T> dataType) {
+        return getJson(jsonType).fromJson(json, dataType);
+    }
+
+    /**
+     * @param json
+     * @param tClass
+     * @param <T>
+     * @return /
+     */
+    @Override
+    public <T> T fromJsonByte(byte[] json, Class<T> tClass) {
+        return getJson(jsonType).fromJsonByte(json, tClass);
+    }
+
+    @Override
+    public <T> T fromJsonByte(byte[] json, DataType<T> dataType) {
+        return getJson(jsonType).fromJsonByte(json, dataType);
+    }
+
+    /**
+     * Json  byte[]
+     *
+     * @param obj
+     * @return /
+     */
+    public byte[] toJsonByte(Object obj, JsonType jsonType) {
+        return getJson(jsonType).toJsonByte(obj);
+    }
+
+    /**
+     * Json
+     *
+     * @param obj
+     * @param jsonType
+     * @return /
+     */
+    public String objectToJson(Object obj, JsonType jsonType) {
+        return getJson(jsonType).objectToJson(obj);
+    }
+
+    /**
+     * Json
+     *
+     * @param obj
+     * @param jsonType
+     * @return /
+     */
+    public String objectToJsonArray(Object obj, JsonType jsonType) {
+        return getJson(jsonType).objectToJsonArray(obj);
+
+    }
+
     /**
      * @param json
      * @param tClass
@@ -109,101 +185,19 @@ public class JsonHelper implements Json {
         return this.fromJsonByteArray(jsonBytes, tClass, jsonType);
     }
 
-    /**
-     * @param json
-     * @param tClass
-     * @param <T>
-     * @return /
-     */
+    public <T> List<T> fromJsonArray(byte[] jsonBytes, DataType<T> dataType, JsonType jsonType) {
+        return getJson(jsonType).fromJsonByteArray(jsonBytes, dataType);
+    }
+
+    public <T> List<T> fromJsonArray(String json, DataType<T> dataType, JsonType jsonType) {
+        return getJson(jsonType).fromJsonArray(json, dataType);
+    }
+
     @Override
-    public <T> T fromJson(String json, Class<T> tClass) {
-        return this.fromJson(json, tClass, jsonType);
+    public <T> List<T> fromJsonArray(String json, DataType<T> dataType) {
+        return this.getJson(jsonType).fromJsonArray(json, dataType);
     }
 
-    /**
-     * @param json
-     * @param tClass
-     * @param <T>
-     * @return /
-     */
-    @Override
-    public <T> T fromJsonByte(byte[] json, Class<T> tClass) {
-        return this.fromJsonByte(json, tClass, jsonType);
-    }
-
-    /**
-     * Json  byte[]
-     *
-     * @param obj
-     * @return /
-     */
-    public byte[] toJsonByte(Object obj, JsonType jsonType) {
-        byte[] data;
-        switch (jsonType) {
-            case FAST_JSON:
-                data = fastJson.toJsonByte(obj);
-                break;
-            case FAST_JSON2:
-                data = fastJson2.toJsonByte(obj);
-                break;
-            case JACK_JSON:
-                data = jackJson.toJsonByte(obj);
-                break;
-            default:
-                data = extraJson.toJsonByte(obj);
-        }
-        return data;
-    }
-
-    /**
-     * Json
-     *
-     * @param obj
-     * @param jsonType
-     * @return /
-     */
-    public String objectToJson(Object obj, JsonType jsonType) {
-        String data;
-        switch (jsonType) {
-            case FAST_JSON2:
-                data = fastJson2.objectToJson(obj);
-                break;
-            case FAST_JSON:
-                data = fastJson.objectToJson(obj);
-                break;
-            case JACK_JSON:
-                data = jackJson.objectToJson(obj);
-                break;
-            default:
-                data = extraJson.objectToJson(obj);
-        }
-        return data;
-    }
-
-    /**
-     * Json
-     *
-     * @param obj
-     * @param jsonType
-     * @return /
-     */
-    public String objectToJsonArray(Object obj, JsonType jsonType) {
-        String data;
-        switch (jsonType) {
-            case FAST_JSON:
-                data = fastJson.objectToJsonArray(obj);
-                break;
-            case FAST_JSON2:
-                data = fastJson2.objectToJsonArray(obj);
-                break;
-            case JACK_JSON:
-                data = jackJson.objectToJsonArray(obj);
-                break;
-            default:
-                data = extraJson.objectToJsonArray(obj);
-        }
-        return data;
-    }
 
     /**
      * Json
@@ -213,21 +207,7 @@ public class JsonHelper implements Json {
      * @return /
      */
     public byte[] objectToJsonArrayByte(Object obj, JsonType jsonType) {
-        byte[] data;
-        switch (jsonType) {
-            case FAST_JSON:
-                data = fastJson.objectToJsonArrayByte(obj);
-                break;
-            case FAST_JSON2:
-                data = fastJson2.objectToJsonArrayByte(obj);
-                break;
-            case JACK_JSON:
-                data = jackJson.objectToJsonArrayByte(obj);
-                break;
-            default:
-                data = extraJson.objectToJsonArrayByte(obj);
-        }
-        return data;
+        return getJson(jsonType).objectToJsonArrayByte(obj);
     }
 
     /**
@@ -238,23 +218,12 @@ public class JsonHelper implements Json {
      * @return /
      */
     public <T> T fromJson(String json, Class<T> tClass, JsonType jsonType) {
-        T data;
-        switch (jsonType) {
-            case FAST_JSON:
-                data = fastJson.fromJson(json, tClass);
-                break;
-            case FAST_JSON2:
-                data = fastJson2.fromJson(json, tClass);
-                break;
-            case JACK_JSON:
-                data = jackJson.fromJson(json, tClass);
-                break;
-            default:
-                data = extraJson.fromJson(json, tClass);
-        }
-        return data;
+        return getJson(jsonType).fromJson(json, tClass);
     }
 
+    public <T> T fromJson(String json, DataType<T> dataType, JsonType jsonType) {
+        return getJson(jsonType).fromJson(json, dataType);
+    }
 
     /**
      * @param jsonBytes
@@ -264,21 +233,11 @@ public class JsonHelper implements Json {
      * @return /
      */
     public <T> T fromJsonByte(byte[] jsonBytes, Class<T> tClass, JsonType jsonType) {
-        T data;
-        switch (jsonType) {
-            case FAST_JSON:
-                data = fastJson.fromJsonByte(jsonBytes, tClass);
-                break;
-            case FAST_JSON2:
-                data = fastJson2.fromJsonByte(jsonBytes, tClass);
-                break;
-            case JACK_JSON:
-                data = jackJson.fromJsonByte(jsonBytes, tClass);
-                break;
-            default:
-                data = extraJson.fromJsonByte(jsonBytes, tClass);
-        }
-        return data;
+        return getJson(jsonType).fromJsonByte(jsonBytes, tClass);
+    }
+
+    public <T> T fromJsonByte(byte[] jsonBytes, DataType<T> dataType, JsonType jsonType) {
+        return getJson(jsonType).fromJsonByte(jsonBytes, dataType);
     }
 
     /**
@@ -289,21 +248,7 @@ public class JsonHelper implements Json {
      * @return /
      */
     public <T> List<T> fromJsonArray(String json, Class<T> tClass, JsonType jsonType) {
-        List<T> data;
-        switch (jsonType) {
-            case FAST_JSON:
-                data = fastJson.fromJsonArray(json, tClass);
-                break;
-            case FAST_JSON2:
-                data = fastJson2.fromJsonArray(json, tClass);
-                break;
-            case JACK_JSON:
-                data = jackJson.fromJsonArray(json, tClass);
-                break;
-            default:
-                data = extraJson.fromJsonArray(json, tClass);
-        }
-        return data;
+        return getJson(jsonType).fromJsonArray(json, tClass);
     }
 
     /**
@@ -314,20 +259,25 @@ public class JsonHelper implements Json {
      * @return /
      */
     public <T> List<T> fromJsonByteArray(byte[] jsonBytes, Class<T> tClass, JsonType jsonType) {
-        List<T> data;
+        return getJson(jsonType).fromJsonByteArray(jsonBytes, tClass);
+    }
+
+    private Json getJson(JsonType jsonType) {
+        Json json;
         switch (jsonType) {
             case FAST_JSON:
-                data = fastJson.fromJsonByteArray(jsonBytes, tClass);
+                json = fastJson;
                 break;
             case FAST_JSON2:
-                data = fastJson2.fromJsonByteArray(jsonBytes, tClass);
+                json = fastJson2;
                 break;
             case JACK_JSON:
-                data = jackJson.fromJsonByteArray(jsonBytes, tClass);
+                json = jackJson;
                 break;
             default:
-                data = extraJson.fromJsonByteArray(jsonBytes, tClass);
+                json = extraJson;
         }
-        return data;
+        return json;
     }
+
 }
