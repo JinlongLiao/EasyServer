@@ -28,7 +28,6 @@
 package io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm;
 
 import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ByteVector;
-import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Label;
 
 /**
  * Information about an exception handler. Corresponds to an element of the exception_table array of

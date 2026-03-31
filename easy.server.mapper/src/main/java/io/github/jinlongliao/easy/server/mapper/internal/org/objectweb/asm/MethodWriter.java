@@ -28,6 +28,20 @@
 package io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm;
 
 import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.*;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.AnnotationVisitor;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.AnnotationWriter;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Attribute;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ByteVector;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ClassReader;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Constants;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.CurrentFrame;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Edge;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Frame;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Handle;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Handler;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Label;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.MethodTooLargeException;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.MethodVisitor;
 
 /**
  * A {@link MethodVisitor} that generates a corresponding 'method_info' structure, as defined in the
@@ -378,7 +392,7 @@ final class MethodWriter extends MethodVisitor {
 
   /**
    * The first non standard attribute of the Code attribute. The next ones can be accessed with the
-   * {@link Attribute#nextAttribute} field. May be {@literal null}.
+   * {@link org.objectweb.asm.Attribute#nextAttribute} field. May be {@literal null}.
    *
    * <p><b>WARNING</b>: this list stores the attributes in the <i>reverse</i> order of their visit.
    * firstAttribute is actually the last attribute visited in {@link #visitAttribute}. The {@link
@@ -653,7 +667,7 @@ final class MethodWriter extends MethodVisitor {
   @Override
   public AnnotationVisitor visitAnnotationDefault() {
     defaultValue = new ByteVector();
-    return new AnnotationWriter(symbolTable, /* useNamedValues = */ false, defaultValue, null);
+    return new AnnotationWriter(symbolTable, /* useNamedValues= */ false, defaultValue, null);
   }
 
   @Override
@@ -1521,14 +1535,14 @@ final class MethodWriter extends MethodVisitor {
       return lastCodeRuntimeVisibleTypeAnnotation =
           new AnnotationWriter(
               symbolTable,
-              /* useNamedValues = */ true,
+              /* useNamedValues= */ true,
               typeAnnotation,
               lastCodeRuntimeVisibleTypeAnnotation);
     } else {
       return lastCodeRuntimeInvisibleTypeAnnotation =
           new AnnotationWriter(
               symbolTable,
-              /* useNamedValues = */ true,
+              /* useNamedValues= */ true,
               typeAnnotation,
               lastCodeRuntimeInvisibleTypeAnnotation);
     }
@@ -1644,7 +1658,7 @@ final class MethodWriter extends MethodVisitor {
           code.data[endOffset] = (byte) Opcodes.ATHROW;
           // Emit a frame for this unreachable block, with no local and a Throwable on the stack
           // (so that the ATHROW could consume this Throwable if it were reachable).
-          int frameIndex = visitFrameStart(startOffset, /* numLocal = */ 0, /* numStack = */ 1);
+          int frameIndex = visitFrameStart(startOffset, /* numLocal= */ 0, /* numStack= */ 1);
           currentFrame[frameIndex] =
               Frame.getAbstractTypeFromInternalName(symbolTable, "java/lang/Throwable");
           visitFrameEnd();

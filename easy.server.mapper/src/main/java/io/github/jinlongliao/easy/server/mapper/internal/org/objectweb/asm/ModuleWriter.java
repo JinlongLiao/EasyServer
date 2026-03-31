@@ -28,8 +28,8 @@
 package io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm;
 
 import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ByteVector;
-import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Opcodes;
-import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.SymbolTable;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Constants;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ModuleVisitor;
 
 /**
  * A {@link ModuleVisitor} that generates the corresponding Module, ModulePackages and

@@ -29,6 +29,8 @@
 package io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm;
 
 import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ByteVector;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ClassVisitor;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.MethodVisitor;
 
 /**
  * A reference to a type appearing in a class, field or method declaration, or on an instruction.

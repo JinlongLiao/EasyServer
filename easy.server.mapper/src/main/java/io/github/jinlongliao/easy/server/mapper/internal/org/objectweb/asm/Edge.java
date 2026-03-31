@@ -27,7 +27,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm;
 
-import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Label;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ClassWriter;
 
 /**
  * An edge in the control flow graph of a method. Each node of this graph is a basic block,

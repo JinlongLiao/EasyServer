@@ -27,8 +27,8 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm;
 
-import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.SymbolTable;
-import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Type;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Frame;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Label;
 
 /**
  * An entry of the constant pool, of the BootstrapMethods attribute, or of the (ASM specific) type
@@ -181,7 +181,9 @@ abstract class Symbol {
    *   <li>the symbol's value for {@link #CONSTANT_INTEGER_TAG},{@link #CONSTANT_FLOAT_TAG}, {@link
    *       #CONSTANT_LONG_TAG}, {@link #CONSTANT_DOUBLE_TAG},
    *   <li>the CONSTANT_MethodHandle_info reference_kind field value for {@link
-   *       #CONSTANT_METHOD_HANDLE_TAG} symbols,
+   *       #CONSTANT_METHOD_HANDLE_TAG} symbols (or this value left shifted by 8 bits for
+   *       reference_kind values larger than or equal to H_INVOKEVIRTUAL and if the method owner is
+   *       an interface),
    *   <li>the CONSTANT_InvokeDynamic_info bootstrap_method_attr_index field value for {@link
    *       #CONSTANT_INVOKE_DYNAMIC_TAG} symbols,
    *   <li>the offset of a bootstrap method in the BootstrapMethods boostrap_methods array, for

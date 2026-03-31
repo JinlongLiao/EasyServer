@@ -28,6 +28,11 @@
 package io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm;
 
 import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.*;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.AnnotationVisitor;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.AnnotationWriter;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Attribute;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ByteVector;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.RecordComponentVisitor;
 
 final class RecordComponentWriter extends RecordComponentVisitor {
     /**
@@ -102,7 +107,7 @@ final class RecordComponentWriter extends RecordComponentVisitor {
             final String name,
             final String descriptor,
             final String signature) {
-        super(/* latest api = */ Opcodes.ASM9);
+        super(/* latest api = */ io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Opcodes.ASM9);
         this.symbolTable = symbolTable;
         this.nameIndex = symbolTable.addConstantUtf8(name);
         this.descriptorIndex = symbolTable.addConstantUtf8(descriptor);

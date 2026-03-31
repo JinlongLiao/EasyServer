@@ -27,7 +27,8 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm;
 
-import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.*;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ByteVector;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Constants;
 
 /**
  * The input and output stack map frames of a basic block.

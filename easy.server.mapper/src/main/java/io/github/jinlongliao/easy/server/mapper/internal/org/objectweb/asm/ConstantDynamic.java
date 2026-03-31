@@ -27,8 +27,6 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm;
 
-import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Handle;
-
 import java.util.Arrays;
 
 /**

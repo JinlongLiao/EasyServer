@@ -28,6 +28,12 @@
 package io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm;
 
 import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.*;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.AnnotationVisitor;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.AnnotationWriter;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Attribute;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ByteVector;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Constants;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.FieldVisitor;
 
 /**
  * A {@link FieldVisitor} that generates a corresponding 'field_info' structure, as defined in the
@@ -196,7 +202,7 @@ final class FieldWriter extends FieldVisitor {
     // For ease of reference, we use here the same attribute order as in Section 4.7 of the JVMS.
     if (constantValueIndex != 0) {
       // ConstantValue attributes always use 8 bytes.
-      symbolTable.addConstantUtf8(Constants.CONSTANT_VALUE);
+      symbolTable.addConstantUtf8(org.objectweb.asm.Constants.CONSTANT_VALUE);
       size += 8;
     }
     size += Attribute.computeAttributesSize(symbolTable, accessFlags, signatureIndex);

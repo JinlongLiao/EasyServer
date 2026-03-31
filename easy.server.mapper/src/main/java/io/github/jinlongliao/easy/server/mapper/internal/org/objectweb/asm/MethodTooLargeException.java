@@ -27,7 +27,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm;
 
-import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Type;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ClassWriter;
 
 /**
  * Exception thrown when the Code attribute of a method produced by a {@link ClassWriter} is too

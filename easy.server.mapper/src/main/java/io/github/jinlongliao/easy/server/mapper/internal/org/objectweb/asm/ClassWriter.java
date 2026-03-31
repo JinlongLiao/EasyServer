@@ -28,6 +28,13 @@
 package io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm;
 
 import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.*;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.AnnotationVisitor;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.AnnotationWriter;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Attribute;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ByteVector;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ClassReader;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ClassTooLargeException;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ClassVisitor;
 
 /**
  * A {@link ClassVisitor} that generates a corresponding ClassFile structure, as defined in the Java
@@ -207,7 +214,7 @@ public class ClassWriter extends ClassVisitor {
 
   /**
    * The first non standard attribute of this class. The next ones can be accessed with the {@link
-   * Attribute#nextAttribute} field. May be {@literal null}.
+   * org.objectweb.asm.Attribute#nextAttribute} field. May be {@literal null}.
    *
    * <p><b>WARNING</b>: this list stores the attributes in the <i>reverse</i> order of their visit.
    * firstAttribute is actually the last attribute visited in {@link #visitAttribute}. The {@link
@@ -266,13 +273,7 @@ public class ClassWriter extends ClassVisitor {
     super(/* latest api = */ Opcodes.ASM9);
     this.flags = flags;
     symbolTable = classReader == null ? new SymbolTable(this) : new SymbolTable(this, classReader);
-    if ((flags & COMPUTE_FRAMES) != 0) {
-      compute = MethodWriter.COMPUTE_ALL_FRAMES;
-    } else if ((flags & COMPUTE_MAXS) != 0) {
-      compute = MethodWriter.COMPUTE_MAX_STACK_AND_LOCAL;
-    } else {
-      compute = MethodWriter.COMPUTE_NOTHING;
-    }
+    setFlags(flags);
   }
 
   // -----------------------------------------------------------------------------------------------
@@ -776,7 +777,7 @@ public class ClassWriter extends ClassVisitor {
     lastRecordComponent = null;
     firstAttribute = null;
     compute = hasFrames ? MethodWriter.COMPUTE_INSERTED_FRAMES : MethodWriter.COMPUTE_NOTHING;
-    new ClassReader(classFile, 0, /* checkClassVersion = */ false)
+    new ClassReader(classFile, 0, /* checkClassVersion= */ false)
         .accept(
             this,
             attributes,
@@ -905,7 +906,7 @@ public class ClassWriter extends ClassVisitor {
    * @deprecated this method is superseded by {@link #newHandle(int, String, String, String,
    *     boolean)}.
    */
-  @Deprecated
+  @Deprecated(forRemoval = false)
   public int newHandle(
       final int tag, final String owner, final String name, final String descriptor) {
     return newHandle(tag, owner, name, descriptor, tag == Opcodes.H_INVOKEINTERFACE);
@@ -1020,6 +1021,28 @@ public class ClassWriter extends ClassVisitor {
    */
   public int newNameType(final String name, final String descriptor) {
     return symbolTable.addConstantNameAndType(name, descriptor);
+  }
+
+  /**
+   * Changes the computation strategy of method properties like max stack size, max number of local
+   * variables, and frames.
+   *
+   * <p><b>WARNING</b>: {@link #setFlags(int)} method changes the behavior of new method visitors
+   * returned from {@link #visitMethod(int, String, String, String, String[])}. The behavior will be
+   * changed only after the next method visitor is returned. All the previously returned method
+   * visitors keep their previous behavior.
+   *
+   * @param flags option flags that can be used to modify the default behavior of this class. Must
+   *     be zero or more of {@link #COMPUTE_MAXS} and {@link #COMPUTE_FRAMES}.
+   */
+  public final void setFlags(final int flags) {
+    if ((flags & ClassWriter.COMPUTE_FRAMES) != 0) {
+      compute = MethodWriter.COMPUTE_ALL_FRAMES;
+    } else if ((flags & ClassWriter.COMPUTE_MAXS) != 0) {
+      compute = MethodWriter.COMPUTE_MAX_STACK_AND_LOCAL;
+    } else {
+      compute = MethodWriter.COMPUTE_NOTHING;
+    }
   }
 
   // -----------------------------------------------------------------------------------------------

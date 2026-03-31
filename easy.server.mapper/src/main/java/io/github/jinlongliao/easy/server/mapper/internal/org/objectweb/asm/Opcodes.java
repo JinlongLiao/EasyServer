@@ -28,6 +28,7 @@
 package io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm;
 
 import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.ClassReader;
+import io.github.jinlongliao.easy.server.mapper.internal.org.objectweb.asm.Frame;
 
 /**
  * The JVM opcodes, access flags and array type codes. This interface does not define all the JVM
@@ -58,7 +59,8 @@ public interface Opcodes {
    *
    * @deprecated This API is experimental.
    */
-  @Deprecated int ASM10_EXPERIMENTAL = 1 << 24 | 10 << 16 | 0 << 8;
+  @Deprecated(forRemoval = false)
+  int ASM10_EXPERIMENTAL = 1 << 24 | 10 << 16 | 0 << 8;
 
   /*
    * Internal flags used to redirect calls to deprecated methods. For instance, if a visitOldStuff
@@ -290,6 +292,10 @@ public interface Opcodes {
   int V20 = 0 << 16 | 64;
   int V21 = 0 << 16 | 65;
   int V22 = 0 << 16 | 66;
+  int V23 = 0 << 16 | 67;
+  int V24 = 0 << 16 | 68;
+  int V25 = 0 << 16 | 69;
+  int V26 = 0 << 16 | 70;
 
   /**
    * Version flag indicating that the class is using 'preview' features.
