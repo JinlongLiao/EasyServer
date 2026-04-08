@@ -16,6 +16,8 @@
         <hibernate.validator.version>8.0.1.Final</hibernate.validator.version>
     </properties>
     <artifactId>easy.server.core</artifactId>
+    <name>easy.server.core</name>
+    <description>Core components of EasyServer framework</description>
     <dependencies>
         <dependency>
             <groupId>io.github.jinlongliao</groupId>

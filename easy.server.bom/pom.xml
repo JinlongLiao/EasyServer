@@ -10,6 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>easy.server.bom</artifactId>
+    <name>easy.server.bom</name>
+    <description>Bill of Materials for EasyServer framework</description>
     <properties>
         <spring.version>6.0.12</spring.version>
     </properties>

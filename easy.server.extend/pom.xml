@@ -9,6 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>easy.server.extend</artifactId>
+    <name>easy.server.extend</name>
+    <description>Extended features and utilities for EasyServer framework</description>
     <properties>
         <asm.version>9.5</asm.version>
         <servlet.version>6.0.0</servlet.version>

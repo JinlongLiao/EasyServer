@@ -9,6 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>easy.server.mapper</artifactId>
+    <name>easy.server.mapper</name>
+    <description>Object mapping utilities for EasyServer framework</description>
 
     <properties>
         <charsetEncoding>UTF-8</charsetEncoding>

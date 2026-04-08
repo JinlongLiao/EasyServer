@@ -6,11 +6,14 @@
     <parent>
         <groupId>io.github.jinlongliao</groupId>
         <artifactId>easy.server.demo</artifactId>
-         <version>2.3.1</version>
+        <version>2.3.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>easy.server.tomcat.demo</artifactId>
     <packaging>war</packaging>
+    <properties>
+        <central.publish.skip>true</central.publish.skip>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -88,6 +91,26 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>3.0.0</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>injected-central-publishing</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
                 <configuration>
                     <skip>true</skip>
                 </configuration>

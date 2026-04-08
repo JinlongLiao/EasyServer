@@ -11,6 +11,7 @@
     </parent>
     <artifactId>easy.server.kotlin.demo</artifactId>
     <properties>
+        <central.publish.skip>true</central.publish.skip>
         <lombok.version>1.18.44</lombok.version>
         <maven.compiler.debug>false</maven.compiler.debug>
         <maven.compiler.debuglevel>none</maven.compiler.debuglevel>
@@ -99,6 +100,26 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>3.0.0</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>injected-central-publishing</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
                 <configuration>
                     <skip>true</skip>
                 </configuration>

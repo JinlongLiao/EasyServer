@@ -11,6 +11,8 @@
     </parent>
     <packaging>maven-plugin</packaging>
     <artifactId>maven-generator-maven-plugin</artifactId>
+    <name>maven-generator-maven-plugin</name>
+    <description>Maven plugin for code generation in EasyServer framework</description>
     <properties>
         <mavenVersion>3.9.0</mavenVersion>
         <slf4j.version>1.7.36</slf4j.version>

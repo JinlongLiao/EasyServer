@@ -11,4 +11,6 @@
     </parent>
     <packaging>jar</packaging>
     <artifactId>common-generator-maven-plugin</artifactId>
+    <name>common-generator-maven-plugin</name>
+    <description>Common code generator for EasyServer Maven plugin</description>
 </project>
